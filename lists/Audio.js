@@ -9,15 +9,6 @@ module.exports = {
             type: Text,
             isRequired: true
         },
-        /*audio: {
-            type: Types.GcsFile,
-            initial: true,
-            autoCleanup: true,
-            datePrefix: 'YYYYMMDDHHmmss',
-            bucket: bucket,
-            destination: 'assets/audios/',
-            publicRead: true,
-        },*/
         coverPhoto: {
             label: '封面照片',
             type: Relationship,
@@ -29,6 +20,13 @@ module.exports = {
             ref: 'Tag',
             many: true
         },
+        createTime: {
+            type: DateTimeUtc,
+            defaultValue: new Date()
+        },
+        audio:{
+            type:Relationship, ref:'GCSFile', many: false
+        }
     },
     plugins: [
         atTracking(),
@@ -43,6 +41,5 @@ module.exports = {
         defaultColumns: 'title, audio, tags, createdAt',
         defaultSort: '-createdAt',
     },
-    plural: 'Audios',
-    labelField: 'title'
+    plural: 'Audios'
 }

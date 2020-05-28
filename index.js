@@ -40,6 +40,7 @@ const keystone = new Keystone({
 
 for (var name in lists) {
   keystone.createList(name, lists[name]);
+  console.log(`${name} created`)
 }
 
 const authStrategy = keystone.createAuthStrategy({

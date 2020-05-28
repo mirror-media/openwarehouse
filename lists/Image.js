@@ -30,6 +30,16 @@ module.exports = {
             label: '關鍵字',
             type: Text,
         },
+        createTime: {
+            type: DateTimeUtc,
+            defaultValue: new Date()
+        },
+        sale: {
+            type: Checkbox
+        },
+        image:{
+            type:Relationship, ref:'GCSFile', many: false
+        }
     },
     plugins: [
         atTracking(),
