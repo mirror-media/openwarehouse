@@ -1,18 +1,20 @@
-const { Text, Relationship } = require('@keystonejs/fields');
+const { Text, Relationship, File } = require('@keystonejs/fields');
+const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
+const { GCSAdapter } = require('../lib/GCSAdapter');
 const access = require('../helpers/access');
 
 module.exports = {
     fields: {
+        file: {
+            type: File,
+            adapter: GCSAdapter,
+            isRequired: true,
+        },
         title: {
             label: '標題',
             type: Text,
             isRequired: true
-        },
-        coverPhoto: {
-            label: '封面照片',
-            type: Relationship,
-            ref: 'Image'
         },
         tags: {
             label: '標籤',

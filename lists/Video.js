@@ -1,9 +1,16 @@
-const { Text, Checkbox, Select, Relationship, DateTime } = require('@keystonejs/fields');
+const { Text, Checkbox, Select, Relationship, File } = require('@keystonejs/fields');
+const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
+const { GCSAdapter } = require('../lib/GCSAdapter');
 const access = require('../helpers/access');
 
 module.exports = {
     fields: {
+        file: {
+            type: File,
+            adapter: GCSAdapter,
+            isRequired: true,
+        },
         title: {
             label: '標題',
             type: Text,
@@ -31,15 +38,6 @@ module.exports = {
             type: Text,
             isMultiline: true
         },
-        /*video: {
-            type: Types.GcsFile,
-            initial: true,
-            autoCleanup: true,
-            datePrefix: 'YYYYMMDDHHmmss',
-            bucket: bucket,
-            destination: 'assets/videos/',
-            publicRead: true,
-        },*/
         tags: {
             label: '標籤',
             type: Relationship,
