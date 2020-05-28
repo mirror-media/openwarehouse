@@ -28,6 +28,9 @@ module.exports = {
             type: DateTimeUtc,
             defaultValue: new Date()
         },
+        audio:{
+            type:Relationship, ref:'GCSFile', many: false
+        }
     },
     plugins: [
         atTracking(),

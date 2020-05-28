@@ -10,4 +10,5 @@ module.exports = {
     Contact: require('./Contact'),
     User: require('./User'),
     Movie: require('./Movie'),
+    GCSFile: require('./GCSFile')
 }

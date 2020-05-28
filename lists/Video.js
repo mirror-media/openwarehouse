@@ -20,6 +20,9 @@ module.exports = {
             ref: 'PostCategory',
             many: true
         },
+        video:{
+            type:Relationship, ref:'GCSFile', many:false
+        },
         //coverPhoto: { label: '首圖', type: Types.ImageRelationship, ref: 'Image' },
         //description: { type: Types.Html, wysiwyg: true, height: 150 },
         /*video: {
