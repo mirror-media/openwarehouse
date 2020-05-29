@@ -43,7 +43,11 @@ module.exports = {
         },
         image:{
             type:Relationship, ref:'GCSFile', many: false
-        }
+        },
+        urlDesktopSized:{type:Text},
+        urlMobileSized:{type:Text},
+        urlTabletSized:{type:Text},
+        urlTinySized:{type:Text},
     },
     plugins: [
         atTracking(),
