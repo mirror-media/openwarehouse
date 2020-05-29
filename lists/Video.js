@@ -80,7 +80,7 @@ module.exports = {
         defaultColumns: 'title, video, tags',
         defaultSort: '-createTime',
     },
-    hooks:{
+    // hooks:{
         // Hooks for create and update operations
         // resolveInput: async (...) => {...}
         // validateInput: async (...) => {...}
@@ -91,5 +91,5 @@ module.exports = {
         // validateDelete: async (...) => {...}
         // beforeDelete: async (...) => {...}
         // afterDelete: async (...) => {...}
-    }
+    // }
 }

@@ -54,9 +54,10 @@ module.exports = {
         defaultSort: '-createTime',
     },
 
-    hooks:{
+    // hooks:{
         // Hooks for create and update operations
-        // resolveInput: async ({}) => {...}
+        // resolveInput: async ({ operation, existingItem, resolvedData }) => {console.log(resolvedData)}
+
         // validateInput: async (...) => {...}
         // beforeChange: async ({ existingItem }) => {
         //     if (existingItem && existingItem.file) {
@@ -73,5 +74,5 @@ module.exports = {
         //         await fileAdapter.delete(existingItem.file);
         //     }
         // }
-    }
+    // }
 }
