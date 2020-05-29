@@ -9,7 +9,7 @@ module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: new GCSAdapter(gcsDir=gcsDir),
+            adapter: new GCSAdapter(gcsDir),
             isRequired: true,
         },
         title: {

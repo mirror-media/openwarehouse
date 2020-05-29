@@ -1,4 +1,4 @@
-const { Text, Relationship, FIle } = require('@keystonejs/fields');
+const { Text, Relationship, File } = require('@keystonejs/fields');
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
@@ -8,7 +8,7 @@ module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: new GCSAdapter(gcsDir=gcsDir),
+            adapter: new GCSAdapter(gcsDir),
             isRequired: true,
         },
         title: {
