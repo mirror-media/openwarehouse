@@ -1,12 +1,12 @@
-const { Text, Checkbox, Select, Relationship } = require('@keystonejs/fields');
-const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
+const { Slug, Text, Checkbox, Select, Relationship, DateTime } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
+const access = require('../helpers/access');
 
 module.exports = {
     fields: {
-        name: {
-            label: '網址名稱（英文）',
-            type: Text,
+        slug: {
+            label: 'Slug',
+            type: Slug,
             isRequired: true,
             isUnique: true
         },
@@ -19,7 +19,6 @@ module.exports = {
         subtitle: {
             label: '副標',
             type: Text,
-            isRequired: false
         },
         state: {
             label: '狀態',
@@ -27,18 +26,19 @@ module.exports = {
             options: 'draft, published, scheduled, archived, invisible',
             defaultValue: 'draft'
         },
-        publishedDate: {
-            label: '發佈日期',
-            type: DateTimeUtc,
-            defaultValue: new Date(),
-            dependsOn: {
+        publishTime: {
+            label: '發佈時間',
+            type: DateTime,
+            format: 'MM/DD/YYYY hh:mm A',
+            defaultValue: new Date().toISOString(),
+            /*dependsOn: {
                 '$or': {
                     state: [
                         'published',
                         'scheduled'
                     ]
                 }
-            }
+            }*/
         },
         sections: {
             label: '分區',
@@ -49,7 +49,7 @@ module.exports = {
         categories: {
             label: '分類',
             type: Relationship,
-            ref: 'PostCategory',
+            ref: 'Category',
             many: true
         },
         writers: {
@@ -64,7 +64,7 @@ module.exports = {
             ref: 'Contact',
             many: true
         },
-        camera_man: {
+        cameraOperators: {
             label: '影音',
             type: Relationship,
             ref: 'Contact',
@@ -88,33 +88,47 @@ module.exports = {
             ref: 'Contact',
             many: true
         },
-        extend_byline: {
+        otherByline: {
             label: '作者（其他）',
             type: Text
         },
         heroVideo: {
-            label: 'Leading Video',
+            label: '影片',
             type: Relationship,
             ref: 'Video'
         },
-        //heroImage: { label: '首圖', type: Types.ImageRelationship, ref: 'Image' },
+        heroImage: {
+            label: '首圖',
+            type: Relationship,
+            ref: 'Image'
+        },
         heroCaption: {
             label: '首圖圖說',
             type: Text
         },
-        //heroImageSize: { label: '首圖尺寸', type: Types.Select, options: 'extend, normal, small', default: 'normal', dependsOn: { heroImage: { '$regex': '.+/i' } } },
+        heroImageSize: {
+            label: '首圖尺寸',
+            type: Select,
+            options: 'extend, normal, small',
+            defaultValue: 'normal',
+            /*dependsOn: {
+                heroImage: {
+                    '$regex': '.+/i'
+                }
+            }*/
+        },
         style: {
-            label: '文章樣式',
+            label: '樣式',
             type: Select,
             options: 'article, wide, projects, photography, script, campaign, readr',
             defaultValue: 'article'
         },
         //brief: { label: '前言', type: Types.Html, wysiwyg: true, height: 150 },
         //content: { label: '內文', type: Types.Html, wysiwyg: true, height: 400 },
-        topics: {
+        topic: {
             label: '專題',
             type: Relationship,
-            ref: 'Topic'
+            ref: 'Topic',
         },
         tags: {
             label: '標籤',
@@ -122,73 +136,73 @@ module.exports = {
             ref: 'Tag',
             many: true
         },
-        //albums: { label: '專輯', type: Types.Relationship, ref: 'Album', many: true },
-        //audio: { label: '語音素材', type: Types.Relationship, ref: 'Audio' },
-        relateds: {
+        audio: {
+            label: '音檔',
+            type: Relationship,
+            ref: 'Audio'
+        },
+        relatedPosts: {
             label: '相關文章',
             type: Relationship,
             ref: 'Post',
             many: true
         },
-        og_title: {
-            label: 'FB分享標題',
+        relatedTopic: {
+            label: '相關專題',
+            type: Relationship,
+            ref: 'Topic',
+        },
+        ogTitle: {
+            label: 'FB 分享標題',
             type: Text
         },
-        og_description: {
-            label: 'FB分享說明',
+        ogDescription: {
+            label: 'FB 分享說明',
             type: Text
         },
-        //og_image: { label: 'FB分享縮圖', type: Types.ImageRelationship, ref: 'Image' },
-        device: {
-            label: '裝置',
-            type: Select,
-            options: 'all, web, app',
-            defaultValue: 'all'
+        ogImage: {
+            label: 'FB 分享縮圖',
+            type: Relationship,
+            ref: 'Image'
         },
-        adTrace: {
+        adTraceCode: {
             label: '追蹤代碼',
             type: Text,
             isMultiline: true
         },
-        createTime: {
-            type: DateTimeUtc,
-            defaultValue: new Date()
-        },
         isFeatured: {
             label: '置頂',
-            type: Checkbox
-        },
-        isAdvertised: {
-            label: '廣告文案',
-            type: Checkbox
-        },
-        hiddenAdvertised: {
-            label: 'google廣告違規',
-            type: Checkbox
-        },
-        isCampaign: {
-            label: '活動',
             type: Checkbox
         },
         isAdult: {
             label: '18禁',
             type: Checkbox
         },
-        lockJS: {
-            label: '鎖定右鍵',
+        isAdvertised: {
+            label: '廣告文案',
             type: Checkbox
         },
         isAudioSiteOnly: {
             label: '僅用於語音網站',
             type: Checkbox
-        }
+        },
+        isAdBlocked: {
+            label: 'Google 廣告違規',
+            type: Checkbox
+        },
     },
     plugins: [
         atTracking(),
         byTracking(),
     ],
-    adminConfig: {
-        defaultColumns: 'title, name, state|20%, author|20%, categories|20%, publishedDate|20%',
-        defaultSort: '-publishedDate',
+    access: {
+        update: access.userIsAboveAuthorOrOwner,
+        create: access.userIsNotContributor,
+        delete: access.userIsAboveAuthorOrOwner,
     },
+    adminConfig: {
+        defaultColumns: 'slug, title, state, categories, createdBy, publishTime, updatedAt',
+        defaultSort: '-publishTime',
+    },
+    labelField: 'title'
 }

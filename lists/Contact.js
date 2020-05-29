@@ -1,16 +1,37 @@
-const { Text, Url, Location } = require('@keystonejs/fields');
+const { Slug, Text, Url, Relationship } = require('@keystonejs/fields');
 const { Markdown } = require('@keystonejs/fields-markdown');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
+const { uuid } = require('uuidv4');
+const access = require('../helpers/access');
 
 module.exports = {
     fields: {
+        slug: {
+            label: 'Slug',
+            type: Slug,
+            generate: uuid,
+            makeUnique: uuid,
+            isUnique: true,
+            regenerateOnUpdate: false,
+            access: {
+                create: false,
+                update: false,
+            }
+        },
         name: {
-            label: '作者姓名',
+            label: '姓名',
             type: Text,
             isRequired: true
         },
-        //email: { type: Types.Email, initial: true, index: true },
-        //image: { label: '照片', type: Types.ImageRelationship, ref: 'Image' },
+        email: {
+            label: 'Email',
+            type: Text
+        },
+        image: {
+            label: '圖片',
+            type: Relationship,
+            ref: 'Image'
+        },
         homepage: {
             label: '個人首頁',
             type: Url
@@ -27,21 +48,22 @@ module.exports = {
             label: 'Instatgram',
             type: Url
         },
-        address: {
-            label: 'address',
-            type: Text
-        },
         bio: {
-            label: '簡介',
-            type: Markdown,
-            collapse: true
+            label: '個人簡介',
+            type: Markdown
         },
     },
     plugins: [
         atTracking(),
         byTracking(),
     ],
+    access: {
+        update: access.userIsAdminOrModerator,
+        create: access.userIsAdminOrModerator,
+        delete: access.userIsAdminOrModerator,
+    },
     adminConfig: {
-        defaultColumns: 'name, email, homepage'
+        defaultColumns: 'slug, name, email, homepage, createdAt',
+        defaultSort: '-createdAt',
     },
 }

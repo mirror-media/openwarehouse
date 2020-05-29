@@ -2,6 +2,7 @@ const { Text, Checkbox, Select, Relationship, File } = require('@keystonejs/fiel
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
+const access = require('../helpers/access');
 const gcsDir = 'assets/videos/'
 
 
@@ -13,6 +14,7 @@ module.exports = {
             isRequired: true,
         },
         title: {
+            label: '標題',
             type: Text,
             isRequired: true
         },
@@ -25,14 +27,21 @@ module.exports = {
         categories: {
             label: '分類',
             type: Relationship,
-            ref: 'PostCategory',
+            ref: 'Category',
             many: true
         },
-        video:{
-            type:Relationship, ref:'GCSFile', many:false
+        coverPhoto: {
+            label: '封面照片',
+            type: Relationship,
+            ref: 'Image'
         },
-
+        description: {
+            label: '敘述',
+            type: Text,
+            isMultiline: true
+        },
         tags: {
+            label: '標籤',
             type: Relationship,
             ref: 'Tag',
             many: true
@@ -43,30 +52,27 @@ module.exports = {
             options: 'draft, published, scheduled',
             defaultValue: 'draft'
         },
-        publishedDate: {
-            label: '發佈日期',
-            type: DateTimeUtc,
-            defaultValue: new Date(),
-            dependsOn: {
+        publishTime: {
+            label: '發佈時間',
+            type: DateTime,
+            format: 'MM/DD/YYYY hh:mm A',
+            defaultValue: new Date().toISOString(),
+            /*dependsOn: {
                 '$or': {
                     state: [
                         'published',
                         'scheduled'
                     ]
                 }
-            }
+            }*/
         },
-        relateds: {
+        relatedPosts: {
             label: '相關文章',
             type: Relationship,
             ref: 'Post',
             many: true
         },
-        createTime: {
-            type: DateTimeUtc,
-            defaultValue: new Date()
-        },
-        feed: {
+        isFeed: {
             label: '供稿',
             type: Checkbox,
             defaultValue: true
@@ -80,9 +86,14 @@ module.exports = {
         atTracking(),
         byTracking(),
     ],
+    access: {
+        update: access.userIsAboveAuthorOrOwner,
+        create: access.userIsNotContributor,
+        delete: access.userIsAboveAuthorOrOwner,
+    },
     adminConfig: {
-        defaultColumns: 'title, video, tags',
-        defaultSort: '-createTime',
+        defaultColumns: 'title, video, tags, state, publishTime, createdAt',
+        defaultSort: '-createdAt',
     },
     hooks:{
         // Hooks for create and update operations
@@ -98,5 +109,6 @@ module.exports = {
         // validateDelete: async (...) => {...}
         // beforeDelete: async (...) => {...}
         // afterDelete: async (...) => {...}
-    }
+    },
+    labelField: 'title'
 }

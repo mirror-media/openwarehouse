@@ -2,7 +2,8 @@ const { Text, Relationship, File } = require('@keystonejs/fields');
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
-const gcsDir = 'test_dir/'
+const access = require('../helpers/access');
+const gcsDir = 'assets/audios/'
 
 module.exports = {
     fields: {
@@ -12,11 +13,12 @@ module.exports = {
             isRequired: true,
         },
         title: {
+            label: '標題',
             type: Text,
             isRequired: true
         },
-
         tags: {
+            label: '標籤',
             type: Relationship,
             ref: 'Tag',
             many: true
@@ -42,9 +44,14 @@ module.exports = {
         atTracking(),
         byTracking(),
     ],
+    access: {
+        update: access.userIsAboveAuthorOrOwner,
+        create: access.userIsNotContributor,
+        delete: access.userIsAboveAuthorOrOwner,
+    },
     adminConfig: {
-        defaultColumns: 'title, audio, tags',
-        defaultSort: '-createTime',
+        defaultColumns: 'title, audio, tags, createdAt',
+        defaultSort: '-createdAt',
     },
     plural: 'Audios',
 

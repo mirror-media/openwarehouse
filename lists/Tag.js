@@ -1,71 +1,53 @@
-const { Text, Checkbox, Select, Relationship } = require('@keystonejs/fields');
+const { Slug, Text, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
+const { uuid } = require('uuidv4');
+const access = require('../helpers/access');
 
 module.exports = {
     fields: {
+        slug: {
+            label: 'Slug',
+            type: Slug,
+            generate: uuid,
+            makeUnique: uuid,
+            isUnique: true,
+            regenerateOnUpdate: false,
+            access: {
+                create: false,
+                update: false,
+            }
+        },
         name: {
-            label: '標籤名稱',
+            label: '名稱',
             type: Text,
             isRequired: true,
             isUnique: true
         },
-        //brief: { label: '前言', type: Types.Html, wysiwyg: true, height: 150 },
-        sections: {
-            label: '分區',
-            type: Relationship,
-            ref: 'Section',
-            many: true
-        },
-        style: {
-            type: Select,
-            options: 'feature, listing, tile, full',
-            defaultValue: 'feature'
-        },
-        leading: {
-            label: '標頭樣式',
-            type: Select,
-            options: 'video, slideshow, image'
-        },
-        heroVideo: {
-            label: 'Leading Video',
-            type: Relationship,
-            ref: 'Video',
-            dependsOn: {
-                leading: 'video'
-            }
-        },
-        //heroImage: { label: '首圖', type: Types.ImageRelationship, ref: 'Image', dependsOn: { leading: 'image' } },
-        //heroImageSize: { label: '首圖尺寸', type: Types.Select, options: 'extend, normal, small', default: 'normal', dependsOn: { heroImage: { '$regex': '.+/i' } } },
-        og_title: {
-            label: 'FB分享標題',
+        ogTitle: {
+            label: 'FB 分享標題',
             type: Text
         },
-        og_description: {
-            label: 'FB分享說明',
+        ogDescription: {
+            label: 'FB 分享說明',
             type: Text
         },
-        //og_image: { label: 'FB分享縮圖', type: Types.ImageRelationship, ref: 'Image' },
-        css: {
-            label: 'CSS',
-            type: Text,
-            isMultiline: true
-        },
-        javascript: {
-            label: 'JavaScript',
-            type: Text,
-            isMultiline: true
-        },
-        isAudioSiteOnly: {
-            label: '僅用於語音網站',
-            type: Checkbox
-        },
-        isFeatured: {
-            label: '置頂',
-            type: Checkbox
+        ogImage: {
+            label: 'FB 分享縮圖',
+            type: Relationship,
+            ref: 'Image'
         },
     },
     plugins: [
         atTracking(),
         byTracking(),
     ],
+    access: {
+        update: access.userIsAboveAuthorOrOwner,
+        create: access.userIsNotContributor,
+        delete: access.userIsAboveAuthorOrOwner,
+    },
+    adminConfig: {
+        defaultColumns: 'slug, name, createdAt',
+        defaultSort: '-createdAt',
+    },
 }

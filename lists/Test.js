@@ -1,9 +1,11 @@
 const { Text } = require('@keystonejs/fields');
-const Stars = require('../fields/Stars');
+const HTML = require('../fields/HTML');
 
 module.exports = {
     fields: {
         name: { type: Text },
-        rating: { type: Stars, starCount: 5 }
+        brief: {
+            type: HTML,
+        },
     },
 }

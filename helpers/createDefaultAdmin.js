@@ -21,7 +21,7 @@ module.exports = async keystone => {
 
         await keystone.executeQuery(
             `mutation initialUser($password: String, $email: String) {
-                createUser(data: {name: "admin", email: $email, isAdmin: true, password: $password}) {
+                createUser(data: {name: "admin", email: $email, password: $password, role: "moderator", isAdmin: true}) {
                 id
                 }
             }`,

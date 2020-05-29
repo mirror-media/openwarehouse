@@ -22,6 +22,7 @@ module.exports = {
             type: Text
         },
         copyright: {
+            label: '版權',
             type: Select,
             dataType: 'string',
             options: 'Creative-Commons, Copyrighted',
@@ -46,6 +47,7 @@ module.exports = {
             many: true
         },
         keywords: {
+            label: '關鍵字',
             type: Text,
         },
         createTime: {
@@ -69,9 +71,14 @@ module.exports = {
         // atTracking(),
         byTracking(),
     ],
+    access: {
+        update: access.userIsAboveAuthorOrOwner,
+        create: access.userIsNotContributor,
+        delete: access.userIsAboveAuthorOrOwner,
+    },
     adminConfig: {
-        defaultColumns: 'description',//, image',
-        defaultSort: '-createTime',
+        defaultColumns: 'title, image, createdAt',
+        defaultSort: '-createdAt',
     },
 
     hooks: {

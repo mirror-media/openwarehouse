@@ -11,6 +11,5 @@ module.exports = {
         height:{type:Integer},
         width:{type:Integer},
         iptc:{type:Text},
-
     }
 }

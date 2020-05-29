@@ -1,50 +1,79 @@
-const { Text, Checkbox, Password } = require('@keystonejs/fields');
-
-
-const userIsAdmin = ({ authentication: { item: user } }) => Boolean(user && user.isAdmin);
-
-const userOwnsItem = ({ authentication: { item: user } }) => {
-    if (!user) {
-        return false;
-    }
-    // Instead of a boolean, you can return a GraphQL query:
-    // https://www.keystonejs.com/api/access-control#graphqlwhere
-    return { id: user.id };
-};
-
-const userIsAdminOrOwner = auth => {
-    const isAdmin = access.userIsAdmin(auth);
-    const isOwner = access.userOwnsItem(auth);
-    return isAdmin ? isAdmin : isOwner;
-};
-
-const access = { userIsAdmin, userOwnsItem, userIsAdminOrOwner };
+const { Text, Checkbox, Password, Select, Relationship } = require('@keystonejs/fields');
+const { atTracking, byTracking } = require('@keystonejs/list-plugins');
+const access = require('../helpers/access');
 
 module.exports = {
     fields: {
-        name: { type: Text },
-        email: {
+        name: {
+            label: '姓名',
             type: Text,
-            isUnique: true,
+            isRequired: true,
         },
-        isAdmin: {
-            type: Checkbox,
-            // Field-level access controls
-            // Here, we set more restrictive field access so a non-admin cannot make themselves admin.
-            access: {
-                update: access.userIsAdmin,
-            },
+        email: {
+            label: 'Email',
+            type: Text,
+            isRequired: true,
+            isUnique: true
         },
         password: {
-            type: Password,
+            label: '密碼',
+            type: Password
         },
+        role: {
+            label: '角色權限',
+            type: Select,
+            dataType: 'string',
+            options: 'contributor, author, editor, moderator',
+            defaultValue: 'contributor',
+            isRequired: true,
+            access: {
+                update: access.userIsAdminOrModerator,
+            }
+        },
+        company: {
+            label: '公司',
+            type: Relationship,
+            ref: 'Company.users',
+        },
+        isAdmin: {
+            label: '管理者',
+            type: Checkbox,
+            access: {
+                update: access.userIsAdmin,
+            }
+        },
+        isProtected: {
+            label: '受保護',
+            type: Checkbox,
+            access: {
+                update: access.userIsAdmin,
+            }
+        }
     },
-    // List-level access controls
+    plugins: [
+        atTracking(),
+        byTracking(),
+    ],
     access: {
-        read: access.userIsAdminOrOwner,
-        update: access.userIsAdminOrOwner,
-        create: access.userIsAdmin,
-        delete: access.userIsAdmin,
+        read: access.userIsAdminOrModeratorOrOwner,
+        update: access.userIsAdminOrModeratorOrOwner,
+        create: access.userIsAdminOrModerator,
+        delete: access.userIsAdminOrModerator,
         auth: true,
-    }
+    },
+    hooks: {
+        resolveInput: async ({ operation, existingItem, resolvedData }) => {
+            if (operation === 'update' && existingItem.isProtected) {
+                const protectedFields = ['name', 'email', 'isAdmin', 'role'];
+                protectedFields.forEach(field => {
+                    resolvedData[field] = existingItem[field];
+                })
+            }
+            return resolvedData;
+        }
+    },
+    adminConfig: {
+        defaultColumns: 'name, email, role, isAdmin, company, createdAt',
+        defaultSort: '-createdAt'
+    },
 }

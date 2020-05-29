@@ -1,10 +1,32 @@
-const { Text, Checkbox, Select, Relationship } = require('@keystonejs/fields');
+const { Slug, Text, Integer, Checkbox, Select, Relationship } = require('@keystonejs/fields');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
+const { uuid } = require('uuidv4');
+const access = require('../helpers/access');
 
 module.exports = {
     fields: {
-        name: {
-            label: '專題名稱',
+        slug: {
+            label: 'Slug',
+            type: Slug,
+            generate: uuid,
+            makeUnique: uuid,
+            isUnique: true,
+            regenerateOnUpdate: false,
+            access: {
+                create: false,
+                update: false,
+            }
+        },
+        sortOrder: {
+            label: '排序順位',
+            type: Integer,
+            isUnique: true
+            /*dependsOn: {
+                type: 'timeline'
+            }*/
+        },
+        title: {
+            label: '標題',
             type: Text,
             isRequired: true
         },
@@ -13,12 +35,15 @@ module.exports = {
             type: Text
         },
         state: {
-            label: '狀態', type: Select,
+            label: '狀態',
+            type: Select,
             options: 'draft, published',
             defaultValue: 'draft'
         },
-        //brief: { label: '前言', type: Types.Html, wysiwyg: true, height: 150 },
-        //heroImage: { label: '專題主圖', type: Types.ImageRelationship, ref: 'Image' },
+        /*brief: {
+            label: '前言',
+            type: Wysiwyg
+        },*/
         leading: {
             label: '標頭樣式',
             type: Select,
@@ -31,26 +56,47 @@ module.exports = {
             many: true
         },
         heroVideo: {
-            label: 'Leading Video',
+            label: '影片',
             type: Relationship,
             ref: 'Video',
-            dependsOn: {
+            /*dependsOn: {
                 leading: 'video'
-            }
+            }*/
         },
-        //heroImage: { label: '首圖', type: Types.ImageRelationship, ref: 'Image', dependsOn: { leading: 'image' } },
-        //heroImageSize: { label: '首圖尺寸', type: Select, options: 'extend, normal, small', default: 'normal', dependsOn: { heroImage: { '$regex': '.+/i' } } },
-        og_title: {
-            label: 'FB分享標題',
+        heroImage: {
+            label: '首圖',
+            type: Relationship,
+            ref: 'Image',
+            /*dependsOn: {
+                leading: 'image'
+            }*/
+        },
+        heroImageSize: {
+            label: '首圖尺寸',
+            type: Select,
+            options: 'extend, normal, small',
+            default: 'normal',
+            /*dependsOn: {
+                heroImage: {
+                    '$regex': '.+/i'
+                }
+            }*/
+        },
+        ogTitle: {
+            label: 'FB 分享標題',
             type: Text
         },
-        og_description: {
-            label: 'FB分享說明',
+        ogDescription: {
+            label: 'FB 分享說明',
             type: Text
         },
-        //og_image: { label: 'FB分享縮圖', type: Types.ImageRelationship, ref: 'Image' },
-        title_style: {
-            label: '專題樣式',
+        ogImage: {
+            label: 'FB 分享縮圖',
+            type: Relationship,
+            ref: 'Image'
+        },
+        titleStyle: {
+            label: '標題樣式',
             type: Select,
             options: 'feature, wide',
             defaultValue: 'feature'
@@ -66,17 +112,17 @@ module.exports = {
             label: '資料來源',
             type: Select,
             options: 'posts, activities',
-            dependsOn: {
+            /*dependsOn: {
                 type: 'timeline'
-            }
+            }*/
         },
-        sort: {
-            label: '時間軸排序',
+        sortDir: {
+            label: '時間軸排序方向',
             type: Select,
             options: 'asc, desc',
-            dependsOn: {
+            /*dependsOn: {
                 type: 'timeline'
-            }
+            }*/
         },
         tags: {
             label: '標籤',
@@ -95,21 +141,30 @@ module.exports = {
             isMultiline: true
         },
         dfp: {
-            label: 'DFP code',
+            label: 'DFP Code',
             type: Text
         },
-        mobile_dfp: {
-            label: 'Mobile DFP code',
+        mobileDfp: {
+            label: 'Mobile DFP Code',
             type: Text
         },
         isFeatured: {
             label: '置頂',
-            type: Checkbox,
-            defaultValue: false
-        }
+            type: Checkbox
+        },
     },
     plugins: [
         atTracking(),
         byTracking(),
     ],
+    access: {
+        update: access.userIsAdminOrModerator,
+        create: access.userIsAdminOrModerator,
+        delete: access.userIsAdminOrModerator,
+    },
+    adminConfig: {
+        defaultColumns: 'slug, title, state, tags, isFeatured, createdAt',
+        defaultSort: '-createdAt',
+    },
+    labelField: 'title'
 }
