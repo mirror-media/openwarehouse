@@ -2,12 +2,14 @@ const { Text, Checkbox, Select, Relationship, File } = require('@keystonejs/fiel
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
+const gcsDir = 'assets/videos/'
+
 
 module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: GCSAdapter,
+            adapter: new GCSAdapter(gcsDir=gcsDir),
             isRequired: true,
         },
         title: {
@@ -78,4 +80,16 @@ module.exports = {
         defaultColumns: 'title, video, tags',
         defaultSort: '-createTime',
     },
+    hooks:{
+        // Hooks for create and update operations
+        // resolveInput: async (...) => {...}
+        // validateInput: async (...) => {...}
+        // beforeChange: async (...) => {...}
+        // afterChange: async (...) => {...}
+
+        // Hooks for delete operations
+        // validateDelete: async (...) => {...}
+        // beforeDelete: async (...) => {...}
+        // afterDelete: async (...) => {...}
+    }
 }

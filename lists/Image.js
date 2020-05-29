@@ -2,12 +2,13 @@ const { Text, Checkbox, Select, Relationship, File } = require('@keystonejs/fiel
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
+const gcsDir = 'assets/images/'
 
 module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: GCSAdapter,
+            adapter: new GCSAdapter(gcsDir=gcsDir),
             isRequired: true,
         },
         description: {
@@ -52,4 +53,25 @@ module.exports = {
         defaultColumns: 'description',//, image',
         defaultSort: '-createTime',
     },
+
+    hooks:{
+        // Hooks for create and update operations
+        // resolveInput: async ({}) => {...}
+        // validateInput: async (...) => {...}
+        // beforeChange: async ({ existingItem }) => {
+        //     if (existingItem && existingItem.file) {
+        //         await GCSAdapter.deleteFile(existingItem.file)
+        //     }
+        // }
+        // afterChange: async (...) => {...}
+
+        // Hooks for delete operations
+        // validateDelete: async (...) => {...}
+        // beforeDelete: async (...) => {...}
+        // afterDelete: async ({ existingItem }) => {
+        //     if (existingItem.file) {
+        //         await fileAdapter.delete(existingItem.file);
+        //     }
+        // }
+    }
 }
