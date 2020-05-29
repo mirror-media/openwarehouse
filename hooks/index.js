@@ -5,7 +5,7 @@ export default {
             children: ['Post', 'Image', 'Video', 'Audio'],
         },
         {
-            label: 'Ｃlassification',
+            label: 'Classification',
             children: ['Topic', 'Section', 'PostCategory', 'Tag'],
         },
         {
