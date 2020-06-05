@@ -59,7 +59,7 @@ module.exports = {
         urlTinySized:{type:Text, access:{read:false, write:false}},
     },
     plugins: [
-        atTracking(),
+        // atTracking(),
         byTracking(),
     ],
     adminConfig: {
@@ -69,7 +69,7 @@ module.exports = {
 
     hooks:{
         // Hooks for create and update operations
-        resolveInput: async ({ operation, existingItem, resolvedData }) => {console.log("resolved data id:",resolvedData.id)}
+        resolveInput: async ({ operation, existingItem, resolvedData }) => {return resolvedData}
 
         // validateInput: async (...) => {...}
         // beforeChange: async ({ existingItem }) => {
