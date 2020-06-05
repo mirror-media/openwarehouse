@@ -1,14 +1,21 @@
-const { Text, Checkbox, Select, Relationship, File } = require('@keystonejs/fields');
+const { Text, Checkbox, Select, Relationship, File, Slug } = require('@keystonejs/fields');
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
-const gcsDir = 'assets/images/'
+const { S3Adapter } = require('@keystonejs/file-adapters');
+// const gcsDir = 'assets/images/'
+const gcsDir = 'test_dir/'
+const path = require('path');
+// var gcskeyfile = require('../configs/gcskeyfile.json')
+// gcskeyfile.bucket = 'mirrormedia-files'
+
 
 module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: new GCSAdapter(gcsDir),
+            adapter: new GCSAdapter(__dirname ,gcsDir),
+            // adapter: new S3Adapter(gcskeyfile),
             isRequired: true,
         },
         description: {
@@ -41,13 +48,15 @@ module.exports = {
         sale: {
             type: Checkbox
         },
+        //TODO: this is not right
         image:{
             type:Relationship, ref:'GCSFile', many: false
         },
-        urlDesktopSized:{type:Text},
-        urlMobileSized:{type:Text},
-        urlTabletSized:{type:Text},
-        urlTinySized:{type:Text},
+        // TODO: Not a field here
+        urlDesktopSized:{type:Text, access:{read:false, write:false}},
+        urlMobileSized:{type:Text, access:{read:false, write:false}},
+        urlTabletSized:{type:Text, access:{read:false, write:false}},
+        urlTinySized:{type:Text, access:{read:false, write:false}},
     },
     plugins: [
         atTracking(),
@@ -58,9 +67,9 @@ module.exports = {
         defaultSort: '-createTime',
     },
 
-    // hooks:{
+    hooks:{
         // Hooks for create and update operations
-        // resolveInput: async ({ operation, existingItem, resolvedData }) => {console.log(resolvedData)}
+        resolveInput: async ({ operation, existingItem, resolvedData }) => {console.log("resolved data id:",resolvedData.id)}
 
         // validateInput: async (...) => {...}
         // beforeChange: async ({ existingItem }) => {
@@ -78,5 +87,5 @@ module.exports = {
         //         await fileAdapter.delete(existingItem.file);
         //     }
         // }
-    // }
+    }
 }
