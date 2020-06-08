@@ -14,7 +14,7 @@ module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: new GCSAdapter(__dirname ,gcsDir),
+            adapter: new GCSAdapter(gcsDir),
             // adapter: new S3Adapter(gcskeyfile),
             isRequired: true,
         },
