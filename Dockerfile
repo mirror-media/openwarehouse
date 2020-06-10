@@ -10,7 +10,9 @@ WORKDIR /build
 
 RUN apk add --no-cache build-base python2 yarn && \
     wget -O dumb-init -q https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_amd64 && \
-    chmod +x dumb-init
+    chmod +x dumb-init \
+    && apk add imagemagick \
+    && apk add graphicsmagick
 
 ADD . /build
 RUN yarn install
