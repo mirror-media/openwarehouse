@@ -1,7 +1,8 @@
 const { Text, Checkbox, Select, Relationship, File, Slug } = require('@keystonejs/fields');
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { GCSAdapter } = require('../lib/GCSAdapter');
+// const { GCSAdapter } = require('../lib/GCSAdapter');
+const { ImageAdapter } = require('../lib/ImageAdapter');
 const { S3Adapter } = require('@keystonejs/file-adapters');
 // const gcsDir = 'assets/images/'
 const gcsDir = 'test_dir/'
@@ -14,7 +15,7 @@ module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: new GCSAdapter(gcsDir),
+            adapter: new ImageAdapter(gcsDir),
             // adapter: new S3Adapter(gcskeyfile),
             isRequired: true,
         },
@@ -27,6 +28,11 @@ module.exports = {
             options: 'Creative-Commons, Copyrighted',
             defaultValue: 'Copyrighted'
         },
+
+        watermark:{
+            type: Checkbox
+        },
+
         topics: {
             label: '專題',
             type: Relationship,
@@ -69,9 +75,15 @@ module.exports = {
 
     hooks:{
         // Hooks for create and update operations
-        resolveInput: async ({ operation, existingItem, resolvedData }) => {return resolvedData}
+        resolveInput: async ({ operation, existingItem, resolvedData }) => {return resolvedData},
 
-        // validateInput: async (...) => {...}
+        // validateInput: async ({operation,
+        //     existingItem,
+        //     originalInput,
+        //     resolvedData,
+        //     context,
+        //     actions,
+        //     addFieldValidationError,}) => {}
         // beforeChange: async ({ existingItem }) => {
         //     if (existingItem && existingItem.file) {
         //         await GCSAdapter.deleteFile(existingItem.file)
