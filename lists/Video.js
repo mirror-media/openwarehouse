@@ -71,6 +71,10 @@ module.exports = {
             type: Checkbox,
             defaultValue: true
         },
+
+        mimeInfo:{
+            type: Text, access:{read:false, write:false}
+        }
     },
     plugins: [
         atTracking(),
@@ -80,9 +84,12 @@ module.exports = {
         defaultColumns: 'title, video, tags',
         defaultSort: '-createTime',
     },
-    // hooks:{
+    hooks:{
         // Hooks for create and update operations
-        // resolveInput: async (...) => {...}
+        resolveInput: async ({ operation, existingItem, resolvedData, originalInput }) => {
+            console.log("RESOLVED INPUT:", resolvedData)
+            return resolvedData
+        }
         // validateInput: async (...) => {...}
         // beforeChange: async (...) => {...}
         // afterChange: async (...) => {...}
@@ -91,5 +98,5 @@ module.exports = {
         // validateDelete: async (...) => {...}
         // beforeDelete: async (...) => {...}
         // afterDelete: async (...) => {...}
-    // }
+    }
 }

@@ -2,7 +2,7 @@ const { Text, Relationship, File } = require('@keystonejs/fields');
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
-const gcsDir = 'assets/audios/'
+const gcsDir = 'test_dir/'
 
 module.exports = {
     fields: {
@@ -27,7 +27,16 @@ module.exports = {
         },
         audio:{
             type:Relationship, ref:'GCSFile', many: false
+        },
+
+        coverPhoto:{
+            type:Relationship, ref:'Image', many: false
+        },
+
+        mimeInfo:{
+            type: Text, access:{read:false, write:false}
         }
+
     },
     plugins: [
         atTracking(),
@@ -39,9 +48,12 @@ module.exports = {
     },
     plural: 'Audios',
 
-    // hooks:{
+    hooks:{
         // Hooks for create and update operations
-        // resolveInput: async (...) => {...}
+        resolveInput: async ({ operation, existingItem, resolvedData, originalInput }) => {
+            console.log("RESLVED INPUT", resolvedData)
+            return resolvedData
+        }
         // validateInput: async (...) => {...}
         // beforeChange: async (...) => {...}
         // afterChange: async (...) => {...}
@@ -50,5 +62,5 @@ module.exports = {
         // validateDelete: async (...) => {...}
         // beforeDelete: async (...) => {...}
         // afterDelete: async (...) => {...}
-    // }
+    }
 }
