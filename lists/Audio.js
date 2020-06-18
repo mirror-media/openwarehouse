@@ -3,12 +3,13 @@ const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
 const access = require('../helpers/access');
+const gcsDir = 'assets/audios/'
 
 module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: GCSAdapter,
+            adapter: new GCSAdapter(gcsDir=gcsDir),
             isRequired: true,
         },
         title: {
@@ -43,5 +44,18 @@ module.exports = {
         defaultColumns: 'title, audio, tags, createdAt',
         defaultSort: '-createdAt',
     },
-    plural: 'Audios'
+    plural: 'Audios',
+
+    hooks:{
+        // Hooks for create and update operations
+        // resolveInput: async (...) => {...}
+        // validateInput: async (...) => {...}
+        // beforeChange: async (...) => {...}
+        // afterChange: async (...) => {...}
+
+        // Hooks for delete operations
+        // validateDelete: async (...) => {...}
+        // beforeDelete: async (...) => {...}
+        // afterDelete: async (...) => {...}
+    }
 }

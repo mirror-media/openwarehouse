@@ -3,12 +3,14 @@ const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const { GCSAdapter } = require('../lib/GCSAdapter');
 const access = require('../helpers/access');
+const gcsDir = 'assets/videos/'
+
 
 module.exports = {
     fields: {
         file: {
             type: File,
-            adapter: GCSAdapter,
+            adapter: new GCSAdapter(gcsDir=gcsDir),
             isRequired: true,
         },
         title: {
