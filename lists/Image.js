@@ -1,15 +1,14 @@
 const { Text, Checkbox, Select, Relationship, File, Slug } = require('@keystonejs/fields');
 const { DateTimeUtc } = require('@keystonejs/fields-datetime-utc');
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-// const { GCSAdapter } = require('../lib/GCSAdapter');
 const { ImageAdapter } = require('../lib/ImageAdapter');
-const { S3Adapter } = require('@keystonejs/file-adapters');
+const path = require('path');
 // const gcsDir = 'assets/images/'
 const gcsDir = 'test_dir/'
-const path = require('path');
+const urlBase = `https://storage.cloud.google.com/mirrormedia-files/${gcsDir}`
+
 // var gcskeyfile = require('../configs/gcskeyfile.json')
 // gcskeyfile.bucket = 'mirrormedia-files'
-
 
 module.exports = {
     fields: {
@@ -29,8 +28,10 @@ module.exports = {
             defaultValue: 'Copyrighted'
         },
 
-        watermark:{
-            type: Checkbox
+
+        watermark: {
+            type: Checkbox,
+            label: 'Needs Watermark?'
         },
 
         topics: {
@@ -55,14 +56,14 @@ module.exports = {
             type: Checkbox
         },
         //TODO: this is not right
-        image:{
-            type:Relationship, ref:'GCSFile', many: false
+        image: {
+            type: Relationship, ref: 'GCSFile', many: false
         },
         // TODO: Not a field here
-        urlDesktopSized:{type:Text, access:{read:false, write:false}},
-        urlMobileSized:{type:Text, access:{read:false, write:false}},
-        urlTabletSized:{type:Text, access:{read:false, write:false}},
-        urlTinySized:{type:Text, access:{read:false, write:false}},
+        urlDesktopSized: { type: Text, access: { read: false, create: true } },
+        urlMobileSized: { type: Text, access: { read: false, create: true } },
+        urlTabletSized: { type: Text, access: { read: false, create: true } },
+        urlTinySized: { type: Text, access: { read: false, create: true } },
     },
     plugins: [
         // atTracking(),
@@ -73,17 +74,20 @@ module.exports = {
         defaultSort: '-createTime',
     },
 
-    hooks:{
+    hooks: {
         // Hooks for create and update operations
-        resolveInput: async ({ operation, existingItem, resolvedData }) => {return resolvedData},
+        resolveInput: ({ operation, existingItem, resolvedData, originalInput }) => {
+            if (resolvedData.file) {
+                resolvedData.urlDesktopSized = resolvedData.file._meta.url.urlDesktopSized
+                resolvedData.urlMobileSized = resolvedData.file._meta.url.urlMobileSized
+                resolvedData.urlTabletSized = resolvedData.file._meta.url.urlTabletSized
+                resolvedData.urlTinySized = resolvedData.file._meta.url.urlTinySized
+            }
 
-        // validateInput: async ({operation,
-        //     existingItem,
-        //     originalInput,
-        //     resolvedData,
-        //     context,
-        //     actions,
-        //     addFieldValidationError,}) => {}
+            console.log("resolveInput RESOLVED DATA", resolvedData)
+            return resolvedData
+        },
+
         // beforeChange: async ({ existingItem }) => {
         //     if (existingItem && existingItem.file) {
         //         await GCSAdapter.deleteFile(existingItem.file)
