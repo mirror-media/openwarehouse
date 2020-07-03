@@ -74,7 +74,6 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        read: access.userIsNotContributor,
         update: access.userIsNotContributor,
         create: access.userIsAdminOrModerator,
         delete: access.userIsAdmin,
