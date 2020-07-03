@@ -203,9 +203,8 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: access.userIsAboveAuthorOrOwner,
-        create: access.userIsNotContributor,
-        delete: access.userIsAboveAuthorOrOwner,
+        update: access.userIsAdminOrModeratorOrOwner,
+        delete: access.userIsAdmin,
     },
     adminConfig: {
         defaultColumns: 'slug, title, state, categories, createdBy, publishTime, updatedAt',

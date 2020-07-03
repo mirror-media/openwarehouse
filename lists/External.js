@@ -74,8 +74,9 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: access.userIsAboveAuthorOrOwner,
-        create: access.userIsNotContributor,
+        read: access.userIsNotContributor,
+        update: access.userIsNotContributor,
+        create: access.userIsAdminOrModerator,
         delete: access.userIsAdmin,
     },
     adminConfig: {
