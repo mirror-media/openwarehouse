@@ -33,10 +33,10 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        read: access.userIsAdminOrModerator,
+        read: access.userIsNotContributor,
         update: access.userIsAdminOrModerator,
         create: access.userIsAdminOrModerator,
-        delete: access.userIsAdminOrModerator,
+        delete: access.userIsAdmin,
         auth: true,
     },
     adminConfig: {

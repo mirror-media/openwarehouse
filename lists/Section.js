@@ -61,7 +61,7 @@ module.exports = {
     access: {
         update: access.userIsAdminOrModerator,
         create: access.userIsAdminOrModerator,
-        delete: access.userIsAdminOrModerator,
+        delete: access.userIsAdmin,
     },
     adminConfig: {
         defaultColumns: 'slug, name, categories, style, isFeatured, isAudioSiteOnly, createdAt',

@@ -14,9 +14,9 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: access.userIsAboveAuthorOrOwner,
+        update: access.userIsNotContributor,
         create: access.userIsNotContributor,
-        delete: access.userIsAboveAuthorOrOwner,
+        delete: access.userIsAdmin,
     },
     adminConfig: {
         defaultColumns: 'function, createdAt',
