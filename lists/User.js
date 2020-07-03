@@ -58,7 +58,7 @@ module.exports = {
         read: access.userIsAdminOrModeratorOrOwner,
         update: access.userIsAdminOrModeratorOrOwner,
         create: access.userIsAdminOrModerator,
-        delete: access.userIsAdminOrModerator,
+        delete: access.userIsAdmin,
         auth: true,
     },
     hooks: {
