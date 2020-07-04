@@ -2,6 +2,7 @@ const { Slug, Text, Checkbox, Select, Relationship, DateTime } = require('@keyst
 const { atTracking, byTracking } = require('@keystonejs/list-plugins');
 const access = require('../helpers/access');
 const HTML = require('../fields/HTML');
+const publishStateExaminer = require('../hooks/publishStateExaminer');
 
 module.exports = {
     fields: {
@@ -205,6 +206,9 @@ module.exports = {
     access: {
         update: access.userIsAdminOrModeratorOrOwner,
         delete: access.userIsAdmin,
+    },
+    hooks: {
+        resolveInput: publishStateExaminer,
     },
     adminConfig: {
         defaultColumns: 'slug, title, state, categories, createdBy, publishTime, updatedAt',
