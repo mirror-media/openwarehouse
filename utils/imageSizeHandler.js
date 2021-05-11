@@ -2,6 +2,7 @@ const probe = require('probe-image-size')
 const sharp = require('sharp')
 const fs = require('fs')
 const { ImageAdapter } = require('../lib/ImageAdapter')
+const Jimp = require('jimp')
 
 const resizeTarget = {
     desktop: { width: 1268, height: 713 },
@@ -65,8 +66,13 @@ function generateImageApiDataFromExistingItem(existingItem) {
     })
 }
 
+function getDimentionFromJimpImage(image) {
+    return image.bitmap
+}
+
 module.exports = {
     getUrlImageDimentions,
     getOriginalImageDimentionInLocal,
     generateImageApiDataFromExistingItem,
+    getDimentionFromJimpImage,
 }

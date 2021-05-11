@@ -19,7 +19,6 @@ const {
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
-const mediaUrlBase = 'assets/images/'
 const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
 const {
     getNewFilename,
@@ -28,10 +27,11 @@ const {
 const {
     generateImageApiDataFromExistingItem,
 } = require('../../utils/imageSizeHandler')
+
 const {
     storage: { gcpUrlBase },
 } = require('../../configs/config')
-
+const mediaUrlBase = 'assets/images/'
 const fileAdapter = new LocalFileAdapter({
     src: './public/images',
     path: `${gcpUrlBase}assets/images`, //function({id, }){}
@@ -132,9 +132,9 @@ module.exports = {
 
         beforeChange: async ({ existingItem, resolvedData }) => {
             try {
+                // resolvedData = true
+                // when create or update newer image
                 if (typeof resolvedData.file !== 'undefined') {
-                    // resolvedData = true
-                    // when create or update newer image
                     await addWatermarkIfNeeded(resolvedData, existingItem)
 
                     const { id, newFileName, originalFileName } = getFileDetail(
