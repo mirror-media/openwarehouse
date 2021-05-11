@@ -153,13 +153,12 @@ module.exports = {
                     // update image
                     // need to delete old image in gcs
                     if (typeof existingItem !== 'undefined') {
-                        console.log('---update image---')
-
+                        // console.log('---update image---')
                         await image_adapter.delete(
                             existingItem.file.id,
                             existingItem.file.originalFilename
                         )
-                        console.log('deleted old one')
+                        // console.log('deleted old one')
                     }
 
                     // import each url into resolvedData
@@ -182,13 +181,13 @@ module.exports = {
 
                     // if there's no image api data, fetch it
                     if (!existingItem.imageApiData) {
-                        const id = existingItem.id
-                        const image_adapter = new ImageAdapter(id)
-
-                        const apiData = await image_adapter.generateNewImageApiData(
-                            existingItem
-                        )
-                        resolvedData.imageApiData = apiData
+                        // (Todo)
+                        // const id = existingItem.id
+                        // const image_adapter = new ImageAdapter(mediaUrlBase)
+                        // const apiData = await image_adapter.generateNewImageApiData(
+                        //     existingItem
+                        // )
+                        // resolvedData.imageApiData = apiData
                     }
                 }
 
