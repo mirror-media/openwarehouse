@@ -1,4 +1,6 @@
 const Jimp = require('jimp')
+const fs = require('fs')
+
 const {
     generateFileNameSeperation,
     feedDimentionToApiData,
@@ -80,4 +82,19 @@ async function saveImageToLocal(jimpImage, filename) {
     })
 }
 
-module.exports = { saveVariousSizeImageToLocal }
+function deleteVariousSizeImageFromLocal(imageNameList) {
+    imageNameList.forEach((imageName) => {
+        const localTempFilePath = `./public/images/${imageName}`
+        fs.unlink(localTempFilePath, (err) => {
+            if (err) {
+                throw err
+            }
+            console.log(`${localTempFilePath} is deleted`)
+        })
+    })
+}
+
+module.exports = {
+    saveVariousSizeImageToLocal,
+    deleteVariousSizeImageFromLocal,
+}
