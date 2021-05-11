@@ -194,7 +194,7 @@ module.exports = {
 
                 return { existingItem, resolvedData }
             } catch (err) {
-                console.log(`error in hook: `, err.message)
+                console.log(`error in hook: `, err)
             }
         },
         // When delete image, delete image in gcs as well

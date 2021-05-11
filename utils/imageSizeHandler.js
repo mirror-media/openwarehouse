@@ -22,31 +22,6 @@ function getUrlImageDimentions(url) {
     })
 }
 
-function getOriginalImageDimentionInLocal(originalFileName) {
-    const stream = fs.createReadStream(`./public/images/${originalFileName}`)
-
-    return new Promise((resolve, reject) => {
-        const metaReader = sharp()
-        metaReader
-            .metadata()
-            .then((info) => {
-                resolve({
-                    width: info.width,
-                    height: info.height,
-                })
-            })
-            .catch((err) => {
-                console.log('err', err)
-                reject({
-                    width: 'unknown',
-                    height: 'unknown',
-                })
-            })
-
-        stream.pipe(metaReader)
-    })
-}
-
 function generateImageApiDataFromExistingItem(existingItem) {
     console.log(ImageAdapter)
     const originalFileName = existingItem.file.filename
@@ -66,13 +41,7 @@ function generateImageApiDataFromExistingItem(existingItem) {
     })
 }
 
-function getDimentionFromJimpImage(image) {
-    return image.bitmap
-}
-
 module.exports = {
     getUrlImageDimentions,
-    getOriginalImageDimentionInLocal,
     generateImageApiDataFromExistingItem,
-    getDimentionFromJimpImage,
 }
