@@ -11,13 +11,9 @@ const resizeTarget = {
     tiny: { width: 150, height: 84 },
 }
 
-function generateImageApiData(newFilename, apiData) {
+function generateImageApiData(imageNameList, apiData) {
     return new Promise((resolve, reject) => {
         try {
-            // generate name list
-            // use it to generate each size's apiData one by one
-            const imageNameList = generateImageNameListArray(newFilename)
-
             imageNameList.forEach((imageName) => {
                 createUrlToApiData(imageName, apiData)
             })
@@ -99,4 +95,5 @@ module.exports = {
     generateImageApiData,
     generateFileNameSeperation,
     feedDimentionToApiData,
+    generateImageNameListArray,
 }
