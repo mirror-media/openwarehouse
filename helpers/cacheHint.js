@@ -1,4 +1,4 @@
 module.exports = {
     scope: 'PUBLIC',
-    maxAge: 1800,
+    maxAge: 600,
 }
