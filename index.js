@@ -97,7 +97,6 @@ const apolloDftOptions = {
 const apolloRedisCacheOptions = {}
 if (!!app.isGraphQLCached) {
     const { options } = redisConf
-    const keyPrefix = `${app.uuid}-cache:`
     switch (redisConf.type) {
         case 'single':
             apolloRedisCacheOptions.plugins = [responseCachePlugin()]
@@ -105,7 +104,6 @@ if (!!app.isGraphQLCached) {
                 host: redisConf.nodes[0].host,
                 port: redisConf.nodes[0].port,
                 password: options.authPass,
-                keyPrefix: keyPrefix,
             })
             break
         case 'cluster':
@@ -116,7 +114,6 @@ if (!!app.isGraphQLCached) {
                     scaleReads: options.scaleReads,
                     redisOptions: {
                         password: options.authPass,
-                        prefix: keyPrefix,
                     },
                 }
             )
