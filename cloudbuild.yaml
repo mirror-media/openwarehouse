@@ -1,31 +1,101 @@
 steps:
-  - name: gcr.io/cloud-builders/gcloud
-    args:
-      - source
-      - repos
-      - clone
-      - helm
-      - ./dockerignore/helm
-  - name: bash
-    args:
-      - cp
-      - ./dockerignore/helm/cms/configs/dev/config.js
-      - ./configs/config.js
-  - name: bash
-    args:
-      - cp
-      - ./dockerignore/helm/cms/configs/dev/gcskeyfile.json
-      - ./configs/gcskeyfile.json
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - '-t'
-      - 'gcr.io/${PROJECT_ID}/openwarehouse:${BRANCH_NAME}_${SHORT_SHA}'
-      - .
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - gcr.io/$PROJECT_ID/openwarehouse
+- name: gcr.io/cloud-builders/gcloud
+  args:
+    - source
+    - repos
+    - clone
+    - helm
+    - ./dockerignore/helm
+- name: bash
+  args:
+    - cp
+    - ./dockerignore/helm/cms/configs/dev/config.js
+    - ./configs/config.js
+- name: bash
+  args:
+    - cp
+    - ./dockerignore/helm/cms/configs/dev/gcskeyfile.json
+    - ./configs/gcskeyfile.json
+- name: gcr.io/cloud-builders/docker
+  args:
+    - build
+    - '-t'
+    - 'gcr.io/${PROJECT_ID}/openwarehouse:${BRANCH_NAME}_${SHORT_SHA}'
+    - .
+- name: gcr.io/cloud-builders/docker
+  args:
+    - push
+    - gcr.io/$PROJECT_ID/openwarehouse
 images:
   - gcr.io/$PROJECT_ID/openwarehouse
 
+# build container image tag
+# TODO: extract pkg version from package.json to build image tag
+#- name: bash
+#  args:
+#    - '-c'
+#    - |
+#      echo "dev_bcgodev_64_cms" > /workspace/container_image_tag.txt
+
+# clone kubernetes configs from gcp source repository
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:342.0.0'
+  entrypoint: gcloud
+  args:
+    - source
+    - repos
+    - clone
+    - github_nickhsine_kubernetes-configs
+
+# set container image for tv-cms component to deploy
+#- name: 'k8s.gcr.io/kustomize/kustomize:v4.1.2'
+#  dir: 'github_nickhsine_kubernetes-configs/kustomize/openwarehouse/overlays/tv-cms/overlays/$BRANCH_NAME'
+#  args:
+#    - '-c'
+#    - 'TAG=`cat /workspace/container_image_tag.txt`; kustomize edit set image openwarehouse=gcr.io/mirror-tv-275709/openwarehouse:$$TAG'
+
+# set container image for tv-cms component to deploy
+- name: 'k8s.gcr.io/kustomize/kustomize:v4.1.2'
+  dir: 'github_nickhsine_kubernetes-configs/kustomize/openwarehouse/overlays/tv-cms/overlays/$BRANCH_NAME'
+  args:
+    - edit
+    - set
+    - image
+    - 'openwarehouse=gcr.io/mirror-tv-275709/openwarehouse:$BRANCH_NAME:$SHORT_SHA'
+
+# build k8s config yaml file of tv-cms
+- name: 'k8s.gcr.io/kustomize/kustomize:v4.1.2'
+  dir: 'github_nickhsine_kubernetes-configs/kustomize/openwarehouse/overlays/tv-cms/overlays/$BRANCH_NAME'
+  args:
+    - build
+    - .
+    - -o
+    - /workspace/tv-cms-k8s-configs.yaml
+
+# print out k8s yaml file
+- name: bash
+  args:
+    - '-c'
+    - |
+      cat /workspace/tv-cms-k8s-configs.yaml
+
+# deploy tv-cms component to kubernetes cluster
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+    - apply
+    - -f
+    - /workspace/tv-cms-k8s-configs.yaml
+    # TODO: remove --dry-run when cloudbuild ready
+    - --dry-run=server
+    - --validate=true
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-east1-c'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=tv-dev'
+
+## TODO uncomment while cloudbuild ready to deploy
+## check tv-cms deployment status
+#- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:342.0.0'
+#  entrypoint: kubectl
+#  args:
+#    - rollout
+#    - status
+#    - deployment/$BRANCH_NAME-openwarehouse-tv-cms
