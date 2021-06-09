@@ -51,37 +51,37 @@ steps:
 #    - '-c'
 #    - 'TAG=`cat /workspace/container_image_tag.txt`; kustomize edit set image openwarehouse=gcr.io/mirror-tv-275709/openwarehouse:$$TAG'
 
-# set container image for tv-cms component to deploy
+# set container image for tv-cms, tv-gql-internal and tv-gql-external components to deploy
 - name: 'k8s.gcr.io/kustomize/kustomize:v4.1.2'
-  dir: 'github_nickhsine_kubernetes-configs/kustomize/openwarehouse/overlays/tv-cms/overlays/$BRANCH_NAME'
+  dir: 'github_nickhsine_kubernetes-configs/kustomize/openwarehouse/overlays/tv-all/overlays/$BRANCH_NAME'
   args:
     - edit
     - set
     - image
     - 'openwarehouse=gcr.io/mirror-tv-275709/openwarehouse:$BRANCH_NAME:$SHORT_SHA'
 
-# build k8s config yaml file of tv-cms
+# build k8s config yaml files for tv-cms, tv-gql-internal and tv-gql-external components to deploy
 - name: 'k8s.gcr.io/kustomize/kustomize:v4.1.2'
-  dir: 'github_nickhsine_kubernetes-configs/kustomize/openwarehouse/overlays/tv-cms/overlays/$BRANCH_NAME'
+  dir: 'github_nickhsine_kubernetes-configs/kustomize/openwarehouse/overlays/tv-all/overlays/$BRANCH_NAME'
   args:
     - build
     - .
     - -o
-    - /workspace/tv-cms-k8s-configs.yaml
+    - /workspace/tv-all-k8s-configs.yaml
 
 # print out k8s yaml file
 - name: bash
   args:
     - '-c'
     - |
-      cat /workspace/tv-cms-k8s-configs.yaml
+      cat /workspace/tv-all-k8s-configs.yaml
 
-# deploy tv-cms component to kubernetes cluster
+# tv-cms, tv-gql-internal and tv-gql-external deployment
 - name: 'gcr.io/cloud-builders/kubectl'
   args:
     - apply
     - -f
-    - /workspace/tv-cms-k8s-configs.yaml
+    - /workspace/tv-all-k8s-configs.yaml
     # TODO: remove --dry-run when cloudbuild ready
     - --dry-run=server
     - --validate=true
