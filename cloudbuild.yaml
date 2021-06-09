@@ -100,3 +100,5 @@ steps:
 
 images:
   - gcr.io/$PROJECT_ID/openwarehouse
+
+timeout: 900s
