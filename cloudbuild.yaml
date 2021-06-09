@@ -36,7 +36,7 @@ steps:
 #      echo "dev_bcgodev_64_cms" > /workspace/container_image_tag.txt
 
 # clone kubernetes configs from gcp source repository
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:342.0.0'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
   entrypoint: gcloud
   args:
     - source
@@ -91,7 +91,7 @@ steps:
 
 ## TODO uncomment while cloudbuild ready to deploy
 ## check tv-cms deployment status
-#- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:342.0.0'
+#- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
 #  entrypoint: kubectl
 #  args:
 #    - rollout
