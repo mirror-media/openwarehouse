@@ -38,16 +38,16 @@ steps:
         curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
 
         # mv kubernetes-configs folder
-        mv ./dockerignore/kubernetes-configs ./kubernetes-configs
+        mv ./dockerignore/kubernetes-configs /workspace/kubernetes-configs
 
         # cd to dev environment kustimzation root
-        cd ./kubernetes-configs/openwarehouse/overlays/${BRANCH_NAME}/base
+        cd /workspace/kubernetes-configs/openwarehouse/overlays/${BRANCH_NAME}/base
 
         # update docker image
         /workspace/kustomize edit set image openwarehouse=gcr.io/${PROJECT_ID}/openwarehouse:${BRANCH_NAME}_${SHORT_SHA}
 
         # back to kubernetes-configs root
-        cd ./kubernetes-configs
+        cd /workspace/kubernetes-configs
 
         /workspace/kustomize build "./openwarehouse/overlays/${BRANCH_NAME}/overlays/tv/overlays/cms" >> $_FILE_TO_DEPLOY
         echo "---" >> $_FILE_TO_DEPLOY
