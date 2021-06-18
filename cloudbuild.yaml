@@ -78,6 +78,6 @@ images:
   - gcr.io/$PROJECT_ID/openwarehouse
 
 substitutions:
-  _FILE_TO_DEPLOY: config-to-deploy.txt # default value
+  _FILE_TO_DEPLOY: /workspace/config-to-deploy.txt # default value
 
 timeout: 900s
