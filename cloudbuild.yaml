@@ -67,8 +67,6 @@ steps:
       - apply
       - -f
       - $_FILE_TO_DEPLOY
-        # TODO: remove --dry-run when cloudbuild ready
-      - --dry-run=server
       - --validate=true
     env:
       - 'CLOUDSDK_COMPUTE_REGION=asia-east1'
