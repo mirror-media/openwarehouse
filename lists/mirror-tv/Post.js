@@ -261,7 +261,7 @@ module.exports = {
     plugins: [logging((args) => emitEditLog(args)), atTracking(), byTracking()],
     plugins: [atTracking(), byTracking()],
     access: {
-        update: allowRoles(admin, moderator, editor, owner),
+        update: allowRoles(admin, bot, moderator, editor, owner),
         create: allowRoles(admin, bot, moderator, editor, contributor),
         delete: allowRoles(admin),
     },
@@ -310,7 +310,7 @@ module.exports = {
                 addValidationError
             )
         },
-        beforeChange: async ({ existingItem, resolvedData }) => {},
+        beforeChange: async ({ existingItem, resolvedData }) => { },
     },
     adminConfig: {
         defaultColumns:
