@@ -11,9 +11,9 @@
         "node": ">=10.0.0"
     },
     "scripts": {
-        "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=true keystone dev",
+        "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=true node server",
         "build": "cross-env NODE_ENV=production keystone build",
-        "start": "cross-env NODE_ENV=production INSECURE_COOKIES=true keystone start",
+        "start": "cross-env NODE_ENV=production INSECURE_COOKIES=true node server",
         "create-tables": "cross-env keystone create-tables",
         "migrate": "cross-env CREATE_TABLES=true keystone upgrade-relationships --migration"
     },
@@ -42,6 +42,7 @@
         "draftjs-conductor": "^2.0.0",
         "get-audio-duration": "^2.0.3",
         "get-video-duration": "^3.0.2",
+        "http-proxy-middleware": "^2.0.0",
         "imagemagick": "^0.1.3",
         "imagemagick-stream": "^4.1.1",
         "ioredis": "^4.19.4",
