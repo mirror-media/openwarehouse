@@ -2,7 +2,7 @@
     "name": "@mirror-media/openwarehouse",
     "description": "CMS and GraphQL API for Mirror Media",
     "private": true,
-    "version": "1.0.0",
+    "version": "1.1.0",
     "author": "mirror-media",
     "repository": "https://github.com/mirror-media/openwarehouse.git",
     "homepage": "https://github.com/keystonejs/keystone",
