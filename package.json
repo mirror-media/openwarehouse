@@ -1,10 +1,10 @@
 {
-    "name": "@keystonejs/example-projects-blank",
-    "description": "A blank KeystoneJS starter project.",
+    "name": "@mirror-media/openwarehouse",
+    "description": "CMS and GraphQL API for Mirror Media",
     "private": true,
-    "version": "5.0.16",
-    "author": "The KeystoneJS Development Team",
-    "repository": "https://github.com/keystonejs/keystone/tree/master/packages/create-keystone-app/example-projects/blank",
+    "version": "1.0.0",
+    "author": "mirror-media",
+    "repository": "https://github.com/mirror-media/openwarehouse.git",
     "homepage": "https://github.com/keystonejs/keystone",
     "license": "MIT",
     "engines": {
