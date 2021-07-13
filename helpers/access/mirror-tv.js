@@ -21,7 +21,7 @@ const owner = ({ authentication: { item: user }, listKey }) => {
 const registeredUsers = ({ authentication: { item } }) => Boolean(!!item)
 
 // anonymousWithGqlControl depends on process.env.K5_SERVICE_TYPE == GQL
-const anonymousWithGqlControl = ({ gqlControl }) => {
+const anonymousWithGqlControl = ({ gqlServiceControl }) => {
 
     const serviceType = process.env.K5_SERVICE_TYPE || 'CMS'
     let control;
@@ -31,7 +31,7 @@ const anonymousWithGqlControl = ({ gqlControl }) => {
         // then restrict read access via user's role
         // (anonymous can only read public)
         case 'GQL':
-            control = gqlControl
+            control = gqlServiceControl
             break;
 
         // if type of server is Preview,

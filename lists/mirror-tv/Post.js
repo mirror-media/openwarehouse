@@ -277,7 +277,7 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        read: allowRoles(registeredUsers, anonymousWithGqlControl({ gqlControl: { 'state_in': ['published', 'invisible'] } })),
+        read: allowRoles(registeredUsers, anonymousWithGqlControl({ gqlServiceControl: { 'state_in': ['published', 'invisible'] } })),
         // FIXME Do we really want to limit read access of a contributor?
         // read: getAccessControlViaServerType(
         //     admin,
