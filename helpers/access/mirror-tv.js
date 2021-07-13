@@ -29,7 +29,7 @@ const anonymousWithDeclarativeControl = (control) => {
     }
 }
 
-const anonymousWithPostsAccess = anonymousWithDeclarativeControl({ 'state_in': ['published', 'invisible'] })
+const anonymousWithPublishedOrInvisibleStateAccess = anonymousWithDeclarativeControl({ 'state_in': ['published', 'invisible'] })
 
 const allowRoles = (...args) => {
     return (auth) => {
@@ -40,7 +40,7 @@ const allowRoles = (...args) => {
 module.exports = {
     admin,
     allowRoles,
-    anonymousWithPostsAccess,
+    anonymousWithPublishedOrdInvisibleStateAccess,
     bot,
     contributor,
     editor,

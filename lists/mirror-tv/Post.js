@@ -17,7 +17,7 @@ const {
     contributor,
     owner,
     registeredUsers,
-    anonymousWithPostsAccess,
+    anonymousWithPublishedOrInvisibleStateAccess,
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const HTML = require('../../fields/HTML')
@@ -277,7 +277,7 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        read: allowRoles(registeredUsers, anonymousWithPostsAccess),
+        read: allowRoles(registeredUsers, anonymousWithPublishedOrInvisibleStateAccess),
         // FIXME Do we really want to limit read access of a contributor?
         // read: getAccessControlViaServerType(
         //     admin,
