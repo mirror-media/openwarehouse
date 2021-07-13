@@ -18,6 +18,19 @@ const owner = ({ authentication: { item: user }, listKey }) => {
     return { createdBy: { id: user.id } }
 }
 
+const registeredUsers = ({ authentication: { item } }) => Boolean(!!item)
+
+const anonymousWithDeclarativeControl = (control) => {
+    return ({ authentication: { item } }) => {
+        if (item === undefined) {
+            return control
+        }
+        return false
+    }
+}
+
+const anonymousWithPostsAccess = anonymousWithDeclarativeControl({ 'state_in': ['published', 'invisible'] })
+
 const allowRoles = (...args) => {
     return (auth) => {
         return args.reduce((result, check) => result || check(auth), false)
@@ -26,10 +39,12 @@ const allowRoles = (...args) => {
 
 module.exports = {
     admin,
-    moderator,
-    editor,
-    contributor,
-    bot,
-    owner,
     allowRoles,
+    anonymousWithPostsAccess,
+    bot,
+    contributor,
+    editor,
+    moderator,
+    owner,
+    registeredUsers,
 }
