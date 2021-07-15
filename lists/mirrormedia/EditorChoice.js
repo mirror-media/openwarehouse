@@ -29,7 +29,13 @@ module.exports = {
             defaultValue: 'draft',
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),

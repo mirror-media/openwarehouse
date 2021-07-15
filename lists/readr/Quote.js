@@ -34,9 +34,17 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
+            hasNowBtn: true,
+            isReadOnly: false,
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),

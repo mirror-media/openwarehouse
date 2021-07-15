@@ -7,7 +7,8 @@ const {
 } = require('@keystonejs/fields')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const {
     admin,
     moderator,
@@ -47,6 +48,8 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
+            hasNowBtn: true,
+            isReadOnly: false,
         },
         categories: {
             label: '分類',
@@ -207,7 +210,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),

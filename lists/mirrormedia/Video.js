@@ -75,6 +75,8 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
+            hasNowBtn: true,
+            isReadOnly: false,
         },
         relatedPosts: {
             label: '相關文章',
@@ -109,7 +111,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor),
         create: allowRoles(admin, moderator, editor),

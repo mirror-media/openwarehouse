@@ -1,5 +1,6 @@
 const { Slug, Text, Relationship } = require('@keystonejs/fields')
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const { uuid } = require('uuidv4')
 const {
     admin,
@@ -45,7 +46,13 @@ module.exports = {
             ref: 'Image',
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor),
         create: allowRoles(admin, moderator, editor),

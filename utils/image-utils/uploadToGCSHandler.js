@@ -1,5 +1,6 @@
 const fs = require('fs')
 const imageUrlBase = 'assets/images/'
+const { deleteImageFromLocal } = require('../image-utils/localImageFileHandler')
 
 function uploadImagesToGCS(imageNameList, bucket) {
     return new Promise(async (resolve, reject) => {
@@ -30,6 +31,9 @@ function saveLocalImageToGCS(fileName, bucket) {
             .createWriteStream()
             .on('finish', (data) => {
                 console.log(`${fileName} has been uploaded to GCS`)
+
+                // after update to gcs, delete local image
+                deleteImageFromLocal(fileName)
                 resolve()
             })
             .on('error', (err) => {

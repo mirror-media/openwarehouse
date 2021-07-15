@@ -1,7 +1,12 @@
 const { Slug, Text, Relationship, Url, Integer } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { uuid } = require('uuidv4')
-const { admin, moderator, editor, allowRoles } = require('../../helpers/access/mirrormedia')
+const {
+    admin,
+    moderator,
+    editor,
+    allowRoles,
+} = require('../../helpers/access/mirrormedia')
 
 module.exports = {
     fields: {
@@ -46,14 +51,21 @@ module.exports = {
             isUnique: true,
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor),
         create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin),
     },
     adminConfig: {
-        defaultColumns: 'slug, name, address, phone, watches, sortOrder, createdAt',
+        defaultColumns:
+            'slug, name, address, phone, watches, sortOrder, createdAt',
         defaultSort: '-createdAt',
     },
     labelField: 'name',

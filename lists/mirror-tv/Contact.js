@@ -6,7 +6,8 @@ const {
     Checkbox,
 } = require('@keystonejs/fields')
 const { Markdown } = require('@keystonejs/fields-markdown')
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const { uuid } = require('uuidv4')
 const {
     admin,
@@ -75,7 +76,13 @@ module.exports = {
             type: Checkbox,
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),

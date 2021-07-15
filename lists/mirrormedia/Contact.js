@@ -2,7 +2,11 @@ const { Slug, Text, Url, Relationship } = require('@keystonejs/fields')
 const { Markdown } = require('@keystonejs/fields-markdown')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { uuid } = require('uuidv4')
-const { admin, moderator, allowRoles } = require('../../helpers/access/mirrormedia')
+const {
+    admin,
+    moderator,
+    allowRoles,
+} = require('../../helpers/access/mirrormedia')
 
 module.exports = {
     fields: {
@@ -53,7 +57,13 @@ module.exports = {
             type: Markdown,
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),

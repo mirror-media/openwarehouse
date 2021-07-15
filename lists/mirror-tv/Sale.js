@@ -1,5 +1,6 @@
 const { Text, Relationship, File, Url, Integer } = require('@keystonejs/fields')
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const { DocumentAdapter } = require('../../lib/DocumentAdapter')
 const {
     admin,
@@ -33,7 +34,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),

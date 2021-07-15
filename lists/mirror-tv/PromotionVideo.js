@@ -1,7 +1,8 @@
 const { Text, Url, Select, Integer } = require('@keystonejs/fields')
 const { gql } = require('apollo-server-express')
 
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const {
     admin,
     moderator,
@@ -37,7 +38,13 @@ module.exports = {
             defaultValue: 'draft',
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor, contributor, owner),
         create: allowRoles(admin, moderator, editor, contributor, owner),

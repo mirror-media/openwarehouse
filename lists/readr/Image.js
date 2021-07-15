@@ -87,7 +87,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor),
         create: allowRoles(admin, moderator, editor),

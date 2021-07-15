@@ -108,10 +108,10 @@ const parseResolvedData = (existingItem, resolvedData) => {
             resolvedData[`${key}ApiData`] &&
             resolvedData[`${key}Html`]
         ) {
-            console.log('data is from gql')
+            // console.log('data is from gql')
             return true
         } else {
-            console.log('data is from cms')
+            // console.log('data is from cms')
             return false
         }
     }

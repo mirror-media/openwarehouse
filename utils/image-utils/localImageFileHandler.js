@@ -77,19 +77,17 @@ async function saveImageToLocal(jimpImage, filename) {
     })
 }
 
-function deleteVariousSizeImageFromLocal(imageNameList) {
-    imageNameList.forEach((imageName) => {
-        const localTempFilePath = `./public/images/${imageName}`
-        fs.unlink(localTempFilePath, (err) => {
-            if (err) {
-                throw err
-            }
-            console.log(`${localTempFilePath} is deleted`)
-        })
+function deleteImageFromLocal(imageName) {
+    const localTempFilePath = `./public/images/${imageName}`
+    fs.unlink(localTempFilePath, (err) => {
+        if (err) {
+            throw err
+        }
+        console.log(`${localTempFilePath} is deleted`)
     })
 }
 
 module.exports = {
     saveVariousSizeImageToLocal,
-    deleteVariousSizeImageFromLocal,
+    deleteImageFromLocal,
 }

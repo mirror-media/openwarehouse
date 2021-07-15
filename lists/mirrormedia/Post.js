@@ -46,6 +46,8 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
+            hasNowBtn: true,
+            isReadOnly: false,
         },
         sections: {
             label: '分區',
@@ -247,7 +249,14 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking(), logging((args) => emitEditLog(args))],
+    plugins: [
+        logging((args) => emitEditLog(args)),
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor, owner),
         create: allowRoles(admin, moderator, editor, contributor),

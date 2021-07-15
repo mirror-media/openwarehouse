@@ -1,6 +1,11 @@
 const { Text, Url, Relationship } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
-const { admin, moderator, editor, allowRoles } = require('../../helpers/access/mirrormedia')
+const {
+    admin,
+    moderator,
+    editor,
+    allowRoles,
+} = require('../../helpers/access/mirrormedia')
 
 module.exports = {
     fields: {
@@ -28,7 +33,13 @@ module.exports = {
             many: true,
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         read: allowRoles(admin, moderator, editor),
         update: allowRoles(admin, moderator),

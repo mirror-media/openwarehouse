@@ -17,30 +17,7 @@ function getPostIdFromUrl() {
 }
 
 function getPreviewUrl(postId) {
-    const currentEnv = app.currentEnv || 'dev'
-    const previewUrl = generatePreviewUrl(postId, currentEnv)
-    console.log(previewUrl)
-    // return previewUrl
-    return `https://dev.mnews.tw/`
-}
-
-function generatePreviewUrl(postId, currentEnv) {
-    switch (currentEnv) {
-        case 'local':
-            return `local preview url for post id: ${postId}`
-
-        case 'dev':
-            return `dev preview url for post id: ${postId}`
-
-        case 'stag':
-            return `stag preview url for post id: ${postId}`
-
-        case 'prod':
-            return `prod preview url for post id: ${postId}`
-
-        default:
-            return `dev preview url for post id: ${postId}`
-    }
+    return `/preview/posts/${postId}`
 }
 
 module.exports = { getPostIdFromUrl, getPreviewUrl }

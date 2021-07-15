@@ -1,7 +1,14 @@
-const { Checkbox, Relationship, Select, Text, Url, } = require('@keystonejs/fields')
+const {
+    Checkbox,
+    Relationship,
+    Select,
+    Text,
+    Url,
+} = require('@keystonejs/fields')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const {
     admin,
     moderator,
@@ -59,14 +66,18 @@ module.exports = {
             dataType: 'string',
             type: Select,
             isRequired: true,
-            options: [...Array(24).keys()].map((v) => v.toString().padStart(2, 0)),
+            options: [...Array(24).keys()].map((v) =>
+                v.toString().padStart(2, 0)
+            ),
         },
         minute: {
             label: '分',
             dataType: 'string',
             type: Select,
             isRequired: true,
-            options: [...Array(60).keys()].map((v) => v.toString().padStart(2, 0)),
+            options: [...Array(60).keys()].map((v) =>
+                v.toString().padStart(2, 0)
+            ),
         },
         parentalGuidelines: {
             label: '電視節目分級',
@@ -86,7 +97,13 @@ module.exports = {
             many: false,
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),

@@ -46,7 +46,8 @@ module.exports = {
                     listKey,
                     fieldPath, // Field hooks only
                 }) => {
-                    const changedList = resolvedData[fieldPath] || existingItem[fieldPath]
+                    const changedList =
+                        resolvedData[fieldPath] || existingItem[fieldPath]
                     const formatedChangedList = formatChangedList(changedList)
                     return formatedChangedList
                 },
@@ -74,7 +75,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin),
         delete: allowRoles(admin),

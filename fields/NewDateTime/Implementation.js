@@ -7,7 +7,11 @@ class NewDateTime extends DateTime.implementation {
     }
 
     extendAdminMeta(meta) {
-        return { ...meta, dateTime: this.dateTime }
+        return {
+            ...meta,
+            hasNowBtn: this.config.hasNowBtn || false,
+            isReadOnly: this.config.isReadOnly || false,
+        }
     }
 }
 

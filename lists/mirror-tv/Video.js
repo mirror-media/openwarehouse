@@ -9,7 +9,8 @@ const {
 } = require('@keystonejs/fields')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const { GCSAdapter } = require('../../lib/GCSAdapter')
 const {
     admin,
@@ -82,6 +83,8 @@ module.exports = {
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
+            hasNowBtn: true,
+            isReadOnly: false,
         },
         relatedPosts: {
             label: '相關文章',
@@ -120,7 +123,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator, editor),
         create: allowRoles(admin, bot, moderator, editor),

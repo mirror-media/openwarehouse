@@ -1,16 +1,19 @@
 const { Integer, Select, Relationship } = require('@keystonejs/fields')
-const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { byTracking } = require('@keystonejs/list-plugins')
+const { atTracking } = require('../../helpers/list-plugins')
 const {
     admin,
-    allowRoles,
     bot,
-    contributor,
-    editor,
     moderator,
+    editor,
+    contributor,
     owner,
+    allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
-const { blockFieldToAnonymous } = require('../../helpers/blockFieldToAnonymous')
+const {
+    getAccessControlViaServerType,
+} = require('../../helpers/ListAccessHandler')
 
 module.exports = {
     fields: {
@@ -31,12 +34,21 @@ module.exports = {
             defaultValue: 'draft',
         },
     },
-    plugins: [atTracking(), byTracking()],
-    access: {
-        read: blockFieldToAnonymous({
-            gateFieldName: 'state',
-            fieldPassValue: ['published', 'invisible'],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
         }),
+        byTracking(),
+    ],
+    access: {
+        read: getAccessControlViaServerType(
+            admin,
+            bot,
+            moderator,
+            editor,
+            owner
+        ),
         update: allowRoles(admin, bot, moderator),
         create: allowRoles(admin, moderator),
         delete: allowRoles(admin),

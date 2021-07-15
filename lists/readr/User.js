@@ -1,6 +1,12 @@
 const { Text, Checkbox, Password, Select } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
-const { admin, moderator, editor, owner, allowRoles } = require('../../helpers/access/readr')
+const {
+    admin,
+    moderator,
+    editor,
+    owner,
+    allowRoles,
+} = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
@@ -39,8 +45,13 @@ module.exports = {
             },
         },
     },
-    plugins: [atTracking(), byTracking()],
-    // access: {
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ], // access: {
     //     read: allowRoles(admin, moderator, editor, owner),
     //     update: allowRoles(admin, moderator, owner),
     //     create: allowRoles(admin, moderator),

@@ -1,6 +1,10 @@
 const { Slug, Text, Checkbox, Relationship } = require('@keystonejs/fields')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
-const { admin, moderator, allowRoles } = require('../../helpers/access/mirrormedia')
+const {
+    admin,
+    moderator,
+    allowRoles,
+} = require('../../helpers/access/mirrormedia')
 
 module.exports = {
     fields: {
@@ -37,7 +41,13 @@ module.exports = {
             type: Checkbox,
         },
     },
-    plugins: [atTracking(), byTracking()],
+    plugins: [
+        atTracking({
+            hasNowBtn: false,
+            isReadOnly: true,
+        }),
+        byTracking(),
+    ],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),
