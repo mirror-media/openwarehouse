@@ -1,9 +1,9 @@
-const Jimp = require('jimp')
 const fs = require('fs')
+const im = require('imagickal')
 
 const {
     generateFileNameSeperation,
-    feedDimentionToApiData,
+    feedDimensionToApiData,
 } = require('./imageApiDataHandler')
 const { getDimentionFromJimpImage } = require('./imageSizeHandler')
 
@@ -15,61 +15,66 @@ const resizeTarget = {
 }
 
 function saveVariousSizeImageToLocal(newFilename, apiData) {
-    return new Promise((resolve, reject) => {
-        const { id, ext } = generateFileNameSeperation(newFilename)
-        const now = Date.now()
-        // first, get original-size image in local
-        Jimp.read(`./public/images/${newFilename}`).then(image => {
-            const pass = Date.now()
-            const diff = pass - now
-            console.log("after Jimp.read " + newFilename + ": " + diff)
+    const { id, ext } = generateFileNameSeperation(newFilename)
+    const now = Date.now()
+    // first, get original-size image in local
+    const actions = {
+        quality: 80,
+    }
+    let beforeRead = Date.now()
+    const pass = Date.now()
+    const diff = pass - now
 
-            // need to get original iamge's dimention
-            // in order to deciding whether is needed to scale image,
-            const { width, height } = getDimentionFromJimpImage(image)
+    // need to get original image's dimension
+    // in order to deciding whether is needed to scale image,
+    let beforeIdentify = Date.now()
+    return im.identify(`./public/images/${newFilename}`).then((data) => {
+        let { width, height } = data
+        console.log('identify file dimension as', width, height, 'takes', Date.now() - beforeIdentify)
+        // on the other hand, save original image dimension into apiData
+        feedDimensionToApiData('original', { width: width, height: height }, apiData)
+        return { width, height }
+    }).then(({ width, height }) => {
+        let resizeJobs = []
+        for (const resizeKey in resizeTarget) {
+            resizeJobs.push(new Promise((resolve) => {
+                // generate resized file name by resizeKey (desktop,mobile...etc)
+                const resized_filename = `${id}-${resizeKey}.${ext}`
 
-            // on the other hand, save original image dimention into apiData
-            feedDimentionToApiData('original', image, apiData)
-
-            try {
-                let resizeJobs = []
-                for (const resizeKey in resizeTarget) {
-                    resizeJobs.push(new Promise((resolve) => {
-
-                        // generate resized file name by resizeKey (desktop,mobile...etc)
-                        const resized_filename = `${id}-${resizeKey}.${ext}`
-
-                        // get resize frame dimention
-                        const { frameWidth, frameHeight } = getFrameDimention(
-                            resizeTarget,
-                            resizeKey
-                        )
-                        // if original image is smaller than resize frame,
-                        // then no need to resize, just save it to local
-                        if (width < frameWidth) {
-                            return saveImageToLocal(image, resized_filename)
-                        } else {
-                            // resize image with desired resize method
-                            return image.resize(frameWidth, Jimp.AUTO)
+                // get resize frame dimension
+                const { frameWidth, frameHeight } = getFrameDimension(
+                    resizeTarget,
+                    resizeKey
+                )
+                // if original image is smaller than resize frame,
+                // then no need to resize, just save it to local
+                if (width < frameWidth) {
+                    return saveImageToLocal(image, resized_filename)
+                    resolve()
+                } else {
+                    // resize image with desired resize method
+                    im.transform(
+                        fs.createReadStream(`./public/images/${newFilename}`),
+                        fs.createWriteStream(`./public/images/${resized_filename}`, { encoding: 'binary' }, { strip: true }),
+                        {
+                            resize: { width: frameWidth, height: frameHeight }
                         }
-                    }).then(image => {
-                        // dont forget to save resized image's dimention to apiData
-                        feedDimentionToApiData(resizeKey, image, apiData)
-
-                        // then save it to local
-                        return saveImageToLocal(image, resized_filename)
+                    ).then(() => {
+                        feedDimensionToApiData(resizeKey, { width: frameWidth, height: frameHeight }, apiData)
                         resolve()
-                    }))
+                    }
+                    )
                 }
-                Promise.allSettled(resizeJobs).then(resolve())
-            } catch (err) {
-                reject(`error in save various size to local, ${err}`)
-            }
-        })
+            }))
+        }
+        return resizeJobs
+    }).then((resizeJobs) => {
+        console.log('I promise all')
+        return Promise.all(resizeJobs).catch((err) => new Error(`error in save various size to local ${err}`))
     })
 }
 
-function getFrameDimention(resizeTarget, resizeKey) {
+function getFrameDimension(resizeTarget, resizeKey) {
     return {
         frameWidth: resizeTarget[resizeKey].width,
         frameHeight: resizeTarget[resizeKey].height,

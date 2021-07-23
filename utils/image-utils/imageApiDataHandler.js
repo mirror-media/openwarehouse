@@ -85,15 +85,13 @@ function generateFileNameSeperation(newFilename) {
     }
 }
 
-function feedDimentionToApiData(resizeKey, image, apiData) {
-    const { width, height } = getDimentionFromJimpImage(image)
-
+function feedDimensionToApiData(resizeKey, { width, height }, apiData) {
     apiData[resizeKey] = { ...apiData[resizeKey], width, height }
 }
 
 module.exports = {
     generateImageApiData,
     generateFileNameSeperation,
-    feedDimentionToApiData,
+    feedDimensionToApiData,
     generateImageNameListArray,
 }
