@@ -15,50 +15,57 @@ const resizeTarget = {
 }
 
 function saveVariousSizeImageToLocal(newFilename, apiData) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const { id, ext } = generateFileNameSeperation(newFilename)
         const now = Date.now()
         // first, get original-size image in local
-        const image = await Jimp.read(`./public/images/${newFilename}`)
-        const pass = Date.now()
-        const diff = pass - now
-        console.log("after Jimp.read " + newFilename + ": " + diff)
+        Jimp.read(`./public/images/${newFilename}`).then(image => {
+            const pass = Date.now()
+            const diff = pass - now
+            console.log("after Jimp.read " + newFilename + ": " + diff)
 
-        // need to get original iamge's dimention
-        // in order to deciding whether is needed to scale image,
-        const { width, height } = getDimentionFromJimpImage(image)
+            // need to get original iamge's dimention
+            // in order to deciding whether is needed to scale image,
+            const { width, height } = getDimentionFromJimpImage(image)
 
-        // on the other hand, save original image dimention into apiData
-        feedDimentionToApiData('original', image, apiData)
+            // on the other hand, save original image dimention into apiData
+            feedDimentionToApiData('original', image, apiData)
 
-        try {
-            for (const resizeKey in resizeTarget) {
-                // generate resized file name by resizeKey (desktop,mobile...etc)
-                const resized_filename = `${id}-${resizeKey}.${ext}`
+            try {
+                let resizeJobs = []
+                for (const resizeKey in resizeTarget) {
+                    resizeJobs.push(new Promise((resolve) => {
 
-                // get resize frame dimention
-                const { frameWidth, frameHeight } = getFrameDimention(
-                    resizeTarget,
-                    resizeKey
-                )
-                // if original image is smaller than resize frame,
-                // then no need to resize, just save it to local
-                if (width < frameWidth) {
-                    await saveImageToLocal(image, resized_filename)
-                } else {
-                    // resize image with desired resize method
-                    await image.resize(frameWidth, Jimp.AUTO)
+                        // generate resized file name by resizeKey (desktop,mobile...etc)
+                        const resized_filename = `${id}-${resizeKey}.${ext}`
+
+                        // get resize frame dimention
+                        const { frameWidth, frameHeight } = getFrameDimention(
+                            resizeTarget,
+                            resizeKey
+                        )
+                        // if original image is smaller than resize frame,
+                        // then no need to resize, just save it to local
+                        if (width < frameWidth) {
+                            return saveImageToLocal(image, resized_filename)
+                        } else {
+                            // resize image with desired resize method
+                            return image.resize(frameWidth, Jimp.AUTO)
+                        }
+                    }).then(image => {
+                        // dont forget to save resized image's dimention to apiData
+                        feedDimentionToApiData(resizeKey, image, apiData)
+
+                        // then save it to local
+                        return saveImageToLocal(image, resized_filename)
+                        resolve()
+                    }))
                 }
-                // dont forget to save resized image's dimention to apiData
-                feedDimentionToApiData(resizeKey, image, apiData)
-
-                // then save it to local
-                await saveImageToLocal(image, resized_filename)
+                Promise.allSettled(resizeJobs).then(resolve())
+            } catch (err) {
+                reject(`error in save various size to local, ${err}`)
             }
-            resolve()
-        } catch (err) {
-            reject(`error in save various size to local, ${err}`)
-        }
+        })
     })
 }
 
@@ -69,15 +76,8 @@ function getFrameDimention(resizeTarget, resizeKey) {
     }
 }
 
-async function saveImageToLocal(jimpImage, filename) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            await jimpImage.writeAsync(`./public/images/${filename}`)
-            resolve()
-        } catch (err) {
-            reject(`error in saveImageToLocal, ${err}`)
-        }
-    })
+function saveImageToLocal(jimpImage, filename) {
+    return jimpImage.writeAsync(`./public/images/${filename}`)
 }
 
 function deleteImageFromLocal(imageName) {
