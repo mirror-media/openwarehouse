@@ -7,9 +7,13 @@ const { app } = require('../configs/config.js')
 const addWatermarkIfNeeded = async (resolvedData, existingItem) => {
     const isNeedWatermark = checkIfNeedWatermark(resolvedData, existingItem)
 
+    let beforeWatermark = Date.now()
+    console.log('addWatermarkIfNeeded starts at', beforeWatermark)
+
     if (isNeedWatermark) {
         let fullFileName = resolvedData.file.filename
         await addWatermark(fullFileName)
+        console.log('addWatermarkIfNeeded takes', Date.now() - beforeWatermark)
     }
 }
 
