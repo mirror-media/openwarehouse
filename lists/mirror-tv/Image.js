@@ -8,7 +8,7 @@ const {
 } = require('@keystonejs/fields')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
-const { ImageAdapter } = require('../../lib/ImageAdapter')
+const { ImageAdapter, isWatermarkNeeded } = require('../../lib/ImageAdapter')
 const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const TextHide = require('../../fields/TextHide')
 const {
@@ -19,7 +19,6 @@ const {
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
-const { addWatermarkIfNeeded } = require('../../utils/watermarkHandler')
 const {
     getNewFilename,
     getFileDetail,
@@ -154,11 +153,12 @@ module.exports = {
                         id
                     )
                     await image_adapter.loadImage({ quality: 80 })
-                    const aggregatedData = Object.assign({}, existingItem, resolvedData);
-                    const isWatermarkRequested = aggregatedData['needWatermark']
-                    // FIXME watermarking is not working
-                    if (isWatermarkRequested) {
+
+                    if (isWatermarkNeeded(resolvedData, existingItem)) {
+                        let now = Date.now()
+                        console.log('add watermark at', now)
                         await image_adapter.addWatermark()
+                        console.log('adding watermark takes', Date.now() - now)
                     }
 
                     let _meta = await image_adapter.sync_save()
