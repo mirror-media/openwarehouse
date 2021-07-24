@@ -135,20 +135,30 @@ module.exports = {
 
         beforeChange: async ({ existingItem, resolvedData }) => {
             try {
+                // resolvedData = true
+                // when create or update newer image
                 if (typeof resolvedData.file !== 'undefined') {
-                    // resolvedData = true
-                    // when create or update newer image
-                    await addWatermarkIfNeeded(resolvedData, existingItem)
-
+                    // await addWatermarkIfNeeded(resolvedData, existingItem)
+                    let now = Date.now()
                     const { id, newFilename, originalFileName } = getFileDetail(
                         resolvedData
                     )
                     // upload image to gcs,and generate corespond meta data(url )
                     const image_adapter = new ImageAdapter(
+                        mediaUrlBase,
                         originalFileName,
                         newFilename,
                         id
                     )
+                    await image_adapter.loadImage({ quality: 80 })
+
+                    if (isWatermarkNeeded(resolvedData, existingItem)) {
+                        let now = Date.now()
+                        console.log('add watermark at', now)
+                        await image_adapter.addWatermark()
+                        console.log('adding watermark takes', Date.now() - now)
+                    }
+
                     let _meta = await image_adapter.sync_save()
 
                     // existingItem = true
@@ -224,7 +234,7 @@ module.exports = {
             console.log("resolveInput RESOLVED DATA", resolvedData)
             return resolvedData
         },
-		*/
+        */
     },
     labelField: 'name',
 }
