@@ -46,16 +46,14 @@
         "get-video-duration": "^3.0.2",
         "http-proxy-middleware": "^2.0.1",
         "imagemagick-stream": "^4.1.1",
-        "imagickal": "^5.0.1",
         "ioredis": "^4.19.4",
-        "jimp": "^0.16.1",
         "lodash": "^4.17.20",
         "probe-image-size": "^7.0.1",
         "purejswatermark": "^0.0.7",
         "react": "^17.0.2",
         "react-datetime": "^3.0.4",
         "redis": "^3.0.2",
-        "sharp": "^0.27.0",
+        "sharp": "^0.28.3",
         "shortid": "^2.2.16",
         "uuidv4": "^6.2.6"
     }

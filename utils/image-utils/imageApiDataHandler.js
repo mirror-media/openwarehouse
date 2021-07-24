@@ -12,17 +12,8 @@ const resizeTarget = {
 }
 
 function generateImageApiData(imageNameList, apiData) {
-    return new Promise((resolve, reject) => {
-        try {
-            console.log('current webUrlBase: ' + webUrlBase)
-            imageNameList.forEach((imageName) => {
-                createUrlToApiData(imageName, apiData)
-            })
-
-            resolve()
-        } catch (err) {
-            reject(`error in generateApiData, ${err}`)
-        }
+    imageNameList.forEach((imageName) => {
+        createUrlToApiData(imageName, apiData)
     })
 }
 
@@ -85,7 +76,7 @@ function generateFileNameSeperation(newFilename) {
     }
 }
 
-function feedDimensionToApiData(resizeKey, { width, height }, apiData) {
+function feedDimensionToApiData(resizeKey, { width, height } = {}, apiData) {
     apiData[resizeKey] = { ...apiData[resizeKey], width, height }
 }
 

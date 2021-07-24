@@ -11,7 +11,6 @@ const { atTracking } = require('../../helpers/list-plugins')
 const { ImageAdapter } = require('../../lib/ImageAdapter')
 const { LocalFileAdapter } = require('@keystonejs/file-adapters')
 const TextHide = require('../../fields/TextHide')
-const fs = require('fs')
 const {
     admin,
     bot,
@@ -142,8 +141,8 @@ module.exports = {
                 // resolvedData = true
                 // when create or update newer image
                 if (typeof resolvedData.file !== 'undefined') {
-                    await addWatermarkIfNeeded(resolvedData, existingItem)
-
+                    // await addWatermarkIfNeeded(resolvedData, existingItem)
+                    let now = Date.now()
                     const { id, newFilename, originalFileName } = getFileDetail(
                         resolvedData
                     )
@@ -154,6 +153,14 @@ module.exports = {
                         newFilename,
                         id
                     )
+                    await image_adapter.loadImage({ quality: 80 })
+                    const aggregatedData = Object.assign({}, existingItem, resolvedData);
+                    const isWatermarkRequested = aggregatedData['needWatermark']
+                    // FIXME watermarking is not working
+                    if (isWatermarkRequested) {
+                        await image_adapter.addWatermark()
+                    }
+
                     let _meta = await image_adapter.sync_save()
 
                     // existingItem = true
@@ -181,6 +188,7 @@ module.exports = {
                     // update stored filename
                     // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
                     resolvedData.file.filename = getNewFilename(resolvedData)
+                    console.log('beforeChange takes', Date.now() - now)
                 } else {
                     // resolvedData = false
                     // image is no needed to update
@@ -228,7 +236,7 @@ module.exports = {
             console.log("resolveInput RESOLVED DATA", resolvedData)
             return resolvedData
         },
-		*/
+        */
     },
     labelField: 'name',
     cacheHint: cacheHint,
