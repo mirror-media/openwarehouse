@@ -1,21 +1,29 @@
+const { Readable } = require('stream');
+
 const imageUrlBase = 'assets/images/'
 
 function uploadBufferToGCS(fileName, buffer, bucket) {
-    const gcsUploadPath = `${imageUrlBase}${fileName}`
     return new Promise((resolve, reject) => {
-        let stream = bucket.file(gcsUploadPath).createWriteStream({
-            contentType: 'auto',
-            gzip: true,
-            resumable: false,
+        const gcsUploadPath = `${imageUrlBase}${fileName}`
+        let writer = bucket.file(gcsUploadPath)
+            .createWriteStream({
+                contentType: 'auto',
+                gzip: true,
+            })
+
+        let reader = Readable.from(buffer)
+        reader.on('end', () => {
+            console.log('uploaded', gcsUploadPath)
+            resolve()
         })
-        stream.end(buffer)
-        stream.once('error', (err) => {
+        reader.on('error', (err) => {
+            console.error(err)
             reject(err)
-        });
-        stream.once('finish', () => {
-            resolve(gcsUploadPath)
-        });
+        })
+
+        reader.pipe(writer)
     })
+
 }
 
 module.exports = { uploadBufferToGCS }
