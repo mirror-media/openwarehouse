@@ -153,7 +153,6 @@ module.exports = {
                         id
                     )
                     await image_adapter.loadImage({ quality: 80 })
-
                     if (isWatermarkNeeded(resolvedData, existingItem)) {
                         let now = Date.now()
                         console.log('add watermark at', now)
@@ -161,6 +160,7 @@ module.exports = {
                         console.log('adding watermark takes', Date.now() - now)
                     }
 
+                    await image_adapter.uploadOriginalImage()
                     let _meta = await image_adapter.sync_save()
 
                     // existingItem = true
@@ -214,6 +214,7 @@ module.exports = {
         // When delete image, delete image in gcs as well
         beforeDelete: async ({ existingItem }) => {
             console.log('delete')
+            // add all needed params into ImageAdapter
             const { id, newFilename, originalFileName } = getFileDetail(
                 existingItem
             )

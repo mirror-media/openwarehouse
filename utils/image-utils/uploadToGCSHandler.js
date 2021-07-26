@@ -1,15 +1,14 @@
-const { Readable } = require('stream');
+const { Readable } = require('stream')
 
 const imageUrlBase = 'assets/images/'
 
 function uploadBufferToGCS(fileName, buffer, bucket) {
     return new Promise((resolve, reject) => {
         const gcsUploadPath = `${imageUrlBase}${fileName}`
-        let writer = bucket.file(gcsUploadPath)
-            .createWriteStream({
-                contentType: 'auto',
-                gzip: true,
-            })
+        let writer = bucket.file(gcsUploadPath).createWriteStream({
+            contentType: 'auto',
+            gzip: true,
+        })
 
         let reader = Readable.from(buffer)
         reader.on('end', () => {
@@ -23,7 +22,6 @@ function uploadBufferToGCS(fileName, buffer, bucket) {
 
         reader.pipe(writer)
     })
-
 }
 
 module.exports = { uploadBufferToGCS }
