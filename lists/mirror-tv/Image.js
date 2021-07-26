@@ -213,7 +213,16 @@ module.exports = {
         },
         // When delete image, delete image in gcs as well
         beforeDelete: async ({ existingItem }) => {
-            const image_adapter = new ImageAdapter(mediaUrlBase)
+            console.log('delete')
+            const { id, newFilename, originalFileName } = getFileDetail(
+                existingItem
+            )
+            const image_adapter = new ImageAdapter(
+                mediaUrlBase,
+                originalFileName,
+                newFilename,
+                id
+            )
 
             if (existingItem && typeof existingItem.file !== 'undefined') {
                 await image_adapter.delete(
