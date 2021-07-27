@@ -151,7 +151,6 @@ module.exports = {
                         id
                     )
                     await image_adapter.loadImage({ quality: 80 })
-
                     if (isWatermarkNeeded(resolvedData, existingItem)) {
                         let now = Date.now()
                         console.log('add watermark at', now)
@@ -159,19 +158,19 @@ module.exports = {
                         console.log('adding watermark takes', Date.now() - now)
                     }
 
+                    // await image_adapter.uploadOriginalImage()
                     let _meta = await image_adapter.sync_save()
 
                     // existingItem = true
                     // update image
                     // need to delete old image in gcs
                     if (typeof existingItem !== 'undefined') {
-                        console.log('---update image---')
-
+                        // console.log('---update image---')
                         await image_adapter.delete(
                             existingItem.file.id,
                             existingItem.file.originalFilename
                         )
-                        console.log('deleted old one')
+                        // console.log('deleted old one')
                     }
 
                     // import each url into resolvedData
@@ -187,6 +186,7 @@ module.exports = {
                     // update stored filename
                     // filename ex: 5ff2779ebcfb3420789bf003-image.jpg
                     resolvedData.file.filename = getNewFilename(resolvedData)
+                    console.log('beforeChange takes', Date.now() - now)
                 } else {
                     // resolvedData = false
                     // image is no needed to update
@@ -194,24 +194,34 @@ module.exports = {
 
                     // if there's no image api data, fetch it
                     if (!existingItem.imageApiData) {
-                        const id = existingItem.id
-                        const image_adapter = new ImageAdapter(id)
-
-                        const apiData = await image_adapter.generateNewImageApiData(
-                            existingItem
-                        )
-                        resolvedData.imageApiData = apiData
+                        // (Todo)
+                        // const id = existingItem.id
+                        // const image_adapter = new ImageAdapter(mediaUrlBase)
+                        // const apiData = await image_adapter.generateNewImageApiData(
+                        //     existingItem
+                        // )
+                        // resolvedData.imageApiData = apiData
                     }
                 }
 
                 return { existingItem, resolvedData }
             } catch (err) {
-                console.log(`error in hook: `, err.message)
+                console.log(`error in hook: `, err)
             }
         },
         // When delete image, delete image in gcs as well
         beforeDelete: async ({ existingItem }) => {
-            const image_adapter = new ImageAdapter(gcsDir)
+            console.log('delete')
+            // add all needed params into ImageAdapter
+            const { id, newFilename, originalFileName } = getFileDetail(
+                existingItem
+            )
+            const image_adapter = new ImageAdapter(
+                mediaUrlBase,
+                originalFileName,
+                newFilename,
+                id
+            )
 
             if (existingItem && typeof existingItem.file !== 'undefined') {
                 await image_adapter.delete(
@@ -237,4 +247,5 @@ module.exports = {
         */
     },
     labelField: 'name',
+    cacheHint: cacheHint,
 }
