@@ -160,7 +160,7 @@ module.exports = {
                         console.log('adding watermark takes', Date.now() - now)
                     }
 
-                    await image_adapter.uploadOriginalImage()
+                    // await image_adapter.uploadOriginalImage()
                     let _meta = await image_adapter.sync_save()
 
                     // existingItem = true
