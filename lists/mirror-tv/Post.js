@@ -54,7 +54,6 @@ module.exports = {
         subtitle: {
             label: '副標',
             type: Text,
-            defaultValue: '',
         },
         state: {
             label: '狀態',
@@ -113,7 +112,6 @@ module.exports = {
         otherbyline: {
             label: '作者（其他）',
             type: Text,
-            defaultValue: '',
         },
         heroVideo: {
             label: '影片',
@@ -189,12 +187,10 @@ module.exports = {
         ogTitle: {
             label: 'FB 分享標題',
             type: Text,
-            defaultValue: '',
         },
         ogDescription: {
             label: 'FB 分享說明',
             type: Text,
-            defaultValue: '',
         },
         ogImage: {
             label: 'FB 分享縮圖',
