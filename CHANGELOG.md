@@ -1,5 +1,102 @@
 # Openwarehouse Changelog
 
+## 2021-09-07, Version 1.1.8 @liyibass
+
+### Notable Changes
+
+-   feat: add new list: Sponsor
+-   feat: add new field in Show
+-   feat: add new field in Contact
+
+### commits
+
+-   [[`648e434c4f`](https://github.com/mirror-media/openwarehouse/commit/648e434c4f)] - **chore**: bump version to v1.1.8 (LIYI)
+-   [[`0e4c059c6f`](https://github.com/mirror-media/openwarehouse/commit/0e4c059c6f)] - Merge pull request #72 from mirror-media/updateFields (LIYI)
+-   [[`90e4978050`](https://github.com/mirror-media/openwarehouse/commit/90e4978050)] - feat(migration): add migration script (bcgodev)
+-   [[`4bf5819e1b`](https://github.com/mirror-media/openwarehouse/commit/4bf5819e1b)] - **feat**: add new field:trailerPlaylist in Show (LIYI)
+-   [[`c066eb60f3`](https://github.com/mirror-media/openwarehouse/commit/c066eb60f3)] - **feat**: update Contact image fields (LIYI)
+-   [[`e3430de555`](https://github.com/mirror-media/openwarehouse/commit/e3430de555)] - **feat**: add Sponsor table (LIYI)
+-   [[`eb5ec2ad55`](https://github.com/mirror-media/openwarehouse/commit/eb5ec2ad55)] - **chore**: update CHANGELOG.md (LIYI)
+
+# 2021-08-31, Version 1.1.7 @liyibass
+
+### Notable Changes
+
+-   fix: fix Contact instagram typo
+-   feat: update ArtShow_author_many part
+
+### commits
+
+-   [[`95a128f6ea`](https://github.com/mirror-media/openwarehouse/commit/95a128f6ea)] - **chore**: bump version to v1.1.7 (LIYI)
+-   [[`369a33f8f9`](https://github.com/mirror-media/openwarehouse/commit/369a33f8f9)] - **fix**: fix Contact label typo (LIYI)
+-   [[`ad45660644`](https://github.com/mirror-media/openwarehouse/commit/ad45660644)] - **fix**: fix typo (LIYI)
+-   [[`e034bbb1a7`](https://github.com/mirror-media/openwarehouse/commit/e034bbb1a7)] - miss the ArtShow_author_many part (Hsin-chan Chien)
+-   [[`7abea3d558`](https://github.com/mirror-media/openwarehouse/commit/7abea3d558)] - **chore**: update CHANGELOG (LIYI)
+-   [[`2bee53394d`](https://github.com/mirror-media/openwarehouse/commit/2bee53394d)] - **chore**: bump version to v1.1.6, update package.json and CHANGELOG (LIYI)
+
+## 2021-08-25, Version 1.1.6 @liyibass
+
+### Notable Changes
+
+-   feat: add new fields:
+
+#### Post
+
+-   isAdult: boolean
+
+#### Serie
+
+-   introductionApiData: string
+-   introductionHtml:string
+
+#### Contact
+
+-   bioApiData: string
+-   bioHtml: string
+
+#### ArtShow
+
+-   state: type: Select
+-   publishTime: type: DateTime
+-   show: Type: Relationship to Show （ArtShow to Show 單方向 一對一）
+-   contentApiData:string
+-   contentHtml: string
+-   author(修改)：relationship 改成一對多
+
+#### Topic
+
+-   post: relationship 單方向一對多
+
+#### 移除 list
+
+-   mmPost
+-   Schedule
+
+### commits
+
+-   [[`2bee53394d`](https://github.com/mirror-media/openwarehouse/commit/2bee53394d)] - **chore**: bump version to v1.1.6, update package.json and CHANGELOG (LIYI)
+-   [[`b0b0a5956c`](https://github.com/mirror-media/openwarehouse/commit/b0b0a5956c)] - Alter table ArtShow to add publishTime related columns (Hsin-chan Chien)
+-   [[`62bdd66fb8`](https://github.com/mirror-media/openwarehouse/commit/62bdd66fb8)] - add a new migration about post/authors and topic/posts relationship (Hsin-chan Chien)
+-   [[`1aae6847ef`](https://github.com/mirror-media/openwarehouse/commit/1aae6847ef)] - **feat**: add Topic.post reference(one to many) (LIYI)
+-   [[`47cbcc2180`](https://github.com/mirror-media/openwarehouse/commit/47cbcc2180)] - Merge pull request #65 from mirror-media/fieldModify (LIYI)
+-   [[`145854f2d7`](https://github.com/mirror-media/openwarehouse/commit/145854f2d7)] - Merge branch 'dev' into fieldModify (LIYI)
+-   [[`d129823dc2`](https://github.com/mirror-media/openwarehouse/commit/d129823dc2)] - **chore**: bump version to v1.1.5 (LIYI)
+
+## 2021-08-23, Version 1.1.5 @liyibass
+
+### Notable Changes
+
+-   feat: change Post slug to Text field(to prevent auto-overwrite existing slug)
+-   fix: fix emitEditLog while creating Post
+-   feat: add new post sourceHandler, generate source depend on post's style
+
+### commits
+
+-   [[`0c1db6d1ea`](https://github.com/mirror-media/openwarehouse/commit/0c1db6d1ea)] - **feat**: change Post slug from Slug to Text field (LIYI)
+-   [[`f7d1ac87bb`](https://github.com/mirror-media/openwarehouse/commit/f7d1ac87bb)] - **fix**: fix emitEditLog issue in create mode (LIYI)
+-   [[`20d3f1e823`](https://github.com/mirror-media/openwarehouse/commit/20d3f1e823)] - **feat**: add postSourceHandler (LIYI)
+-   [[`e314b9968f`](https://github.com/mirror-media/openwarehouse/commit/e314b9968f)] - **chore**: update package.json and CHANGLOG.md (LIYI)
+
 ## 2021-08-16, Version 1.1.4 @liyibass
 
 ### Notable Changes

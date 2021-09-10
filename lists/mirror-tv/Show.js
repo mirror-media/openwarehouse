@@ -84,6 +84,10 @@ module.exports = {
             label: 'Youtube播放清單2',
             type: Url,
         },
+        trailerPlaylist: {
+            label: '預告清單',
+            type: Url,
+        },
     },
     plugins: [
         atTracking({

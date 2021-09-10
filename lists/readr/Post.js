@@ -2,7 +2,12 @@ const { Integer, Text, Relationship, Select } = require('@keystonejs/fields')
 const CustomRelationship = require('../../fields/CustomRelationship')
 const { atTracking, byTracking } = require('@keystonejs/list-plugins')
 const { logging } = require('@keystonejs/list-plugins')
-const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
+const {
+    admin,
+    moderator,
+    editor,
+    allowRoles,
+} = require('../../helpers/access/readr')
 const cacheHint = require('../../helpers/cacheHint')
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
@@ -14,7 +19,6 @@ const {
     validateIfPostNeedPublishTime,
     validateIfPublishTimeIsFutureTime,
 } = require('../../utils/publishTimeHandler')
-const { publishStateExaminer } = require('../../utils/publishStateExaminer')
 
 module.exports = {
     fields: {
@@ -42,6 +46,14 @@ module.exports = {
             type: Select,
             options: 'draft, published, scheduled, archived',
             defaultValue: 'draft',
+            access: {
+                // 如果user.role是contributor 那將不能發佈文章（draft以外的狀態）
+                // 所以在此不給contributor有更動post.state的create/update權限
+                // 但又因post.state的defaultValue是draft
+                // 所以也就變相地達到contributor只能發佈draft的要求
+                create: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         publishTime: {
             label: '發佈時間',
@@ -221,25 +233,13 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: async ({
-            existingItem,
-            originalInput,
-            resolvedData,
-            context,
-            operation,
-        }) => {
+        resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
             await controlCharacterFilter(
                 originalInput,
                 existingItem,
                 resolvedData
             )
             await parseResolvedData(existingItem, resolvedData)
-            await publishStateExaminer(
-                operation,
-                existingItem,
-                resolvedData,
-                context
-            )
 
             return resolvedData
         },

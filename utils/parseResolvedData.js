@@ -19,9 +19,9 @@ and put them to resolvedData
 */
 const { app } = require('../configs/config.js')
 
-const parseResolvedData = (existingItem, resolvedData) => {
+const parseResolvedData = (existingItem, resolvedData, draftFieldNameArray) => {
     // get every draft field's storedEditorContent
-    let fieldsArray = _generateDraftFieldsArray()
+    let fieldsArray = draftFieldNameArray || _generateDraftFieldsArray()
     try {
         // only modified draft is needed to parse
         // push the wanted draft field to storedEditorContentsArray

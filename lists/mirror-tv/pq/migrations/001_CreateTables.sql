@@ -327,7 +327,7 @@ CREATE TABLE "Contact" (
 	homepage text NULL,
 	facebook text NULL,
 	twitter text NULL,
-	instatgram text NULL,
+	instagram text NULL,
 	bio text NULL,
 	anchorperson bool NULL,
 	host bool NULL,

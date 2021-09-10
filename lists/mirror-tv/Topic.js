@@ -40,6 +40,12 @@ module.exports = {
                 type: 'timeline'
             }*/
         },
+        post: {
+            label: 'POST',
+            type: Relationship,
+            ref: 'Post',
+            many: true,
+        },
         name: {
             label: '標題',
             type: Text,

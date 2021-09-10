@@ -1,9 +1,9 @@
-const { Slug, Text, Url, Relationship } = require('@keystonejs/fields');
-const { Markdown } = require('@keystonejs/fields-markdown');
-const { atTracking, byTracking } = require('@keystonejs/list-plugins');
-const { uuid } = require('uuidv4');
-const { admin, moderator, allowRoles } = require('../../helpers/access/readr');
-const cacheHint = require('../../helpers/cacheHint');
+const { Slug, Text, Url, Relationship } = require('@keystonejs/fields')
+const { Markdown } = require('@keystonejs/fields-markdown')
+const { atTracking, byTracking } = require('@keystonejs/list-plugins')
+const { uuid } = require('uuidv4')
+const { admin, moderator, allowRoles } = require('../../helpers/access/readr')
+const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
     fields: {
@@ -45,8 +45,8 @@ module.exports = {
             label: 'Twitter',
             type: Url,
         },
-        instatgram: {
-            label: 'Instatgram',
+        instagram: {
+            label: 'Instagram',
             type: Url,
         },
         bio: {
@@ -54,10 +54,7 @@ module.exports = {
             type: Markdown,
         },
     },
-    plugins: [
-        atTracking(),
-        byTracking(),
-    ],
+    plugins: [atTracking(), byTracking()],
     access: {
         update: allowRoles(admin, moderator),
         create: allowRoles(admin, moderator),

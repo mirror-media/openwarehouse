@@ -48,8 +48,8 @@ module.exports = {
             label: 'Twitter',
             type: Url,
         },
-        instatgram: {
-            label: 'Instatgram',
+        instagram: {
+            label: 'Instagram',
             type: Url,
         },
         bio: {
