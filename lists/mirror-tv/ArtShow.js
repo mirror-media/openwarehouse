@@ -5,7 +5,7 @@ const { atTracking } = require('../../helpers/list-plugins')
 
 const {
     admin,
-    bot
+    bot,
     moderator,
     editor,
     contributor,
