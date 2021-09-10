@@ -5,6 +5,7 @@ const { atTracking } = require('../../helpers/list-plugins')
 
 const {
     admin,
+    bot
     moderator,
     editor,
     allowRoles,
@@ -64,7 +65,7 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: allowRoles(admin, moderator, editor),
+        update: allowRoles(admin, moderator, editor, bot),
         create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin, moderator),
     },
