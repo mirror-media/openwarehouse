@@ -31,6 +31,7 @@ const {
     AclRoleAccessorMethods,
 } = require('@google-cloud/storage/build/src/acl')
 const { generateSource } = require('../../utils/postSourceHandler')
+const { htmlToDraft } = require('../../utils/htmlToDraft')
 
 module.exports = {
     fields: {
@@ -247,13 +248,17 @@ module.exports = {
     },
     hooks: {
         resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
+            resolvedData.summary = await htmlToDraft(existingItem, resolvedData)
+
             await controlCharacterFilter(
                 originalInput,
                 existingItem,
                 resolvedData
             )
-            await parseResolvedData(existingItem, resolvedData)
 
+            await parseResolvedData(existingItem, resolvedData)
+            console.log(resolvedData.content)
+            console.log(resolvedData.summary)
             resolvedData.wordCount = await countWord(existingItem, resolvedData)
 
             return resolvedData

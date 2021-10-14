@@ -7,7 +7,7 @@ const controlCharacterFilter = (originalInput, existingItem, resolvedData) => {
         if (!resolvedData[modifiedKey]) return
         if (typeof resolvedData[modifiedKey] !== 'string') return
 
-        console.log(`checking for ${modifiedKey}'s contorl character...`)
+        console.log(`checking for ${modifiedKey}'s control character...`)
         resolvedData[modifiedKey] = resolvedData[modifiedKey].replace(rules, '')
     })
 }
