@@ -34,6 +34,22 @@ const htmlToDraft = (existingItem, resolvedData) => {
         }
         let styleArray = []
 
+        let boldInlineStyleRange = {
+            offset: 0,
+            length: 0,
+            style: 'BOLD',
+        }
+        let italicInlineStyleRange = {
+            offset: 0,
+            length: 0,
+            style: 'ITALIC',
+        }
+        let underlineInlineStyleRange = {
+            offset: 0,
+            length: 0,
+            style: 'UNDERLINE',
+        }
+
         const parser = new Parser({
             onopentag(name, attributes) {
                 /*
@@ -44,20 +60,34 @@ const htmlToDraft = (existingItem, resolvedData) => {
                  */
                 console.log('open tag ' + name)
 
-                if (name === 'p') {
-                    block = {
-                        key: _uuid(),
-                        text: '',
-                        type: 'unstyled',
-                        depth: 0,
-                        inlineStyleRanges: [],
-                        entityRanges: [],
-                        data: {},
-                    }
-                } else if (isInlineStyle(name)) {
-                    // <em><strong>原料藥廠</strong></em>
-                    inlineStyleRange.offset = block.text.length
-                    styleArray.push(getInlineStyleName(name))
+                switch (name) {
+                    case 'p':
+                        block = {
+                            key: _uuid(),
+                            text: '',
+                            type: 'unstyled',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+                        break
+
+                    case 'strong':
+                        boldInlineStyleRange.offset = block.text.length
+                        styleArray.push('BOLD')
+                        break
+                    case 'em':
+                        italicInlineStyleRange.offset = block.text.length
+                        styleArray.push('ITALIC')
+                        break
+                    case 'u':
+                        underlineInlineStyleRange.offset = block.text.length
+                        styleArray.push('UNDERLINE')
+                        break
+
+                    default:
+                        break
                 }
             },
             ontext(text) {
@@ -71,7 +101,23 @@ const htmlToDraft = (existingItem, resolvedData) => {
                 block.text = block.text + text
 
                 if (styleArray.length) {
-                    inlineStyleRange.length = text.length
+                    const newestInlineStyle = styleArray[styleArray.length - 1]
+                    switch (newestInlineStyle) {
+                        case 'BOLD':
+                            boldInlineStyleRange.length = text.length
+                            break
+
+                        case 'ITALIC':
+                            italicInlineStyleRange.length = text.length
+                            break
+
+                        case 'UNDERLINE':
+                            underlineInlineStyleRange.length = text.length
+                            break
+
+                        default:
+                            break
+                    }
                 }
             },
             onclosetag(tagname) {
@@ -84,47 +130,38 @@ const htmlToDraft = (existingItem, resolvedData) => {
                  */
                 console.log('close tag ' + tagname)
 
-                if (tagname === 'p') {
-                    block.inlineStyleRanges = inlineStyleRanges
-                    blocks.push(block)
-                    block = {}
-                    inlineStyleRanges = []
-                } else if (isInlineStyle(tagname)) {
-                    // <em><strong>原料藥廠</strong></em>
-                    const outerTag = styleArray[0]
-                    console.log(getInlineStyleName(tagname))
-                    if (getInlineStyleName(tagname) !== outerTag) {
-                        console.log('if ' + getInlineStyleName(tagname))
-                        const innerTagInlineStyleRange = {
-                            offset: inlineStyleRange.offset,
-                            length: inlineStyleRange.length,
-                            style: styleArray[styleArray.length - 1],
-                        }
+                switch (tagname) {
+                    case 'p':
+                        block.inlineStyleRanges = inlineStyleRanges
+                        blocks.push(block)
+                        block = {}
+                        inlineStyleRanges = []
+                        break
 
-                        console.log(inlineStyleRanges)
-                        inlineStyleRanges.push(innerTagInlineStyleRange)
-                        console.log('ready to pop')
-                        console.log(styleArray)
-                        styleArray.pop() // remove innerTag
-                        console.log(styleArray)
-                    } else {
-                        console.log('else ' + getInlineStyleName(tagname))
+                    case 'strong':
+                        inlineStyleRanges.push(boldInlineStyleRange)
 
-                        const outerTagInlineStyleRange = {
-                            offset: inlineStyleRange.offset,
-                            length: inlineStyleRange.length,
-                            style: outerTag,
+                        if (styleArray.length) {
+                            styleArray.pop()
                         }
-                        inlineStyleRanges.push(outerTagInlineStyleRange)
-                        console.log(inlineStyleRanges)
+                        break
+                    case 'em':
+                        inlineStyleRanges.push(italicInlineStyleRange)
 
-                        // clear temp
-                        inlineStyleRange = {
-                            offset: 0,
-                            length: 0,
+                        if (styleArray.length) {
+                            styleArray.pop()
                         }
-                        styleArray = []
-                    }
+                        break
+                    case 'u':
+                        inlineStyleRanges.push(underlineInlineStyleRange)
+
+                        if (styleArray.length) {
+                            styleArray.pop()
+                        }
+                        break
+
+                    default:
+                        break
                 }
 
                 if (tagname === 'script') {
