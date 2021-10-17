@@ -8,20 +8,48 @@ const { app } = require('../configs/config.js')
 const htmlToJson = require('html-to-json')
 const { Parser } = require('htmlparser2')
 
-const htmlToDraft = (existingItem, resolvedData) => {
+const htmlToDraft = async (existingItem, resolvedData) => {
     try {
         const html = existingItem.summaryHtml
         console.log(html)
         const contentBlock = JSON.parse(existingItem.summary)
-        console.log(contentBlock)
+
+        contentBlock.blocks.forEach((block) => {
+            console.log(block)
+        })
+        Object.keys(contentBlock.entityMap).forEach((key) => {
+            console.log(contentBlock.entityMap[key])
+        })
+        // entityMap: {
+        //     '0': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
+        //     '1': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
+
+        const convertedContentBlock = await convertHtmlToContentBlock(html)
+
+        return JSON.stringify({
+            draft: convertedContentBlock,
+            html: '',
+            apiData: '',
+        })
+    } catch (error) {
+        console.log(error)
+        return undefined
+    }
+}
+
+function convertHtmlToContentBlock(html) {
+    if (!html) return undefined
+
+    try {
+        // entityMap: {
+        //     '0': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
+        //     '1': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
 
         let blocks = []
+
         let inlineStyleRanges = []
         let block = {}
-        let inlineStyleRange = {
-            offset: 0,
-            length: 0,
-        }
+
         let styleArray = []
 
         let boldInlineStyleRange = {
@@ -41,6 +69,11 @@ const htmlToDraft = (existingItem, resolvedData) => {
         }
 
         let currentListType = 'ordered-list-item'
+
+        let entityMap = {}
+        let entityRange = {}
+        let entityKey = 0
+        let entity = {}
 
         const parser = new Parser({
             onopentag(name, attributes) {
@@ -145,6 +178,28 @@ const htmlToDraft = (existingItem, resolvedData) => {
                         underlineInlineStyleRange.offset = block.text.length
                         styleArray.push('UNDERLINE')
                         break
+                    case 'abbr':
+                        entityRange = {
+                            offset: block.text.length,
+                            length: 0,
+                            key: entityKey,
+                        }
+
+                        const innerContentBlock = convertHtmlToContentBlock(
+                            attributes.html
+                        )
+                        console.log(innerContentBlock)
+                        entity = {
+                            type: 'ANNOTATION',
+                            mutability: 'IMMUTABLE',
+                            data: {
+                                text: 'annotation文字',
+                                annotation: attributes?.html,
+                                pureAnnotationText: attributes?.title,
+                                draftRawObj: innerContentBlock,
+                            },
+                        }
+                        break
 
                     default:
                         break
@@ -157,9 +212,18 @@ const htmlToDraft = (existingItem, resolvedData) => {
                  * Note that this can fire at any point within text and you might
                  * have to stich together multiple pieces.
                  */
-                console.log('-->', text)
-                block.text = block.text + text
 
+                console.log('-->', text)
+
+                if (entityRange?.key) {
+                    block.text = text
+                    entity.data.text = text
+                } else {
+                    // for inlineStyle
+                    block.text = block.text + text
+                }
+
+                // for inlineStyle
                 if (styleArray.length) {
                     const newestInlineStyle = styleArray[styleArray.length - 1]
                     switch (newestInlineStyle) {
@@ -178,6 +242,11 @@ const htmlToDraft = (existingItem, resolvedData) => {
                         default:
                             break
                     }
+                }
+
+                // for annotation
+                if (Object.keys(entity).length !== 0) {
+                    entityRange.length = text.length
                 }
             },
             onclosetag(tagname) {
@@ -201,6 +270,13 @@ const htmlToDraft = (existingItem, resolvedData) => {
                         blocks.push(block)
                         block = {}
                         inlineStyleRanges = []
+                        break
+
+                    case 'abbr':
+                        block.entityRanges.push(entityRange)
+                        entityRange = {}
+                        entityMap[entityKey.toString()] = entity
+                        entityKey++
                         break
 
                     case 'strong':
@@ -237,20 +313,12 @@ const htmlToDraft = (existingItem, resolvedData) => {
         parser.write(html)
         parser.end()
 
-        blocks.forEach((block) => {
-            console.log(block)
-        })
-
         const converedContentBlock = {
             blocks,
-            entityMap: {},
+            entityMap,
         }
 
-        return JSON.stringify({
-            draft: converedContentBlock,
-            html: '',
-            apiData: '',
-        })
+        return converedContentBlock
     } catch (error) {
         console.log(error)
         return undefined

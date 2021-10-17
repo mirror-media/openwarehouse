@@ -37,7 +37,7 @@ let inlineTagMap = {
 
 let defaultEntityTagMap = {
     [ENTITY_LIST.ANNOTATION.type]: [
-        '<abbr title="<%= data.body %>"><%= data.text %>',
+        '<abbr title="<%= data?.pureAnnotationText %>" html="<%= data?.annotation %>" >',
         '</abbr>',
     ],
     [ENTITY_LIST.AUDIO.type]: [
