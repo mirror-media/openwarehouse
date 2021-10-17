@@ -45,8 +45,8 @@ let defaultEntityTagMap = {
         '</div>',
     ],
     [ENTITY_LIST.BLOCKQUOTE.type]: [
-        '<blockquote class="center"><div><%= data.quote %></div><div><%= data.quotedBy %></div>',
-        '<blockquote>',
+        '<blockquote class="center"><div><%= data?.quote %></div><div><%= data?.quoteBy %></div>',
+        '</blockquote>',
     ],
     [ENTITY_LIST.EMBEDDEDCODE.type]: [
         '<div class="embedded <%= data.alignment %>" title="<%= data.caption %>"><%= data.embeddedCode %>',

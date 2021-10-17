@@ -7,6 +7,7 @@ const htmlparser2 = require('htmlparser2')
 
 const processor = {
     convertBlock(entityMap, block) {
+        console.log(block)
         let alignment = 'center'
         let content
         let entityRange = block.entityRanges[0]

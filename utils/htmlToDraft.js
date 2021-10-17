@@ -8,6 +8,8 @@ const { app } = require('../configs/config.js')
 const htmlToJson = require('html-to-json')
 const { Parser } = require('htmlparser2')
 
+const blockquoteKeyMap = ['quote', 'quoteBy']
+
 const htmlToDraft = async (existingItem, resolvedData) => {
     try {
         const html = existingItem.summaryHtml
@@ -25,6 +27,16 @@ const htmlToDraft = async (existingItem, resolvedData) => {
         //     '1': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
 
         const convertedContentBlock = await convertHtmlToContentBlock(html)
+
+        console.log('+++blocks+++')
+        convertedContentBlock.blocks.forEach((block) => {
+            console.log(block)
+        })
+        console.log('+++entityMap+++')
+        console.log(convertedContentBlock.entityMap)
+        // Object.keys(entityMap).forEach((key) => {
+        //     console.log(entityMap[key])
+        // })
 
         return JSON.stringify({
             draft: convertedContentBlock,
@@ -74,6 +86,11 @@ function convertHtmlToContentBlock(html) {
         let entityRange = {}
         let entityKey = 0
         let entity = {}
+
+        let isManipulateAtomicBlock = false
+
+        let currentAtomicBlockType = ''
+        let blockquoteArray = []
 
         const parser = new Parser({
             onopentag(name, attributes) {
@@ -188,7 +205,7 @@ function convertHtmlToContentBlock(html) {
                         const innerContentBlock = convertHtmlToContentBlock(
                             attributes.html
                         )
-                        console.log(innerContentBlock)
+
                         entity = {
                             type: 'ANNOTATION',
                             mutability: 'IMMUTABLE',
@@ -196,9 +213,52 @@ function convertHtmlToContentBlock(html) {
                                 text: 'annotation文字',
                                 annotation: attributes?.html,
                                 pureAnnotationText: attributes?.title,
-                                draftRawObj: innerContentBlock,
+                                // draftRawObj: innerContentBlock,
+                                draftRawObj: null,
                             },
                         }
+                        break
+
+                    case 'div':
+                        isManipulateAtomicBlock = true
+
+                        switch (currentAtomicBlockType) {
+                            case 'blockquote':
+                                break
+
+                            default:
+                                break
+                        }
+
+                        break
+
+                    case 'blockquote':
+                        isManipulateAtomicBlock = true
+                        if (isManipulateAtomicBlock) {
+                            currentAtomicBlockType = 'blockquote'
+                            block = {
+                                key: _uuid(),
+                                text: ' ',
+                                type: 'atomic',
+                                depth: 0,
+                                inlineStyleRanges: [],
+                                entityRanges: [],
+                                data: {},
+                            }
+
+                            entityRange = {
+                                offset: 0,
+                                length: 1,
+                                key: entityKey,
+                            }
+
+                            entity = {
+                                type: 'BLOCKQUOTE',
+                                mutability: 'IMMUTABLE',
+                                data: { quoteBy: '', quote: '' },
+                            }
+                        }
+
                         break
 
                     default:
@@ -214,13 +274,24 @@ function convertHtmlToContentBlock(html) {
                  */
 
                 console.log('-->', text)
-
-                if (entityRange?.key) {
-                    block.text = text
-                    entity.data.text = text
+                if (!isManipulateAtomicBlock) {
+                    if (entityRange?.key) {
+                        block.text = text
+                        entity.data.text = text
+                    } else {
+                        // for inlineStyle
+                        block.text = block.text + text
+                    }
                 } else {
-                    // for inlineStyle
-                    block.text = block.text + text
+                    switch (currentAtomicBlockType) {
+                        case 'blockquote':
+                            blockquoteArray.push(text)
+                            console.log(blockquoteArray)
+                            break
+
+                        default:
+                            break
+                    }
                 }
 
                 // for inlineStyle
@@ -301,6 +372,39 @@ function convertHtmlToContentBlock(html) {
                         }
                         break
 
+                    case 'blockquote':
+                        if (isManipulateAtomicBlock) {
+                            console.log('blockquoteArray')
+                            console.log(blockquoteArray)
+
+                            // [ '我是quote', '我是quoteBy' ]
+
+                            for (let i = 0; i < blockquoteArray.length; i++) {
+                                blockquoteKey = blockquoteKeyMap[i] // quote || quoteBy
+                                if (!blockquoteKey) continue
+
+                                const quoteItem = blockquoteArray[i]
+                                entity.data[blockquoteKey] = quoteItem
+                            }
+
+                            console.log('block')
+                            console.log(block)
+                            block.entityRanges.push(entityRange)
+                            entityRange = {}
+
+                            entityMap[entityKey.toString()] = entity
+                            entityKey++
+
+                            block.inlineStyleRanges = inlineStyleRanges
+                            blocks.push(block)
+                            block = {}
+                            inlineStyleRanges = []
+
+                            currentAtomicBlockType = ''
+                            isManipulateAtomicBlock = false
+                        }
+                        break
+
                     default:
                         break
                 }
@@ -318,6 +422,9 @@ function convertHtmlToContentBlock(html) {
             entityMap,
         }
 
+        // Object.keys(entityMap).forEach((key) => {
+        //     console.log(entityMap[key])
+        // })
         return converedContentBlock
     } catch (error) {
         console.log(error)
