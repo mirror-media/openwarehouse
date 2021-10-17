@@ -8,23 +8,13 @@ const { app } = require('../configs/config.js')
 const htmlToJson = require('html-to-json')
 const { Parser } = require('htmlparser2')
 
-const clear = (resolvedData) => {
-    console.log('clear')
-    const editorState = EditorState.createEmpty()
-    const contentState = editorState.getCurrentContent()
-    const emplyContentBlock = convertToRaw(contentState)
-    resolvedData.summary = emplyContentBlock
-    resolvedData.content = emplyContentBlock
-}
 const htmlToDraft = (existingItem, resolvedData) => {
     try {
-        const html = existingItem.contentHtml
+        const html = existingItem.summaryHtml
         console.log(html)
-        const contentBlock = JSON.parse(existingItem.content)
+        const contentBlock = JSON.parse(existingItem.summary)
+        console.log(contentBlock)
 
-        contentBlock.blocks.forEach((block) => {
-            console.log(block)
-        })
         let blocks = []
         let inlineStyleRanges = []
         let block = {}
@@ -50,6 +40,8 @@ const htmlToDraft = (existingItem, resolvedData) => {
             style: 'UNDERLINE',
         }
 
+        let currentListType = 'ordered-list-item'
+
         const parser = new Parser({
             onopentag(name, attributes) {
                 /*
@@ -72,6 +64,74 @@ const htmlToDraft = (existingItem, resolvedData) => {
                             data: {},
                         }
                         break
+
+                    case 'h1':
+                        block = {
+                            key: _uuid(),
+                            text: '',
+                            type: 'header-one',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+                        break
+
+                    case 'h2':
+                        block = {
+                            key: _uuid(),
+                            text: '',
+                            type: 'header-two',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+                        break
+
+                    case 'code':
+                        block = {
+                            key: _uuid(),
+                            text: '',
+                            type: 'code-block',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+                        break
+
+                    case 'ol':
+                        currentListType = 'ordered-list-item'
+                        break
+                    case 'ul':
+                        currentListType = 'unordered-list-item'
+                        break
+
+                    case 'li':
+                        block = {
+                            key: _uuid(),
+                            text: '',
+                            type: currentListType,
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+
+                        break
+
+                    // case 'blockquote':
+                    //     block = {
+                    //         key: _uuid(),
+                    //         text: '',
+                    //         type: 'blockquote',
+                    //         depth: 0,
+                    //         inlineStyleRanges: [],
+                    //         entityRanges: [],
+                    //         data: {},
+                    //     }
+                    //     break
 
                     case 'strong':
                         boldInlineStyleRange.offset = block.text.length
@@ -132,6 +192,11 @@ const htmlToDraft = (existingItem, resolvedData) => {
 
                 switch (tagname) {
                     case 'p':
+                    case 'h1':
+                    case 'h2':
+                    case 'code':
+                    case 'li':
+                        // case 'blockquote':
                         block.inlineStyleRanges = inlineStyleRanges
                         blocks.push(block)
                         block = {}
@@ -232,4 +297,4 @@ function getInlineStyleName(htmlName) {
     }
 }
 
-module.exports = { htmlToDraft, clear }
+module.exports = { htmlToDraft }

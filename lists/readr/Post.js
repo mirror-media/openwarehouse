@@ -248,7 +248,13 @@ module.exports = {
     },
     hooks: {
         resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
-            resolvedData.summary = await htmlToDraft(existingItem, resolvedData)
+            console.log(resolvedData)
+            if (existingItem.summaryHtml) {
+                resolvedData.content = await htmlToDraft(
+                    existingItem,
+                    resolvedData
+                )
+            }
 
             await controlCharacterFilter(
                 originalInput,
@@ -257,9 +263,12 @@ module.exports = {
             )
 
             await parseResolvedData(existingItem, resolvedData)
-            console.log(resolvedData.content)
-            console.log(resolvedData.summary)
             resolvedData.wordCount = await countWord(existingItem, resolvedData)
+
+            // prevent summary to be updated
+            resolvedData.summary = undefined
+            resolvedData.summaryApiData = undefined
+            resolvedData.summaryHtml = undefined
 
             return resolvedData
         },
