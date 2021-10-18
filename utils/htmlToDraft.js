@@ -243,7 +243,7 @@ function convertHtmlToContentBlock(html) {
                         isManipulateAtomicBlock = true
 
                     case 'blockquote':
-                        currentEntity = 'blockquote'
+                        currentEntity = 'BLOCKQUOTE'
 
                         if (isManipulateAtomicBlock) {
                             block = {
@@ -309,23 +309,27 @@ function convertHtmlToContentBlock(html) {
                         entityRange.length = text.length
                         block.text = block.text + text
 
+                    case 'div':
+                        switch (currentEntity) {
+                            case 'BLOCKQUOTE':
+                                blockquoteArray.push(text)
+
+                                break
+
+                            case '':
+                                break
+
+                            default:
+                                break
+                        }
+
+                        break
+
                     default:
                         break
                 }
 
                 if (isManipulateAtomicBlock) {
-                    switch (currentAtomicBlockType) {
-                        case 'blockquote':
-                            blockquoteArray.push(text)
-
-                            break
-
-                        case '':
-                            break
-
-                        default:
-                            break
-                    }
                 }
 
                 // for inlineStyle
