@@ -295,7 +295,7 @@ function convertHtmlToContentBlock(html) {
                     case 'h2':
                     case 'code':
                     case 'li':
-                        block.text = text
+                        block.text = block.text + text
 
                         if (entityRange?.key) {
                             entity.data.text = text
@@ -309,8 +309,6 @@ function convertHtmlToContentBlock(html) {
                         break
 
                     case 'abbr':
-                        console.log('text in abbr')
-                        console.log(text)
                         entityRange.length = text.length
                         block.text = block.text + text
 
@@ -318,8 +316,6 @@ function convertHtmlToContentBlock(html) {
                         break
 
                     case 'a':
-                        console.log('AAAAAAAA')
-                        console.log(text)
                         block.text = block.text + text
                         entity.data.text = text
                         entityRange.length = text.length
@@ -327,9 +323,16 @@ function convertHtmlToContentBlock(html) {
                         currentTag = prevTag
                         break
 
-                    case 'blockquote':
-                        blockquoteArray.push(text)
+                    case 'div':
+                        if (currentEntity === 'BLOCKQUOTE') {
+                            blockquoteArray.push(text)
+                        }
+
                         break
+
+                    // case 'blockquote':
+                    //     blockquoteArray.push(text)
+                    //     break
 
                     default:
                         break
@@ -410,8 +413,6 @@ function convertHtmlToContentBlock(html) {
                         }
                         break
                     case 'a':
-                        console.log('===close tag in a')
-
                         addEntityRangeToBlock(entityRange)
 
                         addEntityToEntityMap(entity)
@@ -423,11 +424,7 @@ function convertHtmlToContentBlock(html) {
 
                     case 'blockquote':
                         if (isManipulateAtomicBlock) {
-                            console.log('blockquoteArray')
-                            console.log(blockquoteArray)
-
                             // [ '我是quote', '我是quoteBy' ]
-
                             for (let i = 0; i < blockquoteArray.length; i++) {
                                 blockquoteKey = blockquoteKeyMap[i] // quote || quoteBy
                                 if (!blockquoteKey) continue
@@ -436,8 +433,6 @@ function convertHtmlToContentBlock(html) {
                                 entity.data[blockquoteKey] = quoteItem
                             }
 
-                            console.log('block')
-                            console.log(block)
                             block.entityRanges.push(entityRange)
                             entityRange = {}
 
