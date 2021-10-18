@@ -88,12 +88,17 @@ function convertHtmlToContentBlock(html) {
         let entity = {}
 
         let isManipulateAtomicBlock = false
+        let currentTag = ''
+        let currentEntity = ''
 
         let currentAtomicBlockType = ''
         let blockquoteArray = []
 
+        let isManipulateLink = false
+
         const parser = new Parser({
             onopentag(name, attributes) {
+                currentTag = name
                 /*
                  * This fires when a new tag is opened.
                  *
@@ -114,7 +119,6 @@ function convertHtmlToContentBlock(html) {
                             data: {},
                         }
                         break
-
                     case 'h1':
                         block = {
                             key: _uuid(),
@@ -126,7 +130,6 @@ function convertHtmlToContentBlock(html) {
                             data: {},
                         }
                         break
-
                     case 'h2':
                         block = {
                             key: _uuid(),
@@ -138,7 +141,6 @@ function convertHtmlToContentBlock(html) {
                             data: {},
                         }
                         break
-
                     case 'code':
                         block = {
                             key: _uuid(),
@@ -157,7 +159,6 @@ function convertHtmlToContentBlock(html) {
                     case 'ul':
                         currentListType = 'unordered-list-item'
                         break
-
                     case 'li':
                         block = {
                             key: _uuid(),
@@ -196,6 +197,9 @@ function convertHtmlToContentBlock(html) {
                         styleArray.push('UNDERLINE')
                         break
                     case 'abbr':
+                        currentTag = 'abbr'
+                        currentEntity = 'ANNOTATION'
+
                         entityRange = {
                             offset: block.text.length,
                             length: 0,
@@ -218,24 +222,30 @@ function convertHtmlToContentBlock(html) {
                             },
                         }
                         break
+                    // case 'a':
+                    //     entityRange = {
+                    //         offset: block.text.length,
+                    //         length: 0,
+                    //         key: entityKey,
+                    //     }
+
+                    //     entity = {
+                    //         type: 'LINK',
+                    //         mutability: 'IMMUTABLE',
+                    //         data: {
+                    //             text: '我是連結文字',
+                    //             url: attributes.href,
+                    //         },
+                    //     }
+                    //     break
 
                     case 'div':
                         isManipulateAtomicBlock = true
 
-                        switch (currentAtomicBlockType) {
-                            case 'blockquote':
-                                break
-
-                            default:
-                                break
-                        }
-
-                        break
-
                     case 'blockquote':
-                        isManipulateAtomicBlock = true
+                        currentEntity = 'blockquote'
+
                         if (isManipulateAtomicBlock) {
-                            currentAtomicBlockType = 'blockquote'
                             block = {
                                 key: _uuid(),
                                 text: ' ',
@@ -272,21 +282,45 @@ function convertHtmlToContentBlock(html) {
                  * Note that this can fire at any point within text and you might
                  * have to stich together multiple pieces.
                  */
-
                 console.log('-->', text)
-                if (!isManipulateAtomicBlock) {
-                    if (entityRange?.key) {
+
+                switch (currentTag) {
+                    case 'p':
+                    case 'h1':
+                    case 'h2':
+                    case 'code':
+                    case 'li':
                         block.text = text
-                        entity.data.text = text
-                    } else {
-                        // for inlineStyle
+
+                        if (entityRange?.key) {
+                            entity.data.text = text
+                        }
+                        break
+
+                    case 'strong':
+                    case 'em':
+                    case 'u':
                         block.text = block.text + text
-                    }
-                } else {
+                        break
+
+                    case 'abbr':
+                        console.log('text in abbr')
+                        console.log(text)
+                        entityRange.length = text.length
+                        block.text = block.text + text
+
+                    default:
+                        break
+                }
+
+                if (isManipulateAtomicBlock) {
                     switch (currentAtomicBlockType) {
                         case 'blockquote':
                             blockquoteArray.push(text)
-                            console.log(blockquoteArray)
+
+                            break
+
+                        case '':
                             break
 
                         default:
@@ -315,8 +349,8 @@ function convertHtmlToContentBlock(html) {
                     }
                 }
 
-                // for annotation
-                if (Object.keys(entity).length !== 0) {
+                if (isManipulateLink) {
+                    entity.data.text = text
                     entityRange.length = text.length
                 }
             },
@@ -337,40 +371,56 @@ function convertHtmlToContentBlock(html) {
                     case 'code':
                     case 'li':
                         // case 'blockquote':
+
                         block.inlineStyleRanges = inlineStyleRanges
                         blocks.push(block)
+                        // clear
                         block = {}
                         inlineStyleRanges = []
                         break
 
                     case 'abbr':
-                        block.entityRanges.push(entityRange)
-                        entityRange = {}
-                        entityMap[entityKey.toString()] = entity
-                        entityKey++
+                        addEntityRangeToBlock(entityRange)
+
+                        addEntityToEntityMap(entity)
+
                         break
 
                     case 'strong':
-                        inlineStyleRanges.push(boldInlineStyleRange)
+                        addNewInlineStyleRanges(boldInlineStyleRange)
 
                         if (styleArray.length) {
                             styleArray.pop()
                         }
                         break
                     case 'em':
-                        inlineStyleRanges.push(italicInlineStyleRange)
+                        addNewInlineStyleRanges(italicInlineStyleRange)
 
                         if (styleArray.length) {
                             styleArray.pop()
                         }
                         break
                     case 'u':
-                        inlineStyleRanges.push(underlineInlineStyleRange)
+                        addNewInlineStyleRanges(underlineInlineStyleRange)
 
                         if (styleArray.length) {
                             styleArray.pop()
                         }
                         break
+                    // case 'a':
+                    //     block.entityRanges.push(entityRange)
+                    //     entityRange = {}
+
+                    //     entityMap[entityKey.toString()] = entity
+                    //     entityKey++
+
+                    //     block.inlineStyleRanges = inlineStyleRanges
+                    //     blocks.push(block)
+                    //     block = {}
+                    //     inlineStyleRanges = []
+
+                    //     isManipulateLink = false
+                    //     break
 
                     case 'blockquote':
                         if (isManipulateAtomicBlock) {
@@ -426,6 +476,20 @@ function convertHtmlToContentBlock(html) {
         //     console.log(entityMap[key])
         // })
         return converedContentBlock
+
+        function addNewInlineStyleRanges(newInlineStyleRange) {
+            inlineStyleRanges.push(newInlineStyleRange)
+        }
+
+        function addEntityRangeToBlock(newEntityRange) {
+            block.entityRanges.push(newEntityRange)
+            entityRange = {}
+        }
+
+        function addEntityToEntityMap(newEntity) {
+            entityMap[entityKey.toString()] = newEntity
+            entityKey++
+        }
     } catch (error) {
         console.log(error)
         return undefined

@@ -266,9 +266,9 @@ module.exports = {
             resolvedData.wordCount = await countWord(existingItem, resolvedData)
 
             // prevent summary to be updated
-            // resolvedData.summary = undefined
-            // resolvedData.summaryApiData = undefined
-            // resolvedData.summaryHtml = undefined
+            resolvedData.summary = undefined
+            resolvedData.summaryApiData = undefined
+            resolvedData.summaryHtml = undefined
 
             return resolvedData
         },
