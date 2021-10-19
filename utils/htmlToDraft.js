@@ -245,6 +245,42 @@ function convertHtmlToContentBlock(html) {
 
                     case 'div':
                         isManipulateAtomicBlock = true
+                        console.log('====here is div tag')
+
+                        if (
+                            attributes.class === 'embedded ' ||
+                            attributes.class === 'readme-embed'
+                        ) {
+                            currentEntity = 'EMBEDDEDCODE'
+                            console.log('currentEntity')
+                            console.log(currentEntity)
+
+                            block = {
+                                key: _uuid(),
+                                text: ' ',
+                                type: 'atomic',
+                                depth: 0,
+                                inlineStyleRanges: [],
+                                entityRanges: [],
+                                data: {},
+                            }
+
+                            entityRange = {
+                                offset: 0,
+                                length: 1,
+                                key: entityKey,
+                            }
+
+                            entity = {
+                                type: 'EMBEDDEDCODE',
+                                mutability: 'IMMUTABLE',
+                                data: {
+                                    caption: attributes?.title,
+                                    embeddedCode: 'embeddedcode的script',
+                                },
+                            }
+                        }
+                        break
 
                     case 'blockquote':
                         currentEntity = 'BLOCKQUOTE'
@@ -326,6 +362,10 @@ function convertHtmlToContentBlock(html) {
                     case 'div':
                         if (currentEntity === 'BLOCKQUOTE') {
                             blockquoteArray.push(text)
+                        }
+
+                        if (currentEntity === 'EMBEDDEDCODE') {
+                            entity.data.embeddedCode = text
                         }
 
                         break
@@ -446,6 +486,24 @@ function convertHtmlToContentBlock(html) {
 
                             currentAtomicBlockType = ''
                             isManipulateAtomicBlock = false
+                        }
+                        break
+
+                    case 'div':
+                        console.log('DIV END')
+                        console.log(currentEntity)
+                        if (currentEntity === 'EMBEDDEDCODE') {
+                            console.log('embedded code end')
+                            console.log(entityRange)
+                            console.log(entity)
+                            addEntityRangeToBlock(entityRange)
+                            addEntityToEntityMap(entity)
+                            currentEntity = ''
+
+                            blocks.push(block)
+                            // clear
+                            block = {}
+                            inlineStyleRanges = []
                         }
                         break
 
