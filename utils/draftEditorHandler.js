@@ -3,8 +3,9 @@ const countWord = async (existingItem, resolvedData) => {
         const content = resolvedData?.content
             ? JSON.parse(resolvedData?.content)
             : undefined
+
         // only edited draft editor need to count words
-        if (!content) return 0
+        if (!content || !content?.blocks) return 0
 
         let totalCount = 0
         content.blocks.forEach((block) => {

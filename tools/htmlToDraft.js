@@ -1,42 +1,29 @@
-const {
-    convertToRaw,
-    convertFromRaw,
-    EditorState,
-    ContentState,
-} = require('draft-js')
-const { app } = require('../configs/config.js')
-const htmlToJson = require('html-to-json')
 const { Parser } = require('htmlparser2')
-
-const blockquoteKeyMap = ['quote', 'quoteBy']
 
 const htmlToDraft = async (existingItem, resolvedData) => {
     try {
-        const html = existingItem.summaryHtml
-        console.log(html)
-        const contentBlock = JSON.parse(existingItem.summary)
+        const html = existingItem.tempContentHtml
+        const isHtmlText = html.includes('<p>')
 
-        contentBlock.blocks.forEach((block) => {
-            console.log(block)
-        })
-        Object.keys(contentBlock.entityMap).forEach((key) => {
-            console.log(contentBlock.entityMap[key])
-        })
-        // entityMap: {
-        //     '0': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
-        //     '1': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
-
-        const convertedContentBlock = await convertHtmlToContentBlock(html)
-
-        console.log('+++blocks+++')
-        convertedContentBlock.blocks.forEach((block) => {
-            console.log(block)
-        })
-        console.log('+++entityMap+++')
-        console.log(convertedContentBlock.entityMap)
-        // Object.keys(entityMap).forEach((key) => {
-        //     console.log(entityMap[key])
-        // })
+        let convertedContentBlock
+        if (isHtmlText) {
+            convertedContentBlock = await convertHtmlToContentBlock(html)
+        } else {
+            convertedContentBlock = {
+                blocks: [
+                    {
+                        key: '6123a',
+                        text: html,
+                        type: 'unstyled',
+                        depth: 0,
+                        inlineStyleRanges: [],
+                        entityRanges: [],
+                        data: {},
+                    },
+                ],
+                entityMap: {},
+            }
+        }
 
         return JSON.stringify({
             draft: convertedContentBlock,
@@ -53,13 +40,17 @@ function convertHtmlToContentBlock(html) {
     if (!html) return undefined
 
     try {
-        // entityMap: {
-        //     '0': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
-        //     '1': { type: 'ANNOTATION', mutability: 'IMMUTABLE', data: [Object] },
-
         // block
         let blocks = []
-        let block = {}
+        let block = {
+            key: _uuid(),
+            text: '',
+            type: 'unstyled',
+            depth: 0,
+            inlineStyleRanges: [],
+            entityRanges: [],
+            data: {},
+        }
 
         // inlineStyleRange
         let inlineStyleRanges = []
@@ -175,17 +166,17 @@ function convertHtmlToContentBlock(html) {
 
                         break
 
-                    // case 'blockquote':
-                    //     block = {
-                    //         key: _uuid(),
-                    //         text: '',
-                    //         type: 'blockquote',
-                    //         depth: 0,
-                    //         inlineStyleRanges: [],
-                    //         entityRanges: [],
-                    //         data: {},
-                    //     }
-                    //     break
+                    case 'blockquote':
+                        block = {
+                            key: _uuid(),
+                            text: '',
+                            type: 'blockquote',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+                        break
 
                     case 'strong':
                         boldInlineStyleRange.offset = block.text.length
@@ -225,6 +216,7 @@ function convertHtmlToContentBlock(html) {
                         }
                         break
                     case 'a':
+                        if (Object.keys(block).length === 0) break
                         currentEntity = 'LINK'
 
                         entityRange = {
@@ -243,67 +235,44 @@ function convertHtmlToContentBlock(html) {
                         }
                         break
 
-                    case 'div':
+                    case 'iframe':
                         isManipulateAtomicBlock = true
 
-                        if (
-                            attributes.class === 'embedded ' ||
-                            attributes.class === 'readme-embed'
-                        ) {
-                            currentEntity = 'EMBEDDEDCODE'
+                        currentEntity = 'EMBEDDEDCODE'
 
-                            block = {
-                                key: _uuid(),
-                                text: ' ',
-                                type: 'atomic',
-                                depth: 0,
-                                inlineStyleRanges: [],
-                                entityRanges: [],
-                                data: {},
-                            }
+                        console.log('IFRAME')
+                        console.log(attributes)
 
-                            entityRange = {
-                                offset: 0,
-                                length: 1,
-                                key: entityKey,
-                            }
-
-                            entity = {
-                                type: 'EMBEDDEDCODE',
-                                mutability: 'IMMUTABLE',
-                                data: {
-                                    caption: attributes?.title,
-                                    embeddedCode: 'embeddedcode的script',
-                                },
-                            }
+                        block = {
+                            key: _uuid(),
+                            text: ' ',
+                            type: 'atomic',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
                         }
-                        break
 
-                    case 'blockquote':
-                        currentEntity = 'BLOCKQUOTE'
+                        entityRange = {
+                            offset: 0,
+                            length: 1,
+                            key: entityKey,
+                        }
 
-                        if (isManipulateAtomicBlock) {
-                            block = {
-                                key: _uuid(),
-                                text: ' ',
-                                type: 'atomic',
-                                depth: 0,
-                                inlineStyleRanges: [],
-                                entityRanges: [],
-                                data: {},
-                            }
+                        let iframeAttributeString = ''
+                        Object.keys(attributes).forEach((key) => {
+                            const string = `${key}="${attributes[key]}" `
+                            iframeAttributeString += string
+                        })
 
-                            entityRange = {
-                                offset: 0,
-                                length: 1,
-                                key: entityKey,
-                            }
-
-                            entity = {
-                                type: 'BLOCKQUOTE',
-                                mutability: 'IMMUTABLE',
-                                data: { quoteBy: '', quote: '' },
-                            }
+                        console.log(iframeAttributeString)
+                        entity = {
+                            type: 'EMBEDDEDCODE',
+                            mutability: 'IMMUTABLE',
+                            data: {
+                                caption: '',
+                                embeddedCode: `<iframe ${iframeAttributeString}></iframe>`,
+                            },
                         }
 
                         break
@@ -372,24 +341,34 @@ function convertHtmlToContentBlock(html) {
                         break
 
                     case 'img':
-                        const srcSetArray = attributes.srcset.split(', ')
+                        console.log(attributes)
 
                         let srcObj = {}
-                        srcSetArray.forEach((srcset) => {
-                            srcsetTempArray = srcset.split(' ')
-                            let srcSize = ''
-                            let srcUrl = ''
 
-                            srcsetTempArray.forEach((tempArrayItem) => {
-                                if (tempArrayItem.includes('https')) {
-                                    srcUrl = tempArrayItem
-                                } else if (tempArrayItem.includes('w')) {
-                                    srcSize = tempArrayItem
-                                }
+                        if (attributes.srcset) {
+                            const srcSetArray = attributes.srcset.split(', ')
+                            srcSetArray.forEach((srcset) => {
+                                srcsetTempArray = srcset.split(' ')
+                                let srcSize = ''
+                                let srcUrl = ''
+
+                                srcsetTempArray.forEach((tempArrayItem) => {
+                                    if (tempArrayItem.includes('https')) {
+                                        srcUrl = tempArrayItem
+                                    } else if (tempArrayItem.includes('w')) {
+                                        srcSize = tempArrayItem
+                                    }
+                                })
+
+                                srcObj[srcSize] = srcUrl
                             })
-
-                            srcObj[srcSize] = srcUrl
-                        })
+                        } else {
+                            srcObj = {
+                                '2400w': attributes.src,
+                                '1280w': attributes.src,
+                                '800w': attributes.src,
+                            }
+                        }
 
                         currentEntity = 'IMAGE'
 
@@ -472,6 +451,7 @@ function convertHtmlToContentBlock(html) {
                         }
                         break
 
+                    case 'span':
                     case 'strong':
                     case 'em':
                     case 'u':
@@ -486,6 +466,7 @@ function convertHtmlToContentBlock(html) {
                         break
 
                     case 'a':
+                        if (Object.keys(block).length === 0) break
                         block.text = block.text + text
                         entity.data.text = text
                         entityRange.length = text.length
@@ -493,17 +474,9 @@ function convertHtmlToContentBlock(html) {
                         currentTag = prevTag
                         break
 
-                    case 'div':
-                        if (currentEntity === 'BLOCKQUOTE') {
-                            blockquoteArray.push(text)
-                        }
-
-                        if (currentEntity === 'EMBEDDEDCODE') {
-                            entity.data.embeddedCode = text
-                        }
-
+                    case 'blockquote':
+                        block.text = block.text + text
                         break
-
                     // case 'blockquote':
                     //     blockquoteArray.push(text)
                     //     break
@@ -549,8 +522,8 @@ function convertHtmlToContentBlock(html) {
                     case 'h2':
                     case 'code':
                     case 'li':
-                        // case 'blockquote':
-
+                    case 'blockquote':
+                        if (Object.keys(block).length === 0) break
                         block.inlineStyleRanges = inlineStyleRanges
                         blocks.push(block)
                         // clear
@@ -587,50 +560,11 @@ function convertHtmlToContentBlock(html) {
                         }
                         break
                     case 'a':
+                        if (Object.keys(block).length === 0) break
                         addEntityRangeToBlock(entityRange)
 
                         addEntityToEntityMap(entity)
 
-                        break
-
-                    case 'blockquote':
-                        if (isManipulateAtomicBlock) {
-                            // [ '我是quote', '我是quoteBy' ]
-                            for (let i = 0; i < blockquoteArray.length; i++) {
-                                blockquoteKey = blockquoteKeyMap[i] // quote || quoteBy
-                                if (!blockquoteKey) continue
-
-                                const quoteItem = blockquoteArray[i]
-                                entity.data[blockquoteKey] = quoteItem
-                            }
-
-                            block.entityRanges.push(entityRange)
-                            entityRange = {}
-
-                            entityMap[entityKey.toString()] = entity
-                            entityKey++
-
-                            block.inlineStyleRanges = inlineStyleRanges
-                            blocks.push(block)
-                            block = {}
-                            inlineStyleRanges = []
-
-                            currentAtomicBlockType = ''
-                            isManipulateAtomicBlock = false
-                        }
-                        break
-
-                    case 'div':
-                        if (currentEntity === 'EMBEDDEDCODE') {
-                            addEntityRangeToBlock(entityRange)
-                            addEntityToEntityMap(entity)
-                            currentEntity = ''
-
-                            blocks.push(block)
-                            // clear
-                            block = {}
-                            inlineStyleRanges = []
-                        }
                         break
 
                     case 'audio':
@@ -645,6 +579,17 @@ function convertHtmlToContentBlock(html) {
                         block = {}
                         inlineStyleRanges = []
 
+                        break
+
+                    case 'iframe':
+                        addEntityRangeToBlock(entityRange)
+                        addEntityToEntityMap(entity)
+                        currentEntity = ''
+
+                        blocks.push(block)
+                        // clear
+                        block = {}
+                        inlineStyleRanges = []
                         break
 
                     default:
@@ -663,6 +608,11 @@ function convertHtmlToContentBlock(html) {
             blocks,
             entityMap,
         }
+        // console.log('++++++++blocks+++++++++++')
+        // Object.keys(blocks).forEach((key) => {
+        //     console.log(blocks[key])
+        // })
+        // console.log('++++++++entityMap+++++++++++')
 
         // Object.keys(entityMap).forEach((key) => {
         //     console.log(entityMap[key])

@@ -44,7 +44,6 @@
         "express": "^4.17.1",
         "get-audio-duration": "^2.0.3",
         "get-video-duration": "^3.0.2",
-        "html-to-json": "^0.6.0",
         "htmlparser2": "^7.1.2",
         "http-proxy-middleware": "^2.0.1",
         "imagemagick-stream": "^4.1.1",

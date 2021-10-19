@@ -31,7 +31,6 @@ const {
     AclRoleAccessorMethods,
 } = require('@google-cloud/storage/build/src/acl')
 const { generateSource } = require('../../utils/postSourceHandler')
-const { htmlToDraft } = require('../../utils/htmlToDraft')
 
 module.exports = {
     fields: {
@@ -222,9 +221,31 @@ module.exports = {
                 isReadOnly: true,
             },
         },
+
         contentApiData: {
             type: TextHide,
             label: 'Content API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        tempSummaryHtml: {
+            type: TextHide,
+
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        tempBriefHtml: {
+            type: TextHide,
+
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        tempContentHtml: {
+            type: TextHide,
+
             adminConfig: {
                 isReadOnly: true,
             },
@@ -237,25 +258,17 @@ module.exports = {
         }),
         byTracking(),
     ],
-    access: {
-        update: allowRoles(admin, moderator),
-        create: allowRoles(admin, moderator),
-        delete: allowRoles(admin),
-    },
+    // access: {
+    //     update: allowRoles(admin, moderator),
+    //     create: allowRoles(admin, moderator),
+    //     delete: allowRoles(admin),
+    // },
     adminConfig: {
         defaultColumns: 'sortOrder,name, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
     hooks: {
         resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
-            console.log(resolvedData)
-            if (existingItem.summaryHtml) {
-                resolvedData.content = await htmlToDraft(
-                    existingItem,
-                    resolvedData
-                )
-            }
-
             await controlCharacterFilter(
                 originalInput,
                 existingItem,
@@ -263,12 +276,8 @@ module.exports = {
             )
 
             await parseResolvedData(existingItem, resolvedData)
-            resolvedData.wordCount = await countWord(existingItem, resolvedData)
 
-            // prevent summary to be updated
-            resolvedData.summary = undefined
-            resolvedData.summaryApiData = undefined
-            resolvedData.summaryHtml = undefined
+            resolvedData.wordCount = await countWord(existingItem, resolvedData)
 
             return resolvedData
         },
@@ -288,21 +297,21 @@ module.exports = {
                 addValidationError
             )
         },
-        afterChange: async ({
-            operation,
-            existingItem,
-            resolvedData,
-            context,
-            updatedItem,
-        }) => {
-            emitEditLog(
-                operation,
-                resolvedData,
-                existingItem,
-                context,
-                updatedItem
-            )
-        },
+        // afterChange: async ({
+        //     operation,
+        //     existingItem,
+        //     resolvedData,
+        //     context,
+        //     updatedItem,
+        // }) => {
+        //     emitEditLog(
+        //         operation,
+        //         resolvedData,
+        //         existingItem,
+        //         context,
+        //         updatedItem
+        //     )
+        // },
     },
     labelField: 'name',
     cacheHint: cacheHint,
