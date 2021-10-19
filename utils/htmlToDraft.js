@@ -245,15 +245,12 @@ function convertHtmlToContentBlock(html) {
 
                     case 'div':
                         isManipulateAtomicBlock = true
-                        console.log('====here is div tag')
 
                         if (
                             attributes.class === 'embedded ' ||
                             attributes.class === 'readme-embed'
                         ) {
                             currentEntity = 'EMBEDDEDCODE'
-                            console.log('currentEntity')
-                            console.log(currentEntity)
 
                             block = {
                                 key: _uuid(),
@@ -309,6 +306,143 @@ function convertHtmlToContentBlock(html) {
                             }
                         }
 
+                        break
+
+                    case 'audio':
+                        currentEntity = 'AUDIO'
+
+                        block = {
+                            key: _uuid(),
+                            text: ' ',
+                            type: 'atomic',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+
+                        entityRange = {
+                            offset: 0,
+                            length: 1,
+                            key: entityKey,
+                        }
+
+                        entity = {
+                            type: 'AUDIO',
+                            mutability: 'IMMUTABLE',
+                            data: {
+                                id: _uuid(),
+                                name: '',
+                                url: attributes.src,
+                                coverPhoto: null,
+                            },
+                        }
+                        break
+
+                    case 'video':
+                        currentEntity = 'VIDEO'
+
+                        block = {
+                            key: _uuid(),
+                            text: ' ',
+                            type: 'atomic',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+
+                        entityRange = {
+                            offset: 0,
+                            length: 1,
+                            key: entityKey,
+                        }
+
+                        entity = {
+                            type: 'VIDEO',
+                            mutability: 'IMMUTABLE',
+                            data: {
+                                id: _uuid(),
+                                name: ' ',
+                                url: attributes.src,
+                                youtubeUrl: null,
+                                coverPhoto: null,
+                            },
+                        }
+                        break
+
+                    case 'img':
+                        const srcSetArray = attributes.srcset.split(', ')
+
+                        let srcObj = {}
+                        srcSetArray.forEach((srcset) => {
+                            srcsetTempArray = srcset.split(' ')
+                            let srcSize = ''
+                            let srcUrl = ''
+
+                            srcsetTempArray.forEach((tempArrayItem) => {
+                                if (tempArrayItem.includes('https')) {
+                                    srcUrl = tempArrayItem
+                                } else if (tempArrayItem.includes('w')) {
+                                    srcSize = tempArrayItem
+                                }
+                            })
+
+                            srcObj[srcSize] = srcUrl
+                        })
+
+                        currentEntity = 'IMAGE'
+
+                        block = {
+                            key: _uuid(),
+                            text: ' ',
+                            type: 'atomic',
+                            depth: 0,
+                            inlineStyleRanges: [],
+                            entityRanges: [],
+                            data: {},
+                        }
+
+                        entityRange = {
+                            offset: 0,
+                            length: 1,
+                            key: entityKey,
+                        }
+
+                        entity = {
+                            type: 'IMAGE',
+                            mutability: 'IMMUTABLE',
+                            data: {
+                                url: attributes.src,
+                                original: {
+                                    url: attributes.src,
+                                    width: 0,
+                                    height: 0,
+                                },
+                                desktop: {
+                                    url: srcObj['2400w'],
+                                    width: 0,
+                                    height: 0,
+                                },
+                                tablet: {
+                                    url: srcObj['1280w'],
+                                    width: 0,
+                                    height: 0,
+                                },
+                                mobile: {
+                                    url: srcObj['800w'],
+                                    width: 0,
+                                    height: 0,
+                                },
+                                tiny: {
+                                    url: srcObj['800w'],
+                                    width: 0,
+                                    height: 0,
+                                },
+                                id: '968',
+                                name: attributes.alt,
+                            },
+                        }
                         break
 
                     default:
@@ -457,9 +591,6 @@ function convertHtmlToContentBlock(html) {
 
                         addEntityToEntityMap(entity)
 
-                        console.log(block)
-                        console.log(entityMap)
-
                         break
 
                     case 'blockquote':
@@ -490,12 +621,7 @@ function convertHtmlToContentBlock(html) {
                         break
 
                     case 'div':
-                        console.log('DIV END')
-                        console.log(currentEntity)
                         if (currentEntity === 'EMBEDDEDCODE') {
-                            console.log('embedded code end')
-                            console.log(entityRange)
-                            console.log(entity)
                             addEntityRangeToBlock(entityRange)
                             addEntityToEntityMap(entity)
                             currentEntity = ''
@@ -505,6 +631,20 @@ function convertHtmlToContentBlock(html) {
                             block = {}
                             inlineStyleRanges = []
                         }
+                        break
+
+                    case 'audio':
+                    case 'video':
+                    case 'img':
+                        addEntityRangeToBlock(entityRange)
+                        addEntityToEntityMap(entity)
+                        currentEntity = ''
+
+                        blocks.push(block)
+                        // clear
+                        block = {}
+                        inlineStyleRanges = []
+
                         break
 
                     default:
