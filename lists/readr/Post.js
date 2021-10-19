@@ -137,7 +137,8 @@ module.exports = {
         style: {
             label: '樣式',
             type: Select,
-            options: 'reviews, news, report, memo, dummy, card, qa, project3, embedded',
+            options:
+                'reviews, news, report, memo, dummy, card, qa, project3, embedded',
         },
         summary: {
             label: '重點摘要',
@@ -297,21 +298,21 @@ module.exports = {
                 addValidationError
             )
         },
-        // afterChange: async ({
-        //     operation,
-        //     existingItem,
-        //     resolvedData,
-        //     context,
-        //     updatedItem,
-        // }) => {
-        //     emitEditLog(
-        //         operation,
-        //         resolvedData,
-        //         existingItem,
-        //         context,
-        //         updatedItem
-        //     )
-        // },
+        afterChange: async ({
+            operation,
+            existingItem,
+            resolvedData,
+            context,
+            updatedItem,
+        }) => {
+            emitEditLog(
+                operation,
+                resolvedData,
+                existingItem,
+                context,
+                updatedItem
+            )
+        },
     },
     labelField: 'name',
     cacheHint: cacheHint,
