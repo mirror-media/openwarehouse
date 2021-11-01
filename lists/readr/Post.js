@@ -230,6 +230,24 @@ module.exports = {
                 isReadOnly: true,
             },
         },
+        citation: {
+            label: '引用數據',
+            type: HTML,
+        },
+        citationApiData: {
+            type: TextHide,
+            label: 'Citation API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        citationHtml: {
+            type: TextHide,
+            label: 'Citation HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
     },
     plugins: [
         atTracking({
