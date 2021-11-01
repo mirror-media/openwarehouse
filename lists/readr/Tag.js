@@ -42,6 +42,12 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
+        relatedPost: {
+            label: 'Related Post',
+            type: Relationship,
+            ref: 'Post',
+            many: true,
+        },
     },
     plugins: [atTracking(), byTracking()],
     access: {
