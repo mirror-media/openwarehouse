@@ -156,11 +156,19 @@ module.exports = {
             label: '字數',
             type: Integer,
         },
+        readingTime: {
+            label: '閱讀時間',
+            type: Integer,
+        },
         projects: {
             label: '專題',
             type: Relationship,
             ref: 'Project',
             many: true,
+        },
+        actionList: {
+            label: '延伸議題',
+            type: Text,
         },
         tags: {
             label: '標籤',
