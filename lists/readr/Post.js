@@ -230,12 +230,6 @@ module.exports = {
                 isReadOnly: true,
             },
         },
-        dataCitation: {
-            label: '引用數據',
-            type: Relationship,
-            ref: 'Source',
-            many: true,
-        },
     },
     plugins: [
         atTracking({

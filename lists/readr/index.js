@@ -10,7 +10,6 @@ module.exports = {
     Quote: require('./Quote'),
     Post: require('./Post'),
     Project: require('./Project'),
-    Source: require('./Source'),
     Tag: require('./Tag'),
     User: require('./User'),
     Video: require('./Video'),
