@@ -77,7 +77,7 @@ module.exports = {
         categories: {
             label: '分類',
             type: Relationship,
-            ref: 'Category',
+            ref: 'Category.relatedPost',
             many: true,
         },
         writers: {
@@ -173,7 +173,7 @@ module.exports = {
         tags: {
             label: '標籤',
             type: Relationship,
-            ref: 'Tag',
+            ref: 'Tag.relatedPost',
             many: true,
         },
         relatedPosts: {

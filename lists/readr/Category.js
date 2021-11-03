@@ -49,7 +49,7 @@ module.exports = {
         relatedPost: {
             label: 'Related Post',
             type: Relationship,
-            ref: 'Post',
+            ref: 'Post.categories',
             many: true,
         },
     },
