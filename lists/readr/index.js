@@ -5,6 +5,7 @@ module.exports = {
     Collaboration: require('./Collaboration'),
     Data: require('./Data'),
     EditorChoice: require('./EditorChoice'),
+    Feature: require('./Feature'),
     Gallery: require('./Gallery'),
     Image: require('./Image'),
     Quote: require('./Quote'),
