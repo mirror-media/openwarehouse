@@ -195,6 +195,24 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
+        citation: {
+            label: '引用數據',
+            type: HTML,
+        },
+        citationApiData: {
+            type: TextHide,
+            label: 'Citation API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        citationHtml: {
+            type: TextHide,
+            label: 'Citation HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
         summaryHtml: {
             type: TextHide,
             label: 'Summary HTML',
@@ -230,28 +248,9 @@ module.exports = {
                 isReadOnly: true,
             },
         },
-
         contentApiData: {
             type: TextHide,
             label: 'Content API Data',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        citation: {
-            label: '引用數據',
-            type: HTML,
-        },
-        citationApiData: {
-            type: TextHide,
-            label: 'Citation API Data',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        citationHtml: {
-            type: TextHide,
-            label: 'Citation HTML',
             adminConfig: {
                 isReadOnly: true,
             },
