@@ -168,7 +168,21 @@ module.exports = {
         },
         actionList: {
             label: '延伸議題',
-            type: Text,
+            type: HTML,
+        },
+        actionListApiData: {
+            type: TextHide,
+            label: 'Action List API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        actionListHtml: {
+            type: TextHide,
+            label: 'Action List HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
         },
         tags: {
             label: '標籤',
