@@ -131,9 +131,11 @@ module.exports = {
                 resolvedData
             )
 
-            await parseResolvedData(existingItem, resolvedData, [
-                'introduction',
-            ])
+            await parseResolvedData({
+                existingItem,
+                resolvedData,
+                draftFieldNameArray: ['introduction'],
+            })
 
             return resolvedData
         },

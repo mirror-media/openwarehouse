@@ -287,14 +287,29 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: async ({ existingItem, originalInput, resolvedData }) => {
+        resolveInput: async ({
+            existingItem,
+            originalInput,
+            resolvedData,
+            context,
+        }) => {
             await controlCharacterFilter(
                 originalInput,
                 existingItem,
                 resolvedData
             )
 
-            await parseResolvedData(existingItem, resolvedData)
+            await parseResolvedData({
+                existingItem,
+                resolvedData,
+                draftFieldNameArray: [
+                    'summary',
+                    'brief',
+                    'content',
+                    'actionList',
+                    'citation',
+                ],
+            })
 
             await countWord(existingItem, resolvedData)
 

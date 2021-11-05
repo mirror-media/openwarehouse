@@ -17,11 +17,16 @@ before save post,
 need to get html and api data in content
 and put them to resolvedData
 */
-const { app } = require('../configs/config.js')
 
-const parseResolvedData = (existingItem, resolvedData, draftFieldNameArray) => {
+const parseResolvedData = ({
+    existingItem,
+    resolvedData,
+    draftFieldNameArray,
+}) => {
     // get every draft field's storedEditorContent
-    let fieldsArray = draftFieldNameArray || _generateDraftFieldsArray()
+    let fieldsArray = draftFieldNameArray
+    if (!fieldsArray?.length) return
+
     try {
         // only modified draft is needed to parse
         // push the wanted draft field to storedEditorContentsArray
@@ -85,7 +90,7 @@ const parseResolvedData = (existingItem, resolvedData, draftFieldNameArray) => {
     function _generateDraftFieldsArray() {
         switch (app.project) {
             case 'readr':
-                return ['summary', 'brief', 'content', 'actionList', 'citation' ]
+                return ['summary', 'brief', 'content', 'actionList', 'citation']
 
             case 'mirrormedia':
                 return ['brief', 'content']

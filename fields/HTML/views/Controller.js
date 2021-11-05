@@ -15,13 +15,6 @@ class HtmlController extends FieldController {
     serialize = (data) => {
         const editorStateInField = data[this.path]
 
-        // const newEditorState = addImageApiDataToEntityMap(editorStateInField)
-        // if (newEditorState) {
-        //     console.log(convertToRaw(newEditorState.getCurrentContent()))
-        //     console.log(convertEditorStateToDbData(newEditorState))
-        // }
-
-        // console.log(convertEditorStateToDbData(editorStateInField))
         return editorStateInField
             ? JSON.stringify(convertEditorStateToDbData(editorStateInField))
             : undefined
@@ -29,13 +22,6 @@ class HtmlController extends FieldController {
 
     // when load post, format data from db object to editorState, then return to editor.
     deserialize = (data) => {
-        // if (data[this.path]) {
-        //     console.log(JSON.parse(data[this.path]))
-        // }
-        // console.log(
-        //     JSON.stringify(data[this.path] ? data[this.path] : undefined)
-        // )
-
         return convertDbDataToEditorState(
             data[this.path] ? JSON.parse(data[this.path]) : undefined
         )

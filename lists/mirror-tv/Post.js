@@ -298,10 +298,13 @@ module.exports = {
                 resolvedData
             )
 
-            await parseResolvedData(existingItem, resolvedData)
+            await parseResolvedData({
+                existingItem,
+                resolvedData,
+                draftFieldNameArray: ['brief', 'content'],
+            })
 
             await generateSource(existingItem, resolvedData)
-
 
             return resolvedData
         },
