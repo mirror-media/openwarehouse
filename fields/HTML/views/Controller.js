@@ -20,13 +20,6 @@ class HtmlController extends FieldController {
     //  this object will stored in resolvedData and run through list.hooks
     serialize = (data) => {
         const editorStateInField = data[this.path]
-        console.log(this.path)
-
-        if (editorStateInField) {
-            console.log(
-                JSON.stringify(convertEditorStateToDbData(editorStateInField))
-            )
-        }
 
         return editorStateInField
             ? JSON.stringify(convertEditorStateToDbData(editorStateInField))
