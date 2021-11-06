@@ -300,8 +300,6 @@ module.exports = {
             )
 
             await parseResolvedData({
-                existingItem,
-                resolvedData,
                 draftFieldNameArray: [
                     'summary',
                     'brief',
@@ -309,6 +307,7 @@ module.exports = {
                     'actionList',
                     'citation',
                 ],
+                resolvedData,
             })
 
             await countWord(existingItem, resolvedData)

@@ -299,9 +299,8 @@ module.exports = {
             )
 
             await parseResolvedData({
-                existingItem,
-                resolvedData,
                 draftFieldNameArray: ['brief', 'content'],
+                resolvedData,
             })
 
             await generateSource(existingItem, resolvedData)

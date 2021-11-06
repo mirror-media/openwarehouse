@@ -18,11 +18,13 @@ need to get html and api data in content
 and put them to resolvedData
 */
 
-const parseResolvedData = ({
-    existingItem,
-    resolvedData,
-    draftFieldNameArray,
-}) => {
+/**
+ * 
+ * @param {object} param  
+ * @param {array.<string>} param.draftFieldNameArray 
+ * @param {object} param.resolvedData 
+x */
+const parseResolvedData = ({ draftFieldNameArray, resolvedData }) => {
     // get every draft field's storedEditorContent
     let fieldsArray = draftFieldNameArray
     if (!fieldsArray?.length) return
@@ -44,7 +46,7 @@ const parseResolvedData = ({
             }
         }
 
-        // [summary(obj), brief(obj), content(obj)]
+        // storedEditorContentsArray will be like : [summary(obj), brief(obj), content(obj)]
         storedEditorContentsArray.forEach(({ field, editorContent }) => {
             let currentEditorContentValve = _getEditorContentValue(
                 editorContent
@@ -53,10 +55,6 @@ const parseResolvedData = ({
         })
     } catch (err) {
         console.log(err)
-        console.log('EXISTING ITEM')
-        console.log(existingItem)
-        console.log('RESOLVED DATA')
-        console.log(resolvedData)
     }
 
     function _getEditorContentValue(editorContent) {
