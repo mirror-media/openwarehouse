@@ -11,9 +11,22 @@ class HtmlController extends FieldController {
         super(config, ...args)
     }
 
-    // when save post, format data from editorState to specified object, then return to db.
+    // when save post, format data from editorState to specified object:
+    // {
+    //     draft (contentBlock),
+    //     apiData,
+    //     html,
+    // }
+    //  this object will stored in resolvedData and run through list.hooks
     serialize = (data) => {
         const editorStateInField = data[this.path]
+        console.log(this.path)
+
+        if (editorStateInField) {
+            console.log(
+                JSON.stringify(convertEditorStateToDbData(editorStateInField))
+            )
+        }
 
         return editorStateInField
             ? JSON.stringify(convertEditorStateToDbData(editorStateInField))
@@ -29,21 +42,5 @@ class HtmlController extends FieldController {
 
     getFilterTypes = () => []
 }
-
-// function addImageApiDataToEntityMap(editorState) {
-//     const content = convertToRaw(editorState.getCurrentContent())
-//     const { entityMap } = content
-//     console.log(entityMap)
-
-//     for (const index in entityMap) {
-//         if (entityMap[index].type === 'IMAGE') {
-//             const url = entityMap[index].data.url
-//             console.log(url)
-//         }
-//     }
-
-//     const newEditorState = convertFromRaw(content)
-//     return newEditorState
-// }
 
 export default HtmlController

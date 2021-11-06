@@ -1,15 +1,15 @@
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import DraftConverter from './draft-converter'
 
-export function convertDbDataToEditorState(data) {
+export function convertDbDataToEditorState(storedContentBlock) {
     // convert saved editor content into the editor state
     let editorState
     try {
-        const draft = handleDraftData(data)
+        const contentBlock = handleDraftData(storedContentBlock)
 
-        if (draft) {
-            // create an EditorState from the raw Draft data
-            let contentState = convertFromRaw(draft)
+        if (contentBlock) {
+            // create an EditorState from  contentBlock
+            let contentState = convertFromRaw(contentBlock)
             editorState = EditorState.createWithContent(contentState)
         } else {
             // create empty draft object
@@ -24,20 +24,21 @@ export function convertDbDataToEditorState(data) {
 }
 
 export function convertEditorStateToDbData(editorState) {
-    const content = convertToRaw(editorState.getCurrentContent())
+    const contentBlock = convertToRaw(editorState.getCurrentContent())
 
-    // remove unwanted undefined inlineStyle
-    content.blocks.forEach((block) => {
+    // this is for some post migrated from readMe(which may have wrong inlineStyle)
+    // remove unwanted undefined inlineStyle in here
+    contentBlock.blocks.forEach((block) => {
         _.remove(block.inlineStyleRanges, (inlineStyleRange) => {
             return typeof inlineStyleRange.style === 'undefined'
         })
     })
 
-    const cHtml = DraftConverter.convertToHtml(content)
-    const apiData = DraftConverter.convertToApiData(content)
+    const cHtml = DraftConverter.convertToHtml(contentBlock)
+    const apiData = DraftConverter.convertToApiData(contentBlock)
 
     return {
-        draft: content,
+        draft: contentBlock,
         html: cHtml,
         apiData,
     }
@@ -45,6 +46,7 @@ export function convertEditorStateToDbData(editorState) {
 }
 
 function handleDraftData(data) {
+    // NOTE: this is for some old post which is not just stored contentState only in db
     if (data['draft']) {
         return data.draft
         // for new post, data = draft
