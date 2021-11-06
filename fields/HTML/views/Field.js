@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { FieldContainer, FieldLabel, FieldDescription } from '@arch-ui/fields'
 import HtmlDraftEditor from '@liyibass/html-draft-editor'
-import DraftEditor from './Editor'
 
 const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
-    // NOTE: k5 can't use optional chaining......
     const { editorConfig } = field.config || {}
     const { blocktypes, inlineStyles, entityList } = editorConfig || {}
 
@@ -30,7 +28,6 @@ const HtmlField = ({ onChange, autoFocus, field, value, errors }) => {
                     customInlineStyles={inlineStyles}
                     customEntityList={entityList}
                 />
-                {/* <DraftEditor value={value} onChange={onChange} /> */}
             </div>
         </FieldContainer>
     )
