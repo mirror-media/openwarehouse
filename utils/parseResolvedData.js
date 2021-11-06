@@ -87,22 +87,6 @@ const parseResolvedData = ({
         resolvedData[`${currentField}ApiData`] = JSON.stringify(apiData)
     }
 
-    function _generateDraftFieldsArray() {
-        switch (app.project) {
-            case 'readr':
-                return ['summary', 'brief', 'content', 'actionList', 'citation']
-
-            case 'mirrormedia':
-                return ['brief', 'content']
-
-            case 'mirror-tv':
-                return ['brief', 'content']
-
-            default:
-                return ['brief', 'content']
-        }
-    }
-
     function _isFeedDataFromGraphQL(resolvedData, key) {
         // ex:
         // if content, contentApiData and contentHtml are existed together in resolvedData
