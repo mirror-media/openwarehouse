@@ -15,7 +15,9 @@ const NewDateTime = require('../../fields/NewDateTime/index.js')
 const ImageRelationship = require('../../fields/ImageRelationship')
 const TextHide = require('../../fields/TextHide')
 
-const { parseResolvedData } = require('../../utils/parseResolvedData')
+const {
+    parseResolvedData,
+} = require('../../utils/draft-utils/parseResolvedData')
 const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 const { countWord } = require('../../utils/draftEditorHandler')

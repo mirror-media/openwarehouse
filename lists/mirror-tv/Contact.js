@@ -14,7 +14,9 @@ const ImageRelationship = require('../../fields/ImageRelationship')
 const HTML = require('../../fields/HTML')
 const TextHide = require('../../fields/TextHide')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
-const { parseResolvedData } = require('../../utils/parseResolvedData')
+const {
+    parseResolvedData,
+} = require('../../utils/draft-utils/parseResolvedData')
 
 module.exports = {
     fields: {

@@ -34,12 +34,12 @@ export function convertEditorStateToDbData(editorState) {
         })
     })
 
-    const cHtml = DraftConverter.convertToHtml(contentBlock)
+    const html = DraftConverter.convertToHtml(contentBlock)
     const apiData = DraftConverter.convertToApiData(contentBlock)
 
     return {
-        draft: contentBlock,
-        html: cHtml,
+        contentBlock,
+        html,
         apiData,
     }
     // return content
@@ -47,6 +47,7 @@ export function convertEditorStateToDbData(editorState) {
 
 function handleDraftData(data) {
     // NOTE: this is for some old post which is not just stored contentState only in db
+    // it can be removed in the future
     if (data['draft']) {
         return data.draft
         // for new post, data = draft

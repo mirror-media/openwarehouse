@@ -13,7 +13,9 @@ const {
 const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
-const { parseResolvedData } = require('../../utils/parseResolvedData')
+const {
+    parseResolvedData,
+} = require('../../utils/draft-utils/parseResolvedData')
 const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 const {

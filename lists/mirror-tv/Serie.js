@@ -13,7 +13,9 @@ const HTML = require('../../fields/HTML')
 const cacheHint = require('../../helpers/cacheHint')
 const TextHide = require('../../fields/TextHide')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
-const { parseResolvedData } = require('../../utils/parseResolvedData')
+const {
+    parseResolvedData,
+} = require('../../utils/draft-utils/parseResolvedData')
 
 module.exports = {
     fields: {

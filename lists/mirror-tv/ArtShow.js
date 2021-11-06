@@ -17,7 +17,9 @@ const NewDateTime = require('../../fields/NewDateTime/index.js')
 const cacheHint = require('../../helpers/cacheHint')
 const TextHide = require('../../fields/TextHide')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
-const { parseResolvedData } = require('../../utils/parseResolvedData')
+const {
+    parseResolvedData,
+} = require('../../utils/draft-utils/parseResolvedData')
 const {
     validateIfPostNeedPublishTime,
     validateIfPublishTimeIsFutureTime,

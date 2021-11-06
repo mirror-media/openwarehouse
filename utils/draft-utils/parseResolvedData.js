@@ -74,13 +74,13 @@ const parseResolvedData = ({ draftFieldNameArray, resolvedData }) => {
         // storedEditorContent is formated to 3 part:
         // draftState itself, contentHTML, and contentApidata
         // destructure them and put it into resolvedData's key
-        const { draft, html, apiData } = currentEditorContent
+        const { contentBlock, html, apiData } = currentEditorContent
 
         // ex:brief
         // resolvedData.brief = currentEditorContent
         // resolvedData.briefHtml = html
         // resolvedData.cbriefApiData = JSON.stringify(apiData)
-        resolvedData[`${currentField}`] = JSON.stringify(draft)
+        resolvedData[`${currentField}`] = JSON.stringify(contentBlock)
         resolvedData[`${currentField}Html`] = html
         resolvedData[`${currentField}ApiData`] = JSON.stringify(apiData)
     }
