@@ -139,6 +139,7 @@ module.exports = {
             type: Select,
             options:
                 'reviews, news, report, memo, dummy, card, qa, project3, embedded',
+            defaultValue: 'news',
         },
         summary: {
             label: '重點摘要',

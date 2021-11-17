@@ -7,6 +7,7 @@ export default {
             children: [
                 'Post',
                 'EditorChoice',
+                'Feature',
                 'Collaboration',
                 'Project',
                 'Quote',
