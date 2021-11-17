@@ -143,14 +143,181 @@ module.exports = {
         summary: {
             label: '重點摘要',
             type: HTML,
-        },
-        brief: {
-            label: '前言',
-            type: HTML,
+            editorConfig: {
+                blocktypes: [
+                    {
+                        label: 'Normal',
+                        style: 'unstyled',
+                        icon: '',
+                        text: 'Normal',
+                    },
+                    { label: 'H1', style: 'header-one', icon: '', text: 'H1' },
+                    { label: 'H2', style: 'header-two', icon: '', text: 'H2' },
+                    { label: 'OL', style: 'ordered-list-item', icon: 'fa-list-ol', text: '' },
+                    { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
+                ],
+                inlineStyles: [
+                    { label: 'Bold', style: 'BOLD', icon: 'fa-bold', text: '' },
+                    {
+                        label: 'Italic',
+                        style: 'ITALIC',
+                        icon: 'fa-italic',
+                        text: '',
+                    },
+                    {
+                        label: 'Underline',
+                        style: 'UNDERLINE',
+                        icon: 'fa-underline',
+                        text: '',
+                    },
+                ],
+                entityList: {
+                    LINK: {
+                        type: 'LINK',
+                    },
+                },
+            },
         },
         content: {
             label: '內文',
             type: HTML,
+            editorConfig: {
+                blocktypes: [
+                    {
+                        label: 'Normal',
+                        style: 'unstyled',
+                        icon: '',
+                        text: 'Normal',
+                    },
+                    { label: 'H1', style: 'header-one', icon: '', text: 'H1' },
+                    { label: 'H2', style: 'header-two', icon: '', text: 'H2' },
+                    { label: 'Code Block', style: 'code-block', icon: 'fa-code', text: '' },
+                    { label: 'OL', style: 'ordered-list-item', icon: 'fa-list-ol', text: '' },
+                    { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
+                ],
+                inlineStyles: [
+                    { label: 'Bold', style: 'BOLD', icon: 'fa-bold', text: '' },
+                    {
+                        label: 'Italic',
+                        style: 'ITALIC',
+                        icon: 'fa-italic',
+                        text: '',
+                    },
+                    {
+                        label: 'Underline',
+                        style: 'UNDERLINE',
+                        icon: 'fa-underline',
+                        text: '',
+                    },
+                ],
+                entityList: {
+                    ANNOTATION: {
+                        type: 'ANNOTATION',
+                    },
+                    BLOCKQUOTE: {
+                        type: 'BLOCKQUOTE',
+                    },
+                    LINK: {
+                        type: 'LINK',
+                    },
+                    INFOBOX: {
+                        type: 'INFOBOX',
+                    },
+                    EMBEDDEDCODE: {
+                        type: 'EMBEDDEDCODE',
+                    },
+                    AUDIO: {
+                        type: 'AUDIO',
+                    },
+                    VIDEO: {
+                        type: 'VIDEO',
+                    },
+                    IMAGE: {
+                        type: 'IMAGE',
+                    },
+                    YOUTUBE: {
+                        type: 'YOUTUBE',
+                    },
+                },
+            },
+        },
+        actionList: {
+            label: '延伸議題',
+            type: HTML,
+            editorConfig: {
+                blocktypes: [
+                    {
+                        label: 'Normal',
+                        style: 'unstyled',
+                        icon: '',
+                        text: 'Normal',
+                    },
+                    { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
+                ],
+                inlineStyles: [
+                    { label: 'Bold', style: 'BOLD', icon: 'fa-bold', text: '' },
+                    {
+                        label: 'Italic',
+                        style: 'ITALIC',
+                        icon: 'fa-italic',
+                        text: '',
+                    },
+                    {
+                        label: 'Underline',
+                        style: 'UNDERLINE',
+                        icon: 'fa-underline',
+                        text: '',
+                    },
+                ],
+                entityList: {
+                    LINK: {
+                        type: 'LINK',
+                    },
+                },
+            },
+        },
+        citation: {
+            label: '引用數據',
+            type: HTML,
+            editorConfig: {
+                blocktypes: [
+                    {
+                        label: 'Normal',
+                        style: 'unstyled',
+                        icon: '',
+                        text: 'Normal',
+                    },
+                    { label: 'H1', style: 'header-one', icon: '', text: 'H1' },
+                    { label: 'H2', style: 'header-two', icon: '', text: 'H2' },
+                    {
+                        label: 'Blockquote',
+                        style: 'blockquote',
+                        icon: 'fa-quote-left',
+                        text: '',
+                    },
+                    { label: 'UL', style: 'unordered-list-item', icon: 'fa-list-ul', text: '' },
+                ],
+                inlineStyles: [
+                    { label: 'Bold', style: 'BOLD', icon: 'fa-bold', text: '' },
+                    {
+                        label: 'Italic',
+                        style: 'ITALIC',
+                        icon: 'fa-italic',
+                        text: '',
+                    },
+                    {
+                        label: 'Underline',
+                        style: 'UNDERLINE',
+                        icon: 'fa-underline',
+                        text: '',
+                    },
+                ],
+                entityList: {
+                    LINK: {
+                        type: 'LINK',
+                    },
+                },
+            },
         },
         wordCount: {
             label: '字數',
@@ -165,24 +332,6 @@ module.exports = {
             type: Relationship,
             ref: 'Project',
             many: true,
-        },
-        actionList: {
-            label: '延伸議題',
-            type: HTML,
-        },
-        actionListApiData: {
-            type: TextHide,
-            label: 'Action List API Data',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        actionListHtml: {
-            type: TextHide,
-            label: 'Action List HTML',
-            adminConfig: {
-                isReadOnly: true,
-            },
         },
         tags: {
             label: '標籤',
@@ -209,24 +358,6 @@ module.exports = {
             type: Relationship,
             ref: 'Image',
         },
-        citation: {
-            label: '引用數據',
-            type: HTML,
-        },
-        citationApiData: {
-            type: TextHide,
-            label: 'Citation API Data',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        citationHtml: {
-            type: TextHide,
-            label: 'Citation HTML',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
         summaryHtml: {
             type: TextHide,
             label: 'Summary HTML',
@@ -241,20 +372,6 @@ module.exports = {
                 isReadOnly: true,
             },
         },
-        briefHtml: {
-            type: TextHide,
-            label: 'Brief HTML',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
-        briefApiData: {
-            type: TextHide,
-            label: 'Brief API Data',
-            adminConfig: {
-                isReadOnly: true,
-            },
-        },
         contentHtml: {
             type: TextHide,
             label: 'Content HTML',
@@ -265,6 +382,34 @@ module.exports = {
         contentApiData: {
             type: TextHide,
             label: 'Content API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        actionListApiData: {
+            type: TextHide,
+            label: 'Action List API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        actionListHtml: {
+            type: TextHide,
+            label: 'Action List HTML',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        citationApiData: {
+            type: TextHide,
+            label: 'Citation API Data',
+            adminConfig: {
+                isReadOnly: true,
+            },
+        },
+        citationHtml: {
+            type: TextHide,
+            label: 'Citation HTML',
             adminConfig: {
                 isReadOnly: true,
             },
