@@ -18,7 +18,7 @@ const TextHide = require('../../fields/TextHide')
 const { parseResolvedData } = require('../../utils/parseResolvedData')
 const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
-const { countWord } = require('../../utils/draftEditorHandler')
+const { countReadingTime } = require('../../utils/draftEditorHandler')
 const {
     validateIfPostNeedPublishTime,
     validateIfPublishTimeIsFutureTime,
@@ -320,10 +320,6 @@ module.exports = {
                 },
             },
         },
-        wordCount: {
-            label: '字數',
-            type: Integer,
-        },
         readingTime: {
             label: '閱讀時間',
             type: Integer,
@@ -442,7 +438,7 @@ module.exports = {
 
             await parseResolvedData(existingItem, resolvedData)
 
-            await countWord(existingItem, resolvedData)
+            await countReadingTime(existingItem, resolvedData)
 
             return resolvedData
         },
