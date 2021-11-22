@@ -237,6 +237,10 @@ module.exports = {
                     IMAGE: {
                         type: 'IMAGE',
                     },
+                    SLIDESHOW: {
+                        type: 'SLIDESHOW',
+                        slideshowSelectionLimit: 50,
+                    },
                     YOUTUBE: {
                         type: 'YOUTUBE',
                     },
