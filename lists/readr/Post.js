@@ -19,7 +19,7 @@ const { parseResolvedData } = require('../../utils/parseResolvedData')
 const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
 const { countReadingTime } = require('../../utils/draftEditorHandler')
-const { validateIfReportPosthaveSlug } = require('../../utils/validateIfReportPosthaveSlug')
+const { validateIfReportPostHaveSlug } = require('../../utils/validateIfReportPostHaveSlug')
 const {
     validateIfPostNeedPublishTime,
     validateIfPublishTimeIsFutureTime,
@@ -462,7 +462,7 @@ module.exports = {
                 resolvedData,
                 addValidationError
             )
-            validateIfReportPosthaveSlug(
+            validateIfReportPostHaveSlug(
                 existingItem,
                 resolvedData,
                 addValidationError

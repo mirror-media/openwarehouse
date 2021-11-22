@@ -1,4 +1,4 @@
-const validateIfReportPosthaveSlug = (existingItem, resolvedData, addValidationError) => {
+const validateIfReportPostHaveSlug = (existingItem, resolvedData, addValidationError) => {
     const currentStyle = resolvedData.style
     const currentPostSlug = resolvedData.slug || existingItem.slug
 
@@ -10,4 +10,4 @@ const validateIfReportPosthaveSlug = (existingItem, resolvedData, addValidationE
     }
 }
 
-module.exports = { validateIfReportPosthaveSlug }
+module.exports = { validateIfReportPostHaveSlug }
