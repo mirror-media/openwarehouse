@@ -1,4 +1,4 @@
--- public."User" definition
+-- "User" definition
 
 -- Drop table
 
@@ -22,11 +22,11 @@ CREATE TABLE "User" (
 	CONSTRAINT user_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id),
 	CONSTRAINT user_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id)
 );
-CREATE INDEX user_createdby_index ON public."User" USING btree ("createdBy");
-CREATE INDEX user_updatedby_index ON public."User" USING btree ("updatedBy");
+CREATE INDEX user_createdby_index ON "User" USING btree ("createdBy");
+CREATE INDEX user_updatedby_index ON "User" USING btree ("updatedBy");
 
 
--- public."EditLog" definition
+-- "EditLog" definition
 
 -- Drop table
 
@@ -50,11 +50,11 @@ CREATE TABLE "EditLog" (
 	CONSTRAINT editlog_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id),
 	CONSTRAINT editlog_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id)
 );
-CREATE INDEX editlog_createdby_index ON public."EditLog" USING btree ("createdBy");
-CREATE INDEX editlog_updatedby_index ON public."EditLog" USING btree ("updatedBy");
+CREATE INDEX editlog_createdby_index ON "EditLog" USING btree ("createdBy");
+CREATE INDEX editlog_updatedby_index ON "EditLog" USING btree ("updatedBy");
 
 
--- public."Partner" definition
+-- "Partner" definition
 
 -- Drop table
 
@@ -77,11 +77,11 @@ CREATE TABLE "Partner" (
 	CONSTRAINT partner_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id),
 	CONSTRAINT partner_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id)
 );
-CREATE INDEX partner_createdby_index ON public."Partner" USING btree ("createdBy");
-CREATE INDEX partner_updatedby_index ON public."Partner" USING btree ("updatedBy");
+CREATE INDEX partner_createdby_index ON "Partner" USING btree ("createdBy");
+CREATE INDEX partner_updatedby_index ON "Partner" USING btree ("updatedBy");
 
 
--- public."PromotionVideo" definition
+-- "PromotionVideo" definition
 
 -- Drop table
 
@@ -105,11 +105,11 @@ CREATE TABLE "PromotionVideo" (
 	CONSTRAINT promotionvideo_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id),
 	CONSTRAINT promotionvideo_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id)
 );
-CREATE INDEX promotionvideo_createdby_index ON public."PromotionVideo" USING btree ("createdBy");
-CREATE INDEX promotionvideo_updatedby_index ON public."PromotionVideo" USING btree ("updatedBy");
+CREATE INDEX promotionvideo_createdby_index ON "PromotionVideo" USING btree ("createdBy");
+CREATE INDEX promotionvideo_updatedby_index ON "PromotionVideo" USING btree ("updatedBy");
 
 
--- public."Sale" definition
+-- "Sale" definition
 
 -- Drop table
 
@@ -130,11 +130,11 @@ CREATE TABLE "Sale" (
 	CONSTRAINT sale_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id),
 	CONSTRAINT sale_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id)
 );
-CREATE INDEX sale_createdby_index ON public."Sale" USING btree ("createdBy");
-CREATE INDEX sale_updatedby_index ON public."Sale" USING btree ("updatedBy");
+CREATE INDEX sale_createdby_index ON "Sale" USING btree ("createdBy");
+CREATE INDEX sale_updatedby_index ON "Sale" USING btree ("updatedBy");
 
 
--- public."Section" definition
+-- "Section" definition
 
 -- Drop table
 
@@ -155,11 +155,11 @@ CREATE TABLE "Section" (
 	CONSTRAINT section_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id),
 	CONSTRAINT section_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id)
 );
-CREATE INDEX section_createdby_index ON public."Section" USING btree ("createdBy");
-CREATE INDEX section_updatedby_index ON public."Section" USING btree ("updatedBy");
+CREATE INDEX section_createdby_index ON "Section" USING btree ("createdBy");
+CREATE INDEX section_updatedby_index ON "Section" USING btree ("updatedBy");
 
 
--- public."External" definition
+-- "External" definition
 
 -- Drop table
 
@@ -192,12 +192,12 @@ CREATE TABLE "External" (
 	CONSTRAINT external_partner_foreign FOREIGN KEY (partner) REFERENCES "Partner"(id),
 	CONSTRAINT external_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id)
 );
-CREATE INDEX external_createdby_index ON public."External" USING btree ("createdBy");
-CREATE INDEX external_partner_index ON public."External" USING btree (partner);
-CREATE INDEX external_updatedby_index ON public."External" USING btree ("updatedBy");
+CREATE INDEX external_createdby_index ON "External" USING btree ("createdBy");
+CREATE INDEX external_partner_index ON "External" USING btree (partner);
+CREATE INDEX external_updatedby_index ON "External" USING btree ("updatedBy");
 
 
--- public."ArtShow" definition
+-- "ArtShow" definition
 
 -- Drop table
 
@@ -220,14 +220,14 @@ CREATE TABLE "ArtShow" (
 	CONSTRAINT "ArtShow_pkey" PRIMARY KEY (id),
 	CONSTRAINT artshow_slug_unique UNIQUE (slug)
 );
-CREATE INDEX artshow_author_index ON public."ArtShow" USING btree (author);
-CREATE INDEX artshow_createdby_index ON public."ArtShow" USING btree ("createdBy");
-CREATE INDEX artshow_heroimage_index ON public."ArtShow" USING btree ("heroImage");
-CREATE INDEX artshow_herovideo_index ON public."ArtShow" USING btree ("heroVideo");
-CREATE INDEX artshow_updatedby_index ON public."ArtShow" USING btree ("updatedBy");
+CREATE INDEX artshow_author_index ON "ArtShow" USING btree (author);
+CREATE INDEX artshow_createdby_index ON "ArtShow" USING btree ("createdBy");
+CREATE INDEX artshow_heroimage_index ON "ArtShow" USING btree ("heroImage");
+CREATE INDEX artshow_herovideo_index ON "ArtShow" USING btree ("heroVideo");
+CREATE INDEX artshow_updatedby_index ON "ArtShow" USING btree ("updatedBy");
 
 
--- public."ArtShow_series_Serie_post" definition
+-- "ArtShow_series_Serie_post" definition
 
 -- Drop table
 
@@ -237,11 +237,11 @@ CREATE TABLE "ArtShow_series_Serie_post" (
 	"ArtShow_left_id" int4 NOT NULL,
 	"Serie_right_id" int4 NOT NULL
 );
-CREATE INDEX artshow_series_serie_post_artshow_left_id_index ON public."ArtShow_series_Serie_post" USING btree ("ArtShow_left_id");
-CREATE INDEX artshow_series_serie_post_serie_right_id_index ON public."ArtShow_series_Serie_post" USING btree ("Serie_right_id");
+CREATE INDEX artshow_series_serie_post_artshow_left_id_index ON "ArtShow_series_Serie_post" USING btree ("ArtShow_left_id");
+CREATE INDEX artshow_series_serie_post_serie_right_id_index ON "ArtShow_series_Serie_post" USING btree ("Serie_right_id");
 
 
--- public."Audio" definition
+-- "Audio" definition
 
 -- Drop table
 
@@ -263,12 +263,12 @@ CREATE TABLE "Audio" (
 	"createdBy" int4 NULL,
 	CONSTRAINT "Audio_pkey" PRIMARY KEY (id)
 );
-CREATE INDEX audio_coverphoto_index ON public."Audio" USING btree ("coverPhoto");
-CREATE INDEX audio_createdby_index ON public."Audio" USING btree ("createdBy");
-CREATE INDEX audio_updatedby_index ON public."Audio" USING btree ("updatedBy");
+CREATE INDEX audio_coverphoto_index ON "Audio" USING btree ("coverPhoto");
+CREATE INDEX audio_createdby_index ON "Audio" USING btree ("createdBy");
+CREATE INDEX audio_updatedby_index ON "Audio" USING btree ("updatedBy");
 
 
--- public."Audio_tags_many" definition
+-- "Audio_tags_many" definition
 
 -- Drop table
 
@@ -278,11 +278,11 @@ CREATE TABLE "Audio_tags_many" (
 	"Audio_left_id" int4 NOT NULL,
 	"Tag_right_id" int4 NOT NULL
 );
-CREATE INDEX audio_tags_many_audio_left_id_index ON public."Audio_tags_many" USING btree ("Audio_left_id");
-CREATE INDEX audio_tags_many_tag_right_id_index ON public."Audio_tags_many" USING btree ("Tag_right_id");
+CREATE INDEX audio_tags_many_audio_left_id_index ON "Audio_tags_many" USING btree ("Audio_left_id");
+CREATE INDEX audio_tags_many_tag_right_id_index ON "Audio_tags_many" USING btree ("Tag_right_id");
 
 
--- public."Category" definition
+-- "Category" definition
 
 -- Drop table
 
@@ -307,12 +307,12 @@ CREATE TABLE "Category" (
 	CONSTRAINT category_slug_unique UNIQUE (slug),
 	CONSTRAINT category_sortorder_unique UNIQUE ("sortOrder")
 );
-CREATE INDEX category_createdby_index ON public."Category" USING btree ("createdBy");
-CREATE INDEX category_ogimage_index ON public."Category" USING btree ("ogImage");
-CREATE INDEX category_updatedby_index ON public."Category" USING btree ("updatedBy");
+CREATE INDEX category_createdby_index ON "Category" USING btree ("createdBy");
+CREATE INDEX category_ogimage_index ON "Category" USING btree ("ogImage");
+CREATE INDEX category_updatedby_index ON "Category" USING btree ("updatedBy");
 
 
--- public."Contact" definition
+-- "Contact" definition
 
 -- Drop table
 
@@ -340,12 +340,12 @@ CREATE TABLE "Contact" (
 	CONSTRAINT "Contact_pkey" PRIMARY KEY (id),
 	CONSTRAINT contact_slug_unique UNIQUE (slug)
 );
-CREATE INDEX contact_createdby_index ON public."Contact" USING btree ("createdBy");
-CREATE INDEX contact_image_index ON public."Contact" USING btree (image);
-CREATE INDEX contact_updatedby_index ON public."Contact" USING btree ("updatedBy");
+CREATE INDEX contact_createdby_index ON "Contact" USING btree ("createdBy");
+CREATE INDEX contact_image_index ON "Contact" USING btree (image);
+CREATE INDEX contact_updatedby_index ON "Contact" USING btree ("updatedBy");
 
 
--- public."EditorChoice" definition
+-- "EditorChoice" definition
 
 -- Drop table
 
@@ -366,12 +366,12 @@ CREATE TABLE "EditorChoice" (
 	CONSTRAINT "EditorChoice_state_check" CHECK ((state = ANY (ARRAY['draft'::text, 'published'::text, 'scheduled'::text, 'archived'::text, 'invisible'::text]))),
 	CONSTRAINT editorchoice_sortorder_unique UNIQUE ("sortOrder")
 );
-CREATE INDEX editorchoice_choice_index ON public."EditorChoice" USING btree (choice);
-CREATE INDEX editorchoice_createdby_index ON public."EditorChoice" USING btree ("createdBy");
-CREATE INDEX editorchoice_updatedby_index ON public."EditorChoice" USING btree ("updatedBy");
+CREATE INDEX editorchoice_choice_index ON "EditorChoice" USING btree (choice);
+CREATE INDEX editorchoice_createdby_index ON "EditorChoice" USING btree ("createdBy");
+CREATE INDEX editorchoice_updatedby_index ON "EditorChoice" USING btree ("updatedBy");
 
 
--- public."Event" definition
+-- "Event" definition
 
 -- Drop table
 
@@ -403,13 +403,13 @@ CREATE TABLE "Event" (
 	CONSTRAINT "Event_pkey" PRIMARY KEY (id),
 	CONSTRAINT "Event_state_check" CHECK ((state = ANY (ARRAY['draft'::text, 'scheduled'::text, 'published'::text])))
 );
-CREATE INDEX event_createdby_index ON public."Event" USING btree ("createdBy");
-CREATE INDEX event_image_index ON public."Event" USING btree (image);
-CREATE INDEX event_updatedby_index ON public."Event" USING btree ("updatedBy");
-CREATE INDEX event_video_index ON public."Event" USING btree (video);
+CREATE INDEX event_createdby_index ON "Event" USING btree ("createdBy");
+CREATE INDEX event_image_index ON "Event" USING btree (image);
+CREATE INDEX event_updatedby_index ON "Event" USING btree ("updatedBy");
+CREATE INDEX event_video_index ON "Event" USING btree (video);
 
 
--- public."Event_categories_many" definition
+-- "Event_categories_many" definition
 
 -- Drop table
 
@@ -419,11 +419,11 @@ CREATE TABLE "Event_categories_many" (
 	"Event_left_id" int4 NOT NULL,
 	"Category_right_id" int4 NOT NULL
 );
-CREATE INDEX event_categories_many_category_right_id_index ON public."Event_categories_many" USING btree ("Category_right_id");
-CREATE INDEX event_categories_many_event_left_id_index ON public."Event_categories_many" USING btree ("Event_left_id");
+CREATE INDEX event_categories_many_category_right_id_index ON "Event_categories_many" USING btree ("Category_right_id");
+CREATE INDEX event_categories_many_event_left_id_index ON "Event_categories_many" USING btree ("Event_left_id");
 
 
--- public."Image" definition
+-- "Image" definition
 
 -- Drop table
 
@@ -452,12 +452,12 @@ CREATE TABLE "Image" (
 	"createdBy" int4 NULL,
 	CONSTRAINT "Image_pkey" PRIMARY KEY (id)
 );
-CREATE INDEX image_createdby_index ON public."Image" USING btree ("createdBy");
-CREATE INDEX image_topic_index ON public."Image" USING btree (topic);
-CREATE INDEX image_updatedby_index ON public."Image" USING btree ("updatedBy");
+CREATE INDEX image_createdby_index ON "Image" USING btree ("createdBy");
+CREATE INDEX image_topic_index ON "Image" USING btree (topic);
+CREATE INDEX image_updatedby_index ON "Image" USING btree ("updatedBy");
 
 
--- public."Image_tags_many" definition
+-- "Image_tags_many" definition
 
 -- Drop table
 
@@ -467,11 +467,11 @@ CREATE TABLE "Image_tags_many" (
 	"Image_left_id" int4 NOT NULL,
 	"Tag_right_id" int4 NOT NULL
 );
-CREATE INDEX image_tags_many_image_left_id_index ON public."Image_tags_many" USING btree ("Image_left_id");
-CREATE INDEX image_tags_many_tag_right_id_index ON public."Image_tags_many" USING btree ("Tag_right_id");
+CREATE INDEX image_tags_many_image_left_id_index ON "Image_tags_many" USING btree ("Image_left_id");
+CREATE INDEX image_tags_many_tag_right_id_index ON "Image_tags_many" USING btree ("Tag_right_id");
 
 
--- public."MmPost" definition
+-- "MmPost" definition
 
 -- Drop table
 
@@ -518,17 +518,17 @@ CREATE TABLE "MmPost" (
 	CONSTRAINT "MmPost_style_check" CHECK ((style = ANY (ARRAY['article'::text, 'wide'::text, 'projects'::text, 'photography'::text, 'script'::text, 'campaign'::text, 'readr'::text]))),
 	CONSTRAINT mmpost_slug_unique UNIQUE (slug)
 );
-CREATE INDEX mmpost_audio_index ON public."MmPost" USING btree (audio);
-CREATE INDEX mmpost_createdby_index ON public."MmPost" USING btree ("createdBy");
-CREATE INDEX mmpost_heroimage_index ON public."MmPost" USING btree ("heroImage");
-CREATE INDEX mmpost_herovideo_index ON public."MmPost" USING btree ("heroVideo");
-CREATE INDEX mmpost_ogimage_index ON public."MmPost" USING btree ("ogImage");
-CREATE INDEX mmpost_relatedtopic_index ON public."MmPost" USING btree ("relatedTopic");
-CREATE INDEX mmpost_topics_index ON public."MmPost" USING btree (topics);
-CREATE INDEX mmpost_updatedby_index ON public."MmPost" USING btree ("updatedBy");
+CREATE INDEX mmpost_audio_index ON "MmPost" USING btree (audio);
+CREATE INDEX mmpost_createdby_index ON "MmPost" USING btree ("createdBy");
+CREATE INDEX mmpost_heroimage_index ON "MmPost" USING btree ("heroImage");
+CREATE INDEX mmpost_herovideo_index ON "MmPost" USING btree ("heroVideo");
+CREATE INDEX mmpost_ogimage_index ON "MmPost" USING btree ("ogImage");
+CREATE INDEX mmpost_relatedtopic_index ON "MmPost" USING btree ("relatedTopic");
+CREATE INDEX mmpost_topics_index ON "MmPost" USING btree (topics);
+CREATE INDEX mmpost_updatedby_index ON "MmPost" USING btree ("updatedBy");
 
 
--- public."MmPost_cameraOperators_many" definition
+-- "MmPost_cameraOperators_many" definition
 
 -- Drop table
 
@@ -538,11 +538,11 @@ CREATE TABLE "MmPost_cameraOperators_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_cameraoperators_many_contact_right_id_index ON public."MmPost_cameraOperators_many" USING btree ("Contact_right_id");
-CREATE INDEX mmpost_cameraoperators_many_mmpost_left_id_index ON public."MmPost_cameraOperators_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_cameraoperators_many_contact_right_id_index ON "MmPost_cameraOperators_many" USING btree ("Contact_right_id");
+CREATE INDEX mmpost_cameraoperators_many_mmpost_left_id_index ON "MmPost_cameraOperators_many" USING btree ("MmPost_left_id");
 
 
--- public."MmPost_categories_many" definition
+-- "MmPost_categories_many" definition
 
 -- Drop table
 
@@ -552,11 +552,11 @@ CREATE TABLE "MmPost_categories_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Category_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_categories_many_category_right_id_index ON public."MmPost_categories_many" USING btree ("Category_right_id");
-CREATE INDEX mmpost_categories_many_mmpost_left_id_index ON public."MmPost_categories_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_categories_many_category_right_id_index ON "MmPost_categories_many" USING btree ("Category_right_id");
+CREATE INDEX mmpost_categories_many_mmpost_left_id_index ON "MmPost_categories_many" USING btree ("MmPost_left_id");
 
 
--- public."MmPost_designers_many" definition
+-- "MmPost_designers_many" definition
 
 -- Drop table
 
@@ -566,11 +566,11 @@ CREATE TABLE "MmPost_designers_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_designers_many_contact_right_id_index ON public."MmPost_designers_many" USING btree ("Contact_right_id");
-CREATE INDEX mmpost_designers_many_mmpost_left_id_index ON public."MmPost_designers_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_designers_many_contact_right_id_index ON "MmPost_designers_many" USING btree ("Contact_right_id");
+CREATE INDEX mmpost_designers_many_mmpost_left_id_index ON "MmPost_designers_many" USING btree ("MmPost_left_id");
 
 
--- public."MmPost_engineers_many" definition
+-- "MmPost_engineers_many" definition
 
 -- Drop table
 
@@ -580,11 +580,11 @@ CREATE TABLE "MmPost_engineers_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_engineers_many_contact_right_id_index ON public."MmPost_engineers_many" USING btree ("Contact_right_id");
-CREATE INDEX mmpost_engineers_many_mmpost_left_id_index ON public."MmPost_engineers_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_engineers_many_contact_right_id_index ON "MmPost_engineers_many" USING btree ("Contact_right_id");
+CREATE INDEX mmpost_engineers_many_mmpost_left_id_index ON "MmPost_engineers_many" USING btree ("MmPost_left_id");
 
 
--- public."MmPost_photographers_many" definition
+-- "MmPost_photographers_many" definition
 
 -- Drop table
 
@@ -594,11 +594,11 @@ CREATE TABLE "MmPost_photographers_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_photographers_many_contact_right_id_index ON public."MmPost_photographers_many" USING btree ("Contact_right_id");
-CREATE INDEX mmpost_photographers_many_mmpost_left_id_index ON public."MmPost_photographers_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_photographers_many_contact_right_id_index ON "MmPost_photographers_many" USING btree ("Contact_right_id");
+CREATE INDEX mmpost_photographers_many_mmpost_left_id_index ON "MmPost_photographers_many" USING btree ("MmPost_left_id");
 
 
--- public."MmPost_relatedMmPosts_many" definition
+-- "MmPost_relatedMmPosts_many" definition
 
 -- Drop table
 
@@ -608,11 +608,11 @@ CREATE TABLE "MmPost_relatedMmPosts_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"MmPost_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_relatedmmposts_many_mmpost_left_id_index ON public."MmPost_relatedMmPosts_many" USING btree ("MmPost_left_id");
-CREATE INDEX mmpost_relatedmmposts_many_mmpost_right_id_index ON public."MmPost_relatedMmPosts_many" USING btree ("MmPost_right_id");
+CREATE INDEX mmpost_relatedmmposts_many_mmpost_left_id_index ON "MmPost_relatedMmPosts_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_relatedmmposts_many_mmpost_right_id_index ON "MmPost_relatedMmPosts_many" USING btree ("MmPost_right_id");
 
 
--- public."MmPost_tags_many" definition
+-- "MmPost_tags_many" definition
 
 -- Drop table
 
@@ -622,11 +622,11 @@ CREATE TABLE "MmPost_tags_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Tag_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_tags_many_mmpost_left_id_index ON public."MmPost_tags_many" USING btree ("MmPost_left_id");
-CREATE INDEX mmpost_tags_many_tag_right_id_index ON public."MmPost_tags_many" USING btree ("Tag_right_id");
+CREATE INDEX mmpost_tags_many_mmpost_left_id_index ON "MmPost_tags_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_tags_many_tag_right_id_index ON "MmPost_tags_many" USING btree ("Tag_right_id");
 
 
--- public."MmPost_vocals_many" definition
+-- "MmPost_vocals_many" definition
 
 -- Drop table
 
@@ -636,11 +636,11 @@ CREATE TABLE "MmPost_vocals_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_vocals_many_contact_right_id_index ON public."MmPost_vocals_many" USING btree ("Contact_right_id");
-CREATE INDEX mmpost_vocals_many_mmpost_left_id_index ON public."MmPost_vocals_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_vocals_many_contact_right_id_index ON "MmPost_vocals_many" USING btree ("Contact_right_id");
+CREATE INDEX mmpost_vocals_many_mmpost_left_id_index ON "MmPost_vocals_many" USING btree ("MmPost_left_id");
 
 
--- public."MmPost_writers_many" definition
+-- "MmPost_writers_many" definition
 
 -- Drop table
 
@@ -650,11 +650,11 @@ CREATE TABLE "MmPost_writers_many" (
 	"MmPost_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX mmpost_writers_many_contact_right_id_index ON public."MmPost_writers_many" USING btree ("Contact_right_id");
-CREATE INDEX mmpost_writers_many_mmpost_left_id_index ON public."MmPost_writers_many" USING btree ("MmPost_left_id");
+CREATE INDEX mmpost_writers_many_contact_right_id_index ON "MmPost_writers_many" USING btree ("Contact_right_id");
+CREATE INDEX mmpost_writers_many_mmpost_left_id_index ON "MmPost_writers_many" USING btree ("MmPost_left_id");
 
 
--- public."Post" definition
+-- "Post" definition
 
 -- Drop table
 
@@ -706,17 +706,17 @@ CREATE TABLE "Post" (
 	CONSTRAINT "Post_style_check" CHECK ((style = ANY (ARRAY['article'::text, 'videoNews'::text, 'wide'::text, 'projects'::text, 'photography'::text, 'script'::text, 'campaign'::text, 'readr'::text]))),
 	CONSTRAINT post_slug_unique UNIQUE (slug)
 );
-CREATE INDEX post_audio_index ON public."Post" USING btree (audio);
-CREATE INDEX post_createdby_index ON public."Post" USING btree ("createdBy");
-CREATE INDEX post_heroimage_index ON public."Post" USING btree ("heroImage");
-CREATE INDEX post_herovideo_index ON public."Post" USING btree ("heroVideo");
-CREATE INDEX post_ogimage_index ON public."Post" USING btree ("ogImage");
-CREATE INDEX post_relatedtopic_index ON public."Post" USING btree ("relatedTopic");
-CREATE INDEX post_topics_index ON public."Post" USING btree (topics);
-CREATE INDEX post_updatedby_index ON public."Post" USING btree ("updatedBy");
+CREATE INDEX post_audio_index ON "Post" USING btree (audio);
+CREATE INDEX post_createdby_index ON "Post" USING btree ("createdBy");
+CREATE INDEX post_heroimage_index ON "Post" USING btree ("heroImage");
+CREATE INDEX post_herovideo_index ON "Post" USING btree ("heroVideo");
+CREATE INDEX post_ogimage_index ON "Post" USING btree ("ogImage");
+CREATE INDEX post_relatedtopic_index ON "Post" USING btree ("relatedTopic");
+CREATE INDEX post_topics_index ON "Post" USING btree (topics);
+CREATE INDEX post_updatedby_index ON "Post" USING btree ("updatedBy");
 
 
--- public."Post_cameraOperators_many" definition
+-- "Post_cameraOperators_many" definition
 
 -- Drop table
 
@@ -726,11 +726,11 @@ CREATE TABLE "Post_cameraOperators_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX post_cameraoperators_many_contact_right_id_index ON public."Post_cameraOperators_many" USING btree ("Contact_right_id");
-CREATE INDEX post_cameraoperators_many_post_left_id_index ON public."Post_cameraOperators_many" USING btree ("Post_left_id");
+CREATE INDEX post_cameraoperators_many_contact_right_id_index ON "Post_cameraOperators_many" USING btree ("Contact_right_id");
+CREATE INDEX post_cameraoperators_many_post_left_id_index ON "Post_cameraOperators_many" USING btree ("Post_left_id");
 
 
--- public."Post_categories_many" definition
+-- "Post_categories_many" definition
 
 -- Drop table
 
@@ -740,11 +740,11 @@ CREATE TABLE "Post_categories_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Category_right_id" int4 NOT NULL
 );
-CREATE INDEX post_categories_many_category_right_id_index ON public."Post_categories_many" USING btree ("Category_right_id");
-CREATE INDEX post_categories_many_post_left_id_index ON public."Post_categories_many" USING btree ("Post_left_id");
+CREATE INDEX post_categories_many_category_right_id_index ON "Post_categories_many" USING btree ("Category_right_id");
+CREATE INDEX post_categories_many_post_left_id_index ON "Post_categories_many" USING btree ("Post_left_id");
 
 
--- public."Post_designers_many" definition
+-- "Post_designers_many" definition
 
 -- Drop table
 
@@ -754,11 +754,11 @@ CREATE TABLE "Post_designers_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX post_designers_many_contact_right_id_index ON public."Post_designers_many" USING btree ("Contact_right_id");
-CREATE INDEX post_designers_many_post_left_id_index ON public."Post_designers_many" USING btree ("Post_left_id");
+CREATE INDEX post_designers_many_contact_right_id_index ON "Post_designers_many" USING btree ("Contact_right_id");
+CREATE INDEX post_designers_many_post_left_id_index ON "Post_designers_many" USING btree ("Post_left_id");
 
 
--- public."Post_engineers_many" definition
+-- "Post_engineers_many" definition
 
 -- Drop table
 
@@ -768,11 +768,11 @@ CREATE TABLE "Post_engineers_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX post_engineers_many_contact_right_id_index ON public."Post_engineers_many" USING btree ("Contact_right_id");
-CREATE INDEX post_engineers_many_post_left_id_index ON public."Post_engineers_many" USING btree ("Post_left_id");
+CREATE INDEX post_engineers_many_contact_right_id_index ON "Post_engineers_many" USING btree ("Contact_right_id");
+CREATE INDEX post_engineers_many_post_left_id_index ON "Post_engineers_many" USING btree ("Post_left_id");
 
 
--- public."Post_photographers_many" definition
+-- "Post_photographers_many" definition
 
 -- Drop table
 
@@ -782,11 +782,11 @@ CREATE TABLE "Post_photographers_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX post_photographers_many_contact_right_id_index ON public."Post_photographers_many" USING btree ("Contact_right_id");
-CREATE INDEX post_photographers_many_post_left_id_index ON public."Post_photographers_many" USING btree ("Post_left_id");
+CREATE INDEX post_photographers_many_contact_right_id_index ON "Post_photographers_many" USING btree ("Contact_right_id");
+CREATE INDEX post_photographers_many_post_left_id_index ON "Post_photographers_many" USING btree ("Post_left_id");
 
 
--- public."Post_relatedPosts_many" definition
+-- "Post_relatedPosts_many" definition
 
 -- Drop table
 
@@ -796,11 +796,11 @@ CREATE TABLE "Post_relatedPosts_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Post_right_id" int4 NOT NULL
 );
-CREATE INDEX post_relatedposts_many_post_left_id_index ON public."Post_relatedPosts_many" USING btree ("Post_left_id");
-CREATE INDEX post_relatedposts_many_post_right_id_index ON public."Post_relatedPosts_many" USING btree ("Post_right_id");
+CREATE INDEX post_relatedposts_many_post_left_id_index ON "Post_relatedPosts_many" USING btree ("Post_left_id");
+CREATE INDEX post_relatedposts_many_post_right_id_index ON "Post_relatedPosts_many" USING btree ("Post_right_id");
 
 
--- public."Post_tags_many" definition
+-- "Post_tags_many" definition
 
 -- Drop table
 
@@ -810,11 +810,11 @@ CREATE TABLE "Post_tags_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Tag_right_id" int4 NOT NULL
 );
-CREATE INDEX post_tags_many_post_left_id_index ON public."Post_tags_many" USING btree ("Post_left_id");
-CREATE INDEX post_tags_many_tag_right_id_index ON public."Post_tags_many" USING btree ("Tag_right_id");
+CREATE INDEX post_tags_many_post_left_id_index ON "Post_tags_many" USING btree ("Post_left_id");
+CREATE INDEX post_tags_many_tag_right_id_index ON "Post_tags_many" USING btree ("Tag_right_id");
 
 
--- public."Post_vocals_many" definition
+-- "Post_vocals_many" definition
 
 -- Drop table
 
@@ -824,11 +824,11 @@ CREATE TABLE "Post_vocals_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX post_vocals_many_contact_right_id_index ON public."Post_vocals_many" USING btree ("Contact_right_id");
-CREATE INDEX post_vocals_many_post_left_id_index ON public."Post_vocals_many" USING btree ("Post_left_id");
+CREATE INDEX post_vocals_many_contact_right_id_index ON "Post_vocals_many" USING btree ("Contact_right_id");
+CREATE INDEX post_vocals_many_post_left_id_index ON "Post_vocals_many" USING btree ("Post_left_id");
 
 
--- public."Post_writers_many" definition
+-- "Post_writers_many" definition
 
 -- Drop table
 
@@ -838,11 +838,11 @@ CREATE TABLE "Post_writers_many" (
 	"Post_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX post_writers_many_contact_right_id_index ON public."Post_writers_many" USING btree ("Contact_right_id");
-CREATE INDEX post_writers_many_post_left_id_index ON public."Post_writers_many" USING btree ("Post_left_id");
+CREATE INDEX post_writers_many_contact_right_id_index ON "Post_writers_many" USING btree ("Contact_right_id");
+CREATE INDEX post_writers_many_post_left_id_index ON "Post_writers_many" USING btree ("Post_left_id");
 
 
--- public."Schedule" definition
+-- "Schedule" definition
 
 -- Drop table
 
@@ -871,12 +871,12 @@ CREATE TABLE "Schedule" (
 	"createdBy" int4 NULL,
 	CONSTRAINT "Schedule_pkey" PRIMARY KEY (id)
 );
-CREATE INDEX schedule_createdby_index ON public."Schedule" USING btree ("createdBy");
-CREATE INDEX schedule_showurl_index ON public."Schedule" USING btree ("showUrl");
-CREATE INDEX schedule_updatedby_index ON public."Schedule" USING btree ("updatedBy");
+CREATE INDEX schedule_createdby_index ON "Schedule" USING btree ("createdBy");
+CREATE INDEX schedule_showurl_index ON "Schedule" USING btree ("showUrl");
+CREATE INDEX schedule_updatedby_index ON "Schedule" USING btree ("updatedBy");
 
 
--- public."Section_series_Serie_section" definition
+-- "Section_series_Serie_section" definition
 
 -- Drop table
 
@@ -886,11 +886,11 @@ CREATE TABLE "Section_series_Serie_section" (
 	"Section_left_id" int4 NOT NULL,
 	"Serie_right_id" int4 NOT NULL
 );
-CREATE INDEX section_series_serie_section_section_left_id_index ON public."Section_series_Serie_section" USING btree ("Section_left_id");
-CREATE INDEX section_series_serie_section_serie_right_id_index ON public."Section_series_Serie_section" USING btree ("Serie_right_id");
+CREATE INDEX section_series_serie_section_section_left_id_index ON "Section_series_Serie_section" USING btree ("Section_left_id");
+CREATE INDEX section_series_serie_section_serie_right_id_index ON "Section_series_Serie_section" USING btree ("Serie_right_id");
 
 
--- public."Section_show_Show_sections" definition
+-- "Section_show_Show_sections" definition
 
 -- Drop table
 
@@ -900,11 +900,11 @@ CREATE TABLE "Section_show_Show_sections" (
 	"Section_left_id" int4 NOT NULL,
 	"Show_right_id" int4 NOT NULL
 );
-CREATE INDEX section_show_show_sections_section_left_id_index ON public."Section_show_Show_sections" USING btree ("Section_left_id");
-CREATE INDEX section_show_show_sections_show_right_id_index ON public."Section_show_Show_sections" USING btree ("Show_right_id");
+CREATE INDEX section_show_show_sections_section_left_id_index ON "Section_show_Show_sections" USING btree ("Section_left_id");
+CREATE INDEX section_show_show_sections_show_right_id_index ON "Section_show_Show_sections" USING btree ("Show_right_id");
 
 
--- public."Serie" definition
+-- "Serie" definition
 
 -- Drop table
 
@@ -925,12 +925,12 @@ CREATE TABLE "Serie" (
 	CONSTRAINT "Serie_pkey" PRIMARY KEY (id),
 	CONSTRAINT serie_slug_unique UNIQUE (slug)
 );
-CREATE INDEX serie_createdby_index ON public."Serie" USING btree ("createdBy");
-CREATE INDEX serie_heroimage_index ON public."Serie" USING btree ("heroImage");
-CREATE INDEX serie_updatedby_index ON public."Serie" USING btree ("updatedBy");
+CREATE INDEX serie_createdby_index ON "Serie" USING btree ("createdBy");
+CREATE INDEX serie_heroimage_index ON "Serie" USING btree ("heroImage");
+CREATE INDEX serie_updatedby_index ON "Serie" USING btree ("updatedBy");
 
 
--- public."Show" definition
+-- "Show" definition
 
 -- Drop table
 
@@ -958,13 +958,13 @@ CREATE TABLE "Show" (
 	CONSTRAINT show_slug_unique UNIQUE (slug),
 	CONSTRAINT show_sortorder_unique UNIQUE ("sortOrder")
 );
-CREATE INDEX show_bannerimg_index ON public."Show" USING btree ("bannerImg");
-CREATE INDEX show_createdby_index ON public."Show" USING btree ("createdBy");
-CREATE INDEX show_picture_index ON public."Show" USING btree (picture);
-CREATE INDEX show_updatedby_index ON public."Show" USING btree ("updatedBy");
+CREATE INDEX show_bannerimg_index ON "Show" USING btree ("bannerImg");
+CREATE INDEX show_createdby_index ON "Show" USING btree ("createdBy");
+CREATE INDEX show_picture_index ON "Show" USING btree (picture);
+CREATE INDEX show_updatedby_index ON "Show" USING btree ("updatedBy");
 
 
--- public."Show_hostName_many" definition
+-- "Show_hostName_many" definition
 
 -- Drop table
 
@@ -974,11 +974,11 @@ CREATE TABLE "Show_hostName_many" (
 	"Show_left_id" int4 NOT NULL,
 	"Contact_right_id" int4 NOT NULL
 );
-CREATE INDEX show_hostname_many_contact_right_id_index ON public."Show_hostName_many" USING btree ("Contact_right_id");
-CREATE INDEX show_hostname_many_show_left_id_index ON public."Show_hostName_many" USING btree ("Show_left_id");
+CREATE INDEX show_hostname_many_contact_right_id_index ON "Show_hostName_many" USING btree ("Contact_right_id");
+CREATE INDEX show_hostname_many_show_left_id_index ON "Show_hostName_many" USING btree ("Show_left_id");
 
 
--- public."Tag" definition
+-- "Tag" definition
 
 -- Drop table
 
@@ -1001,12 +1001,12 @@ CREATE TABLE "Tag" (
 	CONSTRAINT tag_name_unique UNIQUE (name),
 	CONSTRAINT tag_slug_unique UNIQUE (slug)
 );
-CREATE INDEX tag_createdby_index ON public."Tag" USING btree ("createdBy");
-CREATE INDEX tag_ogimage_index ON public."Tag" USING btree ("ogImage");
-CREATE INDEX tag_updatedby_index ON public."Tag" USING btree ("updatedBy");
+CREATE INDEX tag_createdby_index ON "Tag" USING btree ("createdBy");
+CREATE INDEX tag_ogimage_index ON "Tag" USING btree ("ogImage");
+CREATE INDEX tag_updatedby_index ON "Tag" USING btree ("updatedBy");
 
 
--- public."Topic" definition
+-- "Topic" definition
 
 -- Drop table
 
@@ -1052,14 +1052,14 @@ CREATE TABLE "Topic" (
 	CONSTRAINT topic_slug_unique UNIQUE (slug),
 	CONSTRAINT topic_sortorder_unique UNIQUE ("sortOrder")
 );
-CREATE INDEX topic_createdby_index ON public."Topic" USING btree ("createdBy");
-CREATE INDEX topic_heroimage_index ON public."Topic" USING btree ("heroImage");
-CREATE INDEX topic_herovideo_index ON public."Topic" USING btree ("heroVideo");
-CREATE INDEX topic_ogimage_index ON public."Topic" USING btree ("ogImage");
-CREATE INDEX topic_updatedby_index ON public."Topic" USING btree ("updatedBy");
+CREATE INDEX topic_createdby_index ON "Topic" USING btree ("createdBy");
+CREATE INDEX topic_heroimage_index ON "Topic" USING btree ("heroImage");
+CREATE INDEX topic_herovideo_index ON "Topic" USING btree ("heroVideo");
+CREATE INDEX topic_ogimage_index ON "Topic" USING btree ("ogImage");
+CREATE INDEX topic_updatedby_index ON "Topic" USING btree ("updatedBy");
 
 
--- public."Topic_categories_many" definition
+-- "Topic_categories_many" definition
 
 -- Drop table
 
@@ -1069,11 +1069,11 @@ CREATE TABLE "Topic_categories_many" (
 	"Topic_left_id" int4 NOT NULL,
 	"Category_right_id" int4 NOT NULL
 );
-CREATE INDEX topic_categories_many_category_right_id_index ON public."Topic_categories_many" USING btree ("Category_right_id");
-CREATE INDEX topic_categories_many_topic_left_id_index ON public."Topic_categories_many" USING btree ("Topic_left_id");
+CREATE INDEX topic_categories_many_category_right_id_index ON "Topic_categories_many" USING btree ("Category_right_id");
+CREATE INDEX topic_categories_many_topic_left_id_index ON "Topic_categories_many" USING btree ("Topic_left_id");
 
 
--- public."Topic_tags_many" definition
+-- "Topic_tags_many" definition
 
 -- Drop table
 
@@ -1083,11 +1083,11 @@ CREATE TABLE "Topic_tags_many" (
 	"Topic_left_id" int4 NOT NULL,
 	"Tag_right_id" int4 NOT NULL
 );
-CREATE INDEX topic_tags_many_tag_right_id_index ON public."Topic_tags_many" USING btree ("Tag_right_id");
-CREATE INDEX topic_tags_many_topic_left_id_index ON public."Topic_tags_many" USING btree ("Topic_left_id");
+CREATE INDEX topic_tags_many_tag_right_id_index ON "Topic_tags_many" USING btree ("Tag_right_id");
+CREATE INDEX topic_tags_many_topic_left_id_index ON "Topic_tags_many" USING btree ("Topic_left_id");
 
 
--- public."Video" definition
+-- "Video" definition
 
 -- Drop table
 
@@ -1117,12 +1117,12 @@ CREATE TABLE "Video" (
 	CONSTRAINT "Video_pkey" PRIMARY KEY (id),
 	CONSTRAINT "Video_state_check" CHECK ((state = ANY (ARRAY['draft'::text, 'published'::text, 'scheduled'::text])))
 );
-CREATE INDEX video_coverphoto_index ON public."Video" USING btree ("coverPhoto");
-CREATE INDEX video_createdby_index ON public."Video" USING btree ("createdBy");
-CREATE INDEX video_updatedby_index ON public."Video" USING btree ("updatedBy");
+CREATE INDEX video_coverphoto_index ON "Video" USING btree ("coverPhoto");
+CREATE INDEX video_createdby_index ON "Video" USING btree ("createdBy");
+CREATE INDEX video_updatedby_index ON "Video" USING btree ("updatedBy");
 
 
--- public."VideoEditorChoice" definition
+-- "VideoEditorChoice" definition
 
 -- Drop table
 
@@ -1142,12 +1142,12 @@ CREATE TABLE "VideoEditorChoice" (
 	CONSTRAINT "VideoEditorChoice_pkey" PRIMARY KEY (id),
 	CONSTRAINT "VideoEditorChoice_state_check" CHECK ((state = ANY (ARRAY['draft'::text, 'published'::text, 'scheduled'::text])))
 );
-CREATE INDEX videoeditorchoice_createdby_index ON public."VideoEditorChoice" USING btree ("createdBy");
-CREATE INDEX videoeditorchoice_updatedby_index ON public."VideoEditorChoice" USING btree ("updatedBy");
-CREATE INDEX videoeditorchoice_videoeditor_index ON public."VideoEditorChoice" USING btree ("videoEditor");
+CREATE INDEX videoeditorchoice_createdby_index ON "VideoEditorChoice" USING btree ("createdBy");
+CREATE INDEX videoeditorchoice_updatedby_index ON "VideoEditorChoice" USING btree ("updatedBy");
+CREATE INDEX videoeditorchoice_videoeditor_index ON "VideoEditorChoice" USING btree ("videoEditor");
 
 
--- public."Video_categories_many" definition
+-- "Video_categories_many" definition
 
 -- Drop table
 
@@ -1157,11 +1157,11 @@ CREATE TABLE "Video_categories_many" (
 	"Video_left_id" int4 NOT NULL,
 	"Category_right_id" int4 NOT NULL
 );
-CREATE INDEX video_categories_many_category_right_id_index ON public."Video_categories_many" USING btree ("Category_right_id");
-CREATE INDEX video_categories_many_video_left_id_index ON public."Video_categories_many" USING btree ("Video_left_id");
+CREATE INDEX video_categories_many_category_right_id_index ON "Video_categories_many" USING btree ("Category_right_id");
+CREATE INDEX video_categories_many_video_left_id_index ON "Video_categories_many" USING btree ("Video_left_id");
 
 
--- public."Video_relatedPosts_many" definition
+-- "Video_relatedPosts_many" definition
 
 -- Drop table
 
@@ -1171,11 +1171,11 @@ CREATE TABLE "Video_relatedPosts_many" (
 	"Video_left_id" int4 NOT NULL,
 	"Post_right_id" int4 NOT NULL
 );
-CREATE INDEX video_relatedposts_many_post_right_id_index ON public."Video_relatedPosts_many" USING btree ("Post_right_id");
-CREATE INDEX video_relatedposts_many_video_left_id_index ON public."Video_relatedPosts_many" USING btree ("Video_left_id");
+CREATE INDEX video_relatedposts_many_post_right_id_index ON "Video_relatedPosts_many" USING btree ("Post_right_id");
+CREATE INDEX video_relatedposts_many_video_left_id_index ON "Video_relatedPosts_many" USING btree ("Video_left_id");
 
 
--- public."Video_tags_many" definition
+-- "Video_tags_many" definition
 
 -- Drop table
 
@@ -1185,313 +1185,313 @@ CREATE TABLE "Video_tags_many" (
 	"Video_left_id" int4 NOT NULL,
 	"Tag_right_id" int4 NOT NULL
 );
-CREATE INDEX video_tags_many_tag_right_id_index ON public."Video_tags_many" USING btree ("Tag_right_id");
-CREATE INDEX video_tags_many_video_left_id_index ON public."Video_tags_many" USING btree ("Video_left_id");
+CREATE INDEX video_tags_many_tag_right_id_index ON "Video_tags_many" USING btree ("Tag_right_id");
+CREATE INDEX video_tags_many_video_left_id_index ON "Video_tags_many" USING btree ("Video_left_id");
 
 
--- public."ArtShow" foreign keys
+-- "ArtShow" foreign keys
 
-ALTER TABLE public."ArtShow" ADD CONSTRAINT artshow_author_foreign FOREIGN KEY (author) REFERENCES "Contact"(id);
-ALTER TABLE public."ArtShow" ADD CONSTRAINT artshow_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."ArtShow" ADD CONSTRAINT artshow_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
-ALTER TABLE public."ArtShow" ADD CONSTRAINT artshow_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
-ALTER TABLE public."ArtShow" ADD CONSTRAINT artshow_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "ArtShow" ADD CONSTRAINT artshow_author_foreign FOREIGN KEY (author) REFERENCES "Contact"(id);
+ALTER TABLE "ArtShow" ADD CONSTRAINT artshow_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "ArtShow" ADD CONSTRAINT artshow_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
+ALTER TABLE "ArtShow" ADD CONSTRAINT artshow_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
+ALTER TABLE "ArtShow" ADD CONSTRAINT artshow_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."ArtShow_series_Serie_post" foreign keys
+-- "ArtShow_series_Serie_post" foreign keys
 
-ALTER TABLE public."ArtShow_series_Serie_post" ADD CONSTRAINT artshow_series_serie_post_artshow_left_id_foreign FOREIGN KEY ("ArtShow_left_id") REFERENCES "ArtShow"(id) ON DELETE CASCADE;
-ALTER TABLE public."ArtShow_series_Serie_post" ADD CONSTRAINT artshow_series_serie_post_serie_right_id_foreign FOREIGN KEY ("Serie_right_id") REFERENCES "Serie"(id) ON DELETE CASCADE;
+ALTER TABLE "ArtShow_series_Serie_post" ADD CONSTRAINT artshow_series_serie_post_artshow_left_id_foreign FOREIGN KEY ("ArtShow_left_id") REFERENCES "ArtShow"(id) ON DELETE CASCADE;
+ALTER TABLE "ArtShow_series_Serie_post" ADD CONSTRAINT artshow_series_serie_post_serie_right_id_foreign FOREIGN KEY ("Serie_right_id") REFERENCES "Serie"(id) ON DELETE CASCADE;
 
 
--- public."Audio" foreign keys
+-- "Audio" foreign keys
 
-ALTER TABLE public."Audio" ADD CONSTRAINT audio_coverphoto_foreign FOREIGN KEY ("coverPhoto") REFERENCES "Image"(id);
-ALTER TABLE public."Audio" ADD CONSTRAINT audio_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Audio" ADD CONSTRAINT audio_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Audio" ADD CONSTRAINT audio_coverphoto_foreign FOREIGN KEY ("coverPhoto") REFERENCES "Image"(id);
+ALTER TABLE "Audio" ADD CONSTRAINT audio_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Audio" ADD CONSTRAINT audio_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Audio_tags_many" foreign keys
+-- "Audio_tags_many" foreign keys
 
-ALTER TABLE public."Audio_tags_many" ADD CONSTRAINT audio_tags_many_audio_left_id_foreign FOREIGN KEY ("Audio_left_id") REFERENCES "Audio"(id) ON DELETE CASCADE;
-ALTER TABLE public."Audio_tags_many" ADD CONSTRAINT audio_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
+ALTER TABLE "Audio_tags_many" ADD CONSTRAINT audio_tags_many_audio_left_id_foreign FOREIGN KEY ("Audio_left_id") REFERENCES "Audio"(id) ON DELETE CASCADE;
+ALTER TABLE "Audio_tags_many" ADD CONSTRAINT audio_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
 
 
--- public."Category" foreign keys
+-- "Category" foreign keys
 
-ALTER TABLE public."Category" ADD CONSTRAINT category_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Category" ADD CONSTRAINT category_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
-ALTER TABLE public."Category" ADD CONSTRAINT category_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Category" ADD CONSTRAINT category_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Category" ADD CONSTRAINT category_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
+ALTER TABLE "Category" ADD CONSTRAINT category_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Contact" foreign keys
+-- "Contact" foreign keys
 
-ALTER TABLE public."Contact" ADD CONSTRAINT contact_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Contact" ADD CONSTRAINT contact_image_foreign FOREIGN KEY (image) REFERENCES "Image"(id);
-ALTER TABLE public."Contact" ADD CONSTRAINT contact_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Contact" ADD CONSTRAINT contact_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Contact" ADD CONSTRAINT contact_image_foreign FOREIGN KEY (image) REFERENCES "Image"(id);
+ALTER TABLE "Contact" ADD CONSTRAINT contact_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."EditorChoice" foreign keys
+-- "EditorChoice" foreign keys
 
-ALTER TABLE public."EditorChoice" ADD CONSTRAINT editorchoice_choice_foreign FOREIGN KEY (choice) REFERENCES "Post"(id);
-ALTER TABLE public."EditorChoice" ADD CONSTRAINT editorchoice_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."EditorChoice" ADD CONSTRAINT editorchoice_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "EditorChoice" ADD CONSTRAINT editorchoice_choice_foreign FOREIGN KEY (choice) REFERENCES "Post"(id);
+ALTER TABLE "EditorChoice" ADD CONSTRAINT editorchoice_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "EditorChoice" ADD CONSTRAINT editorchoice_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Event" foreign keys
+-- "Event" foreign keys
 
-ALTER TABLE public."Event" ADD CONSTRAINT event_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Event" ADD CONSTRAINT event_image_foreign FOREIGN KEY (image) REFERENCES "Image"(id);
-ALTER TABLE public."Event" ADD CONSTRAINT event_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
-ALTER TABLE public."Event" ADD CONSTRAINT event_video_foreign FOREIGN KEY (video) REFERENCES "Video"(id);
+ALTER TABLE "Event" ADD CONSTRAINT event_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Event" ADD CONSTRAINT event_image_foreign FOREIGN KEY (image) REFERENCES "Image"(id);
+ALTER TABLE "Event" ADD CONSTRAINT event_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Event" ADD CONSTRAINT event_video_foreign FOREIGN KEY (video) REFERENCES "Video"(id);
 
 
--- public."Event_categories_many" foreign keys
+-- "Event_categories_many" foreign keys
 
-ALTER TABLE public."Event_categories_many" ADD CONSTRAINT event_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
-ALTER TABLE public."Event_categories_many" ADD CONSTRAINT event_categories_many_event_left_id_foreign FOREIGN KEY ("Event_left_id") REFERENCES "Event"(id) ON DELETE CASCADE;
+ALTER TABLE "Event_categories_many" ADD CONSTRAINT event_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
+ALTER TABLE "Event_categories_many" ADD CONSTRAINT event_categories_many_event_left_id_foreign FOREIGN KEY ("Event_left_id") REFERENCES "Event"(id) ON DELETE CASCADE;
 
 
--- public."Image" foreign keys
+-- "Image" foreign keys
 
-ALTER TABLE public."Image" ADD CONSTRAINT image_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Image" ADD CONSTRAINT image_topic_foreign FOREIGN KEY (topic) REFERENCES "Topic"(id);
-ALTER TABLE public."Image" ADD CONSTRAINT image_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Image" ADD CONSTRAINT image_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Image" ADD CONSTRAINT image_topic_foreign FOREIGN KEY (topic) REFERENCES "Topic"(id);
+ALTER TABLE "Image" ADD CONSTRAINT image_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Image_tags_many" foreign keys
+-- "Image_tags_many" foreign keys
 
-ALTER TABLE public."Image_tags_many" ADD CONSTRAINT image_tags_many_image_left_id_foreign FOREIGN KEY ("Image_left_id") REFERENCES "Image"(id) ON DELETE CASCADE;
-ALTER TABLE public."Image_tags_many" ADD CONSTRAINT image_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
+ALTER TABLE "Image_tags_many" ADD CONSTRAINT image_tags_many_image_left_id_foreign FOREIGN KEY ("Image_left_id") REFERENCES "Image"(id) ON DELETE CASCADE;
+ALTER TABLE "Image_tags_many" ADD CONSTRAINT image_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
 
 
--- public."MmPost" foreign keys
+-- "MmPost" foreign keys
 
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_audio_foreign FOREIGN KEY (audio) REFERENCES "Audio"(id);
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_relatedtopic_foreign FOREIGN KEY ("relatedTopic") REFERENCES "Topic"(id);
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_topics_foreign FOREIGN KEY (topics) REFERENCES "Topic"(id);
-ALTER TABLE public."MmPost" ADD CONSTRAINT mmpost_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_audio_foreign FOREIGN KEY (audio) REFERENCES "Audio"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_relatedtopic_foreign FOREIGN KEY ("relatedTopic") REFERENCES "Topic"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_topics_foreign FOREIGN KEY (topics) REFERENCES "Topic"(id);
+ALTER TABLE "MmPost" ADD CONSTRAINT mmpost_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."MmPost_cameraOperators_many" foreign keys
+-- "MmPost_cameraOperators_many" foreign keys
 
-ALTER TABLE public."MmPost_cameraOperators_many" ADD CONSTRAINT mmpost_cameraoperators_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_cameraOperators_many" ADD CONSTRAINT mmpost_cameraoperators_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_cameraOperators_many" ADD CONSTRAINT mmpost_cameraoperators_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_cameraOperators_many" ADD CONSTRAINT mmpost_cameraoperators_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_categories_many" foreign keys
+-- "MmPost_categories_many" foreign keys
 
-ALTER TABLE public."MmPost_categories_many" ADD CONSTRAINT mmpost_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_categories_many" ADD CONSTRAINT mmpost_categories_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_categories_many" ADD CONSTRAINT mmpost_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_categories_many" ADD CONSTRAINT mmpost_categories_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_designers_many" foreign keys
+-- "MmPost_designers_many" foreign keys
 
-ALTER TABLE public."MmPost_designers_many" ADD CONSTRAINT mmpost_designers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_designers_many" ADD CONSTRAINT mmpost_designers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_designers_many" ADD CONSTRAINT mmpost_designers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_designers_many" ADD CONSTRAINT mmpost_designers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_engineers_many" foreign keys
+-- "MmPost_engineers_many" foreign keys
 
-ALTER TABLE public."MmPost_engineers_many" ADD CONSTRAINT mmpost_engineers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_engineers_many" ADD CONSTRAINT mmpost_engineers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_engineers_many" ADD CONSTRAINT mmpost_engineers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_engineers_many" ADD CONSTRAINT mmpost_engineers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_photographers_many" foreign keys
+-- "MmPost_photographers_many" foreign keys
 
-ALTER TABLE public."MmPost_photographers_many" ADD CONSTRAINT mmpost_photographers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_photographers_many" ADD CONSTRAINT mmpost_photographers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_photographers_many" ADD CONSTRAINT mmpost_photographers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_photographers_many" ADD CONSTRAINT mmpost_photographers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_relatedMmPosts_many" foreign keys
+-- "MmPost_relatedMmPosts_many" foreign keys
 
-ALTER TABLE public."MmPost_relatedMmPosts_many" ADD CONSTRAINT mmpost_relatedmmposts_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_relatedMmPosts_many" ADD CONSTRAINT mmpost_relatedmmposts_many_mmpost_right_id_foreign FOREIGN KEY ("MmPost_right_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_relatedMmPosts_many" ADD CONSTRAINT mmpost_relatedmmposts_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_relatedMmPosts_many" ADD CONSTRAINT mmpost_relatedmmposts_many_mmpost_right_id_foreign FOREIGN KEY ("MmPost_right_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_tags_many" foreign keys
+-- "MmPost_tags_many" foreign keys
 
-ALTER TABLE public."MmPost_tags_many" ADD CONSTRAINT mmpost_tags_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_tags_many" ADD CONSTRAINT mmpost_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_tags_many" ADD CONSTRAINT mmpost_tags_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_tags_many" ADD CONSTRAINT mmpost_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_vocals_many" foreign keys
+-- "MmPost_vocals_many" foreign keys
 
-ALTER TABLE public."MmPost_vocals_many" ADD CONSTRAINT mmpost_vocals_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_vocals_many" ADD CONSTRAINT mmpost_vocals_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_vocals_many" ADD CONSTRAINT mmpost_vocals_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_vocals_many" ADD CONSTRAINT mmpost_vocals_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."MmPost_writers_many" foreign keys
+-- "MmPost_writers_many" foreign keys
 
-ALTER TABLE public."MmPost_writers_many" ADD CONSTRAINT mmpost_writers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."MmPost_writers_many" ADD CONSTRAINT mmpost_writers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_writers_many" ADD CONSTRAINT mmpost_writers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "MmPost_writers_many" ADD CONSTRAINT mmpost_writers_many_mmpost_left_id_foreign FOREIGN KEY ("MmPost_left_id") REFERENCES "MmPost"(id) ON DELETE CASCADE;
 
 
--- public."Post" foreign keys
+-- "Post" foreign keys
 
-ALTER TABLE public."Post" ADD CONSTRAINT post_audio_foreign FOREIGN KEY (audio) REFERENCES "Audio"(id);
-ALTER TABLE public."Post" ADD CONSTRAINT post_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Post" ADD CONSTRAINT post_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
-ALTER TABLE public."Post" ADD CONSTRAINT post_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
-ALTER TABLE public."Post" ADD CONSTRAINT post_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
-ALTER TABLE public."Post" ADD CONSTRAINT post_relatedtopic_foreign FOREIGN KEY ("relatedTopic") REFERENCES "Topic"(id);
-ALTER TABLE public."Post" ADD CONSTRAINT post_topics_foreign FOREIGN KEY (topics) REFERENCES "Topic"(id);
-ALTER TABLE public."Post" ADD CONSTRAINT post_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_audio_foreign FOREIGN KEY (audio) REFERENCES "Audio"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_relatedtopic_foreign FOREIGN KEY ("relatedTopic") REFERENCES "Topic"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_topics_foreign FOREIGN KEY (topics) REFERENCES "Topic"(id);
+ALTER TABLE "Post" ADD CONSTRAINT post_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Post_cameraOperators_many" foreign keys
+-- "Post_cameraOperators_many" foreign keys
 
-ALTER TABLE public."Post_cameraOperators_many" ADD CONSTRAINT post_cameraoperators_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_cameraOperators_many" ADD CONSTRAINT post_cameraoperators_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_cameraOperators_many" ADD CONSTRAINT post_cameraoperators_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_cameraOperators_many" ADD CONSTRAINT post_cameraoperators_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Post_categories_many" foreign keys
+-- "Post_categories_many" foreign keys
 
-ALTER TABLE public."Post_categories_many" ADD CONSTRAINT post_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_categories_many" ADD CONSTRAINT post_categories_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_categories_many" ADD CONSTRAINT post_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_categories_many" ADD CONSTRAINT post_categories_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Post_designers_many" foreign keys
+-- "Post_designers_many" foreign keys
 
-ALTER TABLE public."Post_designers_many" ADD CONSTRAINT post_designers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_designers_many" ADD CONSTRAINT post_designers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_designers_many" ADD CONSTRAINT post_designers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_designers_many" ADD CONSTRAINT post_designers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Post_engineers_many" foreign keys
+-- "Post_engineers_many" foreign keys
 
-ALTER TABLE public."Post_engineers_many" ADD CONSTRAINT post_engineers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_engineers_many" ADD CONSTRAINT post_engineers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_engineers_many" ADD CONSTRAINT post_engineers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_engineers_many" ADD CONSTRAINT post_engineers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Post_photographers_many" foreign keys
+-- "Post_photographers_many" foreign keys
 
-ALTER TABLE public."Post_photographers_many" ADD CONSTRAINT post_photographers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_photographers_many" ADD CONSTRAINT post_photographers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_photographers_many" ADD CONSTRAINT post_photographers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_photographers_many" ADD CONSTRAINT post_photographers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Post_relatedPosts_many" foreign keys
+-- "Post_relatedPosts_many" foreign keys
 
-ALTER TABLE public."Post_relatedPosts_many" ADD CONSTRAINT post_relatedposts_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_relatedPosts_many" ADD CONSTRAINT post_relatedposts_many_post_right_id_foreign FOREIGN KEY ("Post_right_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_relatedPosts_many" ADD CONSTRAINT post_relatedposts_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_relatedPosts_many" ADD CONSTRAINT post_relatedposts_many_post_right_id_foreign FOREIGN KEY ("Post_right_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Post_tags_many" foreign keys
+-- "Post_tags_many" foreign keys
 
-ALTER TABLE public."Post_tags_many" ADD CONSTRAINT post_tags_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_tags_many" ADD CONSTRAINT post_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_tags_many" ADD CONSTRAINT post_tags_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_tags_many" ADD CONSTRAINT post_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
 
 
--- public."Post_vocals_many" foreign keys
+-- "Post_vocals_many" foreign keys
 
-ALTER TABLE public."Post_vocals_many" ADD CONSTRAINT post_vocals_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_vocals_many" ADD CONSTRAINT post_vocals_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_vocals_many" ADD CONSTRAINT post_vocals_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_vocals_many" ADD CONSTRAINT post_vocals_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Post_writers_many" foreign keys
+-- "Post_writers_many" foreign keys
 
-ALTER TABLE public."Post_writers_many" ADD CONSTRAINT post_writers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."Post_writers_many" ADD CONSTRAINT post_writers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_writers_many" ADD CONSTRAINT post_writers_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "Post_writers_many" ADD CONSTRAINT post_writers_many_post_left_id_foreign FOREIGN KEY ("Post_left_id") REFERENCES "Post"(id) ON DELETE CASCADE;
 
 
--- public."Schedule" foreign keys
+-- "Schedule" foreign keys
 
-ALTER TABLE public."Schedule" ADD CONSTRAINT schedule_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Schedule" ADD CONSTRAINT schedule_showurl_foreign FOREIGN KEY ("showUrl") REFERENCES "Show"(id);
-ALTER TABLE public."Schedule" ADD CONSTRAINT schedule_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Schedule" ADD CONSTRAINT schedule_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Schedule" ADD CONSTRAINT schedule_showurl_foreign FOREIGN KEY ("showUrl") REFERENCES "Show"(id);
+ALTER TABLE "Schedule" ADD CONSTRAINT schedule_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Section_series_Serie_section" foreign keys
+-- "Section_series_Serie_section" foreign keys
 
-ALTER TABLE public."Section_series_Serie_section" ADD CONSTRAINT section_series_serie_section_section_left_id_foreign FOREIGN KEY ("Section_left_id") REFERENCES "Section"(id) ON DELETE CASCADE;
-ALTER TABLE public."Section_series_Serie_section" ADD CONSTRAINT section_series_serie_section_serie_right_id_foreign FOREIGN KEY ("Serie_right_id") REFERENCES "Serie"(id) ON DELETE CASCADE;
+ALTER TABLE "Section_series_Serie_section" ADD CONSTRAINT section_series_serie_section_section_left_id_foreign FOREIGN KEY ("Section_left_id") REFERENCES "Section"(id) ON DELETE CASCADE;
+ALTER TABLE "Section_series_Serie_section" ADD CONSTRAINT section_series_serie_section_serie_right_id_foreign FOREIGN KEY ("Serie_right_id") REFERENCES "Serie"(id) ON DELETE CASCADE;
 
 
--- public."Section_show_Show_sections" foreign keys
+-- "Section_show_Show_sections" foreign keys
 
-ALTER TABLE public."Section_show_Show_sections" ADD CONSTRAINT section_show_show_sections_section_left_id_foreign FOREIGN KEY ("Section_left_id") REFERENCES "Section"(id) ON DELETE CASCADE;
-ALTER TABLE public."Section_show_Show_sections" ADD CONSTRAINT section_show_show_sections_show_right_id_foreign FOREIGN KEY ("Show_right_id") REFERENCES "Show"(id) ON DELETE CASCADE;
+ALTER TABLE "Section_show_Show_sections" ADD CONSTRAINT section_show_show_sections_section_left_id_foreign FOREIGN KEY ("Section_left_id") REFERENCES "Section"(id) ON DELETE CASCADE;
+ALTER TABLE "Section_show_Show_sections" ADD CONSTRAINT section_show_show_sections_show_right_id_foreign FOREIGN KEY ("Show_right_id") REFERENCES "Show"(id) ON DELETE CASCADE;
 
 
--- public."Serie" foreign keys
+-- "Serie" foreign keys
 
-ALTER TABLE public."Serie" ADD CONSTRAINT serie_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Serie" ADD CONSTRAINT serie_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
-ALTER TABLE public."Serie" ADD CONSTRAINT serie_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Serie" ADD CONSTRAINT serie_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Serie" ADD CONSTRAINT serie_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
+ALTER TABLE "Serie" ADD CONSTRAINT serie_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Show" foreign keys
+-- "Show" foreign keys
 
-ALTER TABLE public."Show" ADD CONSTRAINT show_bannerimg_foreign FOREIGN KEY ("bannerImg") REFERENCES "Image"(id);
-ALTER TABLE public."Show" ADD CONSTRAINT show_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Show" ADD CONSTRAINT show_picture_foreign FOREIGN KEY (picture) REFERENCES "Image"(id);
-ALTER TABLE public."Show" ADD CONSTRAINT show_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Show" ADD CONSTRAINT show_bannerimg_foreign FOREIGN KEY ("bannerImg") REFERENCES "Image"(id);
+ALTER TABLE "Show" ADD CONSTRAINT show_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Show" ADD CONSTRAINT show_picture_foreign FOREIGN KEY (picture) REFERENCES "Image"(id);
+ALTER TABLE "Show" ADD CONSTRAINT show_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Show_hostName_many" foreign keys
+-- "Show_hostName_many" foreign keys
 
-ALTER TABLE public."Show_hostName_many" ADD CONSTRAINT show_hostname_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
-ALTER TABLE public."Show_hostName_many" ADD CONSTRAINT show_hostname_many_show_left_id_foreign FOREIGN KEY ("Show_left_id") REFERENCES "Show"(id) ON DELETE CASCADE;
+ALTER TABLE "Show_hostName_many" ADD CONSTRAINT show_hostname_many_contact_right_id_foreign FOREIGN KEY ("Contact_right_id") REFERENCES "Contact"(id) ON DELETE CASCADE;
+ALTER TABLE "Show_hostName_many" ADD CONSTRAINT show_hostname_many_show_left_id_foreign FOREIGN KEY ("Show_left_id") REFERENCES "Show"(id) ON DELETE CASCADE;
 
 
--- public."Tag" foreign keys
+-- "Tag" foreign keys
 
-ALTER TABLE public."Tag" ADD CONSTRAINT tag_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Tag" ADD CONSTRAINT tag_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
-ALTER TABLE public."Tag" ADD CONSTRAINT tag_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Tag" ADD CONSTRAINT tag_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Tag" ADD CONSTRAINT tag_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
+ALTER TABLE "Tag" ADD CONSTRAINT tag_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Topic" foreign keys
+-- "Topic" foreign keys
 
-ALTER TABLE public."Topic" ADD CONSTRAINT topic_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Topic" ADD CONSTRAINT topic_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
-ALTER TABLE public."Topic" ADD CONSTRAINT topic_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
-ALTER TABLE public."Topic" ADD CONSTRAINT topic_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
-ALTER TABLE public."Topic" ADD CONSTRAINT topic_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Topic" ADD CONSTRAINT topic_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Topic" ADD CONSTRAINT topic_heroimage_foreign FOREIGN KEY ("heroImage") REFERENCES "Image"(id);
+ALTER TABLE "Topic" ADD CONSTRAINT topic_herovideo_foreign FOREIGN KEY ("heroVideo") REFERENCES "Video"(id);
+ALTER TABLE "Topic" ADD CONSTRAINT topic_ogimage_foreign FOREIGN KEY ("ogImage") REFERENCES "Image"(id);
+ALTER TABLE "Topic" ADD CONSTRAINT topic_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."Topic_categories_many" foreign keys
+-- "Topic_categories_many" foreign keys
 
-ALTER TABLE public."Topic_categories_many" ADD CONSTRAINT topic_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
-ALTER TABLE public."Topic_categories_many" ADD CONSTRAINT topic_categories_many_topic_left_id_foreign FOREIGN KEY ("Topic_left_id") REFERENCES "Topic"(id) ON DELETE CASCADE;
+ALTER TABLE "Topic_categories_many" ADD CONSTRAINT topic_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
+ALTER TABLE "Topic_categories_many" ADD CONSTRAINT topic_categories_many_topic_left_id_foreign FOREIGN KEY ("Topic_left_id") REFERENCES "Topic"(id) ON DELETE CASCADE;
 
 
--- public."Topic_tags_many" foreign keys
+-- "Topic_tags_many" foreign keys
 
-ALTER TABLE public."Topic_tags_many" ADD CONSTRAINT topic_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
-ALTER TABLE public."Topic_tags_many" ADD CONSTRAINT topic_tags_many_topic_left_id_foreign FOREIGN KEY ("Topic_left_id") REFERENCES "Topic"(id) ON DELETE CASCADE;
+ALTER TABLE "Topic_tags_many" ADD CONSTRAINT topic_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
+ALTER TABLE "Topic_tags_many" ADD CONSTRAINT topic_tags_many_topic_left_id_foreign FOREIGN KEY ("Topic_left_id") REFERENCES "Topic"(id) ON DELETE CASCADE;
 
 
--- public."Video" foreign keys
+-- "Video" foreign keys
 
-ALTER TABLE public."Video" ADD CONSTRAINT video_coverphoto_foreign FOREIGN KEY ("coverPhoto") REFERENCES "Image"(id);
-ALTER TABLE public."Video" ADD CONSTRAINT video_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."Video" ADD CONSTRAINT video_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "Video" ADD CONSTRAINT video_coverphoto_foreign FOREIGN KEY ("coverPhoto") REFERENCES "Image"(id);
+ALTER TABLE "Video" ADD CONSTRAINT video_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "Video" ADD CONSTRAINT video_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
 
 
--- public."VideoEditorChoice" foreign keys
+-- "VideoEditorChoice" foreign keys
 
-ALTER TABLE public."VideoEditorChoice" ADD CONSTRAINT videoeditorchoice_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
-ALTER TABLE public."VideoEditorChoice" ADD CONSTRAINT videoeditorchoice_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
-ALTER TABLE public."VideoEditorChoice" ADD CONSTRAINT videoeditorchoice_videoeditor_foreign FOREIGN KEY ("videoEditor") REFERENCES "Post"(id);
+ALTER TABLE "VideoEditorChoice" ADD CONSTRAINT videoeditorchoice_createdby_foreign FOREIGN KEY ("createdBy") REFERENCES "User"(id);
+ALTER TABLE "VideoEditorChoice" ADD CONSTRAINT videoeditorchoice_updatedby_foreign FOREIGN KEY ("updatedBy") REFERENCES "User"(id);
+ALTER TABLE "VideoEditorChoice" ADD CONSTRAINT videoeditorchoice_videoeditor_foreign FOREIGN KEY ("videoEditor") REFERENCES "Post"(id);
 
 
--- public."Video_categories_many" foreign keys
+-- "Video_categories_many" foreign keys
 
-ALTER TABLE public."Video_categories_many" ADD CONSTRAINT video_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
-ALTER TABLE public."Video_categories_many" ADD CONSTRAINT video_categories_many_video_left_id_foreign FOREIGN KEY ("Video_left_id") REFERENCES "Video"(id) ON DELETE CASCADE;
+ALTER TABLE "Video_categories_many" ADD CONSTRAINT video_categories_many_category_right_id_foreign FOREIGN KEY ("Category_right_id") REFERENCES "Category"(id) ON DELETE CASCADE;
+ALTER TABLE "Video_categories_many" ADD CONSTRAINT video_categories_many_video_left_id_foreign FOREIGN KEY ("Video_left_id") REFERENCES "Video"(id) ON DELETE CASCADE;
 
 
--- public."Video_relatedPosts_many" foreign keys
+-- "Video_relatedPosts_many" foreign keys
 
-ALTER TABLE public."Video_relatedPosts_many" ADD CONSTRAINT video_relatedposts_many_post_right_id_foreign FOREIGN KEY ("Post_right_id") REFERENCES "Post"(id) ON DELETE CASCADE;
-ALTER TABLE public."Video_relatedPosts_many" ADD CONSTRAINT video_relatedposts_many_video_left_id_foreign FOREIGN KEY ("Video_left_id") REFERENCES "Video"(id) ON DELETE CASCADE;
+ALTER TABLE "Video_relatedPosts_many" ADD CONSTRAINT video_relatedposts_many_post_right_id_foreign FOREIGN KEY ("Post_right_id") REFERENCES "Post"(id) ON DELETE CASCADE;
+ALTER TABLE "Video_relatedPosts_many" ADD CONSTRAINT video_relatedposts_many_video_left_id_foreign FOREIGN KEY ("Video_left_id") REFERENCES "Video"(id) ON DELETE CASCADE;
 
 
--- public."Video_tags_many" foreign keys
+-- "Video_tags_many" foreign keys
 
-ALTER TABLE public."Video_tags_many" ADD CONSTRAINT video_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
-ALTER TABLE public."Video_tags_many" ADD CONSTRAINT video_tags_many_video_left_id_foreign FOREIGN KEY ("Video_left_id") REFERENCES "Video"(id) ON DELETE CASCADE;
+ALTER TABLE "Video_tags_many" ADD CONSTRAINT video_tags_many_tag_right_id_foreign FOREIGN KEY ("Tag_right_id") REFERENCES "Tag"(id) ON DELETE CASCADE;
+ALTER TABLE "Video_tags_many" ADD CONSTRAINT video_tags_many_video_left_id_foreign FOREIGN KEY ("Video_left_id") REFERENCES "Video"(id) ON DELETE CASCADE;

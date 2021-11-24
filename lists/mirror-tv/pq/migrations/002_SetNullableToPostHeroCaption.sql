@@ -1,1 +1,1 @@
-ALTER TABLE public."Post" ALTER COLUMN "heroCaption" DROP NOT NULL;
+ALTER TABLE "Post" ALTER COLUMN "heroCaption" DROP NOT NULL;
