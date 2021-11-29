@@ -1,7 +1,7 @@
 const countReadingTime = async (existingItem, resolvedData) => {
     try {
-        const content = resolvedData?.content
-            ? JSON.parse(resolvedData?.content)
+        const content = resolvedData?.content || existingItem?.content
+            ? JSON.parse(resolvedData?.content || existingItem?.content)
             : undefined
         
         // only edited draft editor need to count readTime
@@ -13,11 +13,9 @@ const countReadingTime = async (existingItem, resolvedData) => {
 
         // if style is replaced to report, clear readingTime and return
         if (reportStyles.includes(resolvedData.style)) {
-            resolvedData.readingTime = null
+            resolvedData.readingTime = 0
             return
         }
-
-        console.log('content', content)
 
         // count words
         let totalWordCount = 0
