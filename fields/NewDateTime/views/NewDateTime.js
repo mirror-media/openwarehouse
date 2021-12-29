@@ -43,16 +43,22 @@ function NewDateTime({ value, onChange, config, isReadOnly }) {
 
     // watch the new vale and refresh UI
     const refeshHandler = () => {
-        const selectUnixTimestamp = new Date(newValue)
-        const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
+        if (!newValue) {
+            setInputField('')
+            onChange('')
+        } else {
+            const selectUnixTimestamp = new Date(newValue)
+            const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
 
-        setInputField(selectUnixTimestamp)
-        onChange(selectISO8601)
+            setInputField(selectUnixTimestamp)
+            onChange(selectISO8601)
+        }
     }
 
     const [inputField, setInputField] = useState(newValue)
     useEffect(() => {
         if (inputField && inputField !== newValue) {
+          console.log('tyty', inputField, newValue)
           refeshHandler()
         }
     }, [newValue])
