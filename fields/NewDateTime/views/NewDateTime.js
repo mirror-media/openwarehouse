@@ -58,7 +58,6 @@ function NewDateTime({ value, onChange, config, isReadOnly }) {
     const [inputField, setInputField] = useState(newValue)
     useEffect(() => {
         if (inputField && inputField !== newValue) {
-          console.log('tyty', inputField, newValue)
           refeshHandler()
         }
     }, [newValue])
