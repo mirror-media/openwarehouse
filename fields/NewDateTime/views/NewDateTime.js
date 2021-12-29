@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './NewDateTime.style.css'
 import Datetime from 'react-datetime'
 import 'react-datetime/css/react-datetime.css'
@@ -8,8 +8,11 @@ function NewDateTime({ value, onChange, config, isReadOnly }) {
     // react-datetime accept integer unix timestamp
     // transform ISO 8601 to unix timestamp
     const newValue = Date.parse(value)
-
-    const [inputField, setInputField] = useState(newValue)
+    const { hasNowBtn } = config
+    const inputProps = {
+        placeholder: isReadOnly ? '' : '請輸入日期',
+        disabled: isReadOnly,
+    }
 
     // get selected unix timestamp by moment from callback
     const changeHandler = (momentObj) => {
@@ -17,13 +20,10 @@ function NewDateTime({ value, onChange, config, isReadOnly }) {
 
         // when user edit field's content by keyboard
         if (typeof momentObj !== 'object') {
-            // edittedMomentObj = moment()
             setInputField(null)
             onChange(null)
         } else {
             const selectUnixTimestamp = parseInt(edittedMomentObj.format('x'))
-            // const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
-
             const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
 
             setInputField(selectUnixTimestamp)
@@ -41,11 +41,21 @@ function NewDateTime({ value, onChange, config, isReadOnly }) {
         onChange(nowISO8601)
     }
 
-    const { hasNowBtn } = config
-    const inputProps = {
-        placeholder: isReadOnly ? '' : '請輸入日期',
-        disabled: isReadOnly,
+    // watch the new vale and refresh UI
+    const refeshHandler = () => {
+        const selectUnixTimestamp = new Date(newValue)
+        const selectISO8601 = new Date(selectUnixTimestamp).toISOString()
+
+        setInputField(selectUnixTimestamp)
+        onChange(selectISO8601)
     }
+
+    const [inputField, setInputField] = useState(newValue)
+    useEffect(() => {
+        if (inputField && inputField !== newValue) {
+          refeshHandler()
+        }
+    }, [newValue])
 
     return (
         <div className="NewDateTime">

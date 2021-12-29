@@ -24,7 +24,7 @@ const validateIfPostNeedPublishTime = async (
 
     if (needPublishTime && noPublishTime) {
         addValidationError(
-            '若狀態為「Published」、「Scheduled」,則發佈時間不能空白'
+            '若狀態為「Published」、「Scheduled」，則發佈時間不能空白'
         )
     }
 }
@@ -34,8 +34,11 @@ const validateIfPublishTimeIsFutureTime = async (
     resolvedData,
     addValidationError
 ) => {
-    // validate post state only when post state updated( which means resolvedData has state key)
-    const updatedPostState = resolvedData ? resolvedData.state : null
+    const currentPostState = returnExistedKeyValueBetweenObjects(
+        'state',
+        resolvedData,
+        existingItem
+    )
 
     const postPublishTime = returnExistedKeyValueBetweenObjects(
         'publishTime',
@@ -44,17 +47,31 @@ const validateIfPublishTimeIsFutureTime = async (
     )
 
     const needValidatePublishTime =
-        updatedPostState === 'published' || updatedPostState === 'scheduled'
+        currentPostState === 'published' || currentPostState === 'scheduled'
 
     if (needValidatePublishTime) {
         const nowTime = new Date(Date.now())
         const currentPublishTime = new Date(postPublishTime)
 
-        //newDateTime field's "now" button active only within 60s
-        const publishTimeIsFutureTime = currentPublishTime - nowTime >= -3600000
+        if (currentPostState === 'published') {
+            // newDateTime field's "now" button active only within 60s,
+            // and can't be future time
+            const publishTimeIsNow =
+              currentPublishTime - nowTime >= -3600000 &&
+              currentPublishTime - nowTime < 0
+            
+            if (!publishTimeIsNow) {
+              addValidationError('若狀態為「Published」，則發佈時間必須是現在')
+            }
+        }
 
-        if (!publishTimeIsFutureTime) {
-            addValidationError('發佈時間不能是過去的時間')
+        if (currentPostState === 'scheduled') {
+            // newDateTime field's "now" button active only within 60s
+            const publishTimeIsFutureTime = currentPublishTime - nowTime >= -3600000
+
+            if (!publishTimeIsFutureTime) {
+                addValidationError('若狀態為「Scheduled」，則發佈時間不能是過去的時間')
+            }
         }
     }
 }
