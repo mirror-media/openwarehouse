@@ -9,6 +9,7 @@ const {
 } = require('@keystonejs/fields')
 const HTML = require('../../fields/HTML')
 const TextHide = require('../../fields/TextHide')
+const CustomRelationship = require('../../fields/CustomRelationship')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const { uuid } = require('uuidv4')
@@ -93,7 +94,7 @@ module.exports = {
         },
         post: {
             label: 'POST',
-            type: Relationship,
+            type: CustomRelationship,
             ref: 'Post',
             many: true,
         },

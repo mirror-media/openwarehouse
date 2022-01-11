@@ -1,4 +1,4 @@
-const { Integer, Slug, Text, Url, Checkbox } = require('@keystonejs/fields')
+const { Integer, Slug, Text, Url, Checkbox, Relationship } = require('@keystonejs/fields')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const { uuid } = require('uuidv4')
@@ -126,6 +126,18 @@ module.exports = {
         host: {
             label: '節目主持人',
             type: Checkbox,
+        },
+        relatedShows: {
+            label: '關聯藝文節目',
+            type: Relationship,
+            ref: 'Show.hostName',
+            many: true,
+        },
+        relatedSeries: {
+            label: '關聯節目單元',
+            type: Relationship,
+            ref: 'Serie.relatedContacts',
+            many: true,
         },
         bioApiData: {
             label: 'bio API Data',

@@ -20,6 +20,7 @@ const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 const ImageRelationship = require('../../fields/ImageRelationship')
 const TextHide = require('../../fields/TextHide')
+const CustomRelationship = require('../../fields/CustomRelationship')
 const cacheHint = require('../../helpers/cacheHint')
 
 const { parseResolvedData } = require('../../utils/parseResolvedData')
@@ -184,7 +185,7 @@ module.exports = {
         },
         relatedPosts: {
             label: '相關文章',
-            type: Relationship,
+            type: CustomRelationship,
             ref: 'Post',
             many: true,
         },
