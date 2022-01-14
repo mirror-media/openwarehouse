@@ -69,6 +69,12 @@ module.exports = {
         hostName: {
             label: '主持人姓名',
             type: Relationship,
+            ref: 'Contact.relatedShows',
+            many: true,
+        },
+        staffName: {
+            label: '工作人員姓名',
+            type: Relationship,
             ref: 'Contact',
             many: true,
         },

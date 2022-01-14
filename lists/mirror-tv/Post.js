@@ -20,6 +20,7 @@ const HTML = require('../../fields/HTML')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 const ImageRelationship = require('../../fields/ImageRelationship')
 const TextHide = require('../../fields/TextHide')
+const CustomRelationship = require('../../fields/CustomRelationship')
 const cacheHint = require('../../helpers/cacheHint')
 
 const { parseResolvedData } = require('../../utils/parseResolvedData')
@@ -66,7 +67,7 @@ module.exports = {
                 // 所以在此不給contributor有更動post.state的create/update權限
                 // 但又因post.state的defaultValue是draft
                 // 所以也就變相地達到contributor只能發佈draft的要求
-                create: allowRoles(admin, moderator, editor),
+                create: allowRoles(admin, moderator, editor, bot),
                 update: allowRoles(admin, moderator, editor, bot),
             },
         },
@@ -184,7 +185,7 @@ module.exports = {
         },
         relatedPosts: {
             label: '相關文章',
-            type: Relationship,
+            type: CustomRelationship,
             ref: 'Post',
             many: true,
         },

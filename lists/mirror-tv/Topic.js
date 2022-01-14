@@ -5,9 +5,11 @@ const {
     Checkbox,
     Select,
     Relationship,
+    Url,
 } = require('@keystonejs/fields')
 const HTML = require('../../fields/HTML')
 const TextHide = require('../../fields/TextHide')
+const CustomRelationship = require('../../fields/CustomRelationship')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const { uuid } = require('uuidv4')
@@ -44,20 +46,75 @@ module.exports = {
                 type: 'timeline'
             }*/
         },
-        post: {
-            label: 'POST',
-            type: Relationship,
-            ref: 'Post',
-            many: true,
-        },
         name: {
             label: '標題',
             type: Text,
             isRequired: true,
         },
-        subtitle: {
-            label: '副標',
-            type: Text,
+        leading: {
+            label: '標頭樣式',
+            type: Select,
+            options: 'video, slideshow, image, multivideo',
+            defaultValue: 'image',
+        },
+        heroImage: {
+            label: '首圖',
+            type: Relationship,
+            ref: 'Image',
+            isRequired: true,
+            /*dependsOn: {
+                leading: 'image'
+            }*/
+        },
+        heroVideo: {
+            label: '影片',
+            type: Relationship,
+            ref: 'Video',
+            /*dependsOn: {
+                leading: 'video'
+            }*/
+        },
+        slideshow: {
+            label: '輪播文章',
+            type: Relationship,
+            ref: 'Post',
+            many: true,
+            /*dependsOn: {
+                leading: 'slideshow'
+            }*/
+        },
+        multivideo: {
+            label: '輪播影片',
+            type: Relationship,
+            ref: 'Video',
+            many: true,
+            /*dependsOn: {
+                leading: 'multivideo'
+            }*/
+        },
+        post: {
+            label: 'POST',
+            type: CustomRelationship,
+            ref: 'Post',
+            many: true,
+        },
+        sortDir: {
+            label: '時間軸排序方向',
+            type: Select,
+            options: 'asc, desc',
+            defaultValue: 'desc',
+        },
+        categories: {
+            label: '分類',
+            type: Relationship,
+            ref: 'Category',
+            many: true,
+        },
+        tags: {
+            label: '標籤',
+            type: Relationship,
+            ref: 'Tag',
+            many: true,
         },
         state: {
             label: '狀態',
@@ -95,43 +152,17 @@ module.exports = {
                 entityList: {},
             },
         },
-        leading: {
-            label: '標頭樣式',
-            type: Select,
-            options: 'video, slideshow, image',
+        facebook: {
+            label: 'Facebook',
+            type: Url,
         },
-        categories: {
-            label: '分類',
-            type: Relationship,
-            ref: 'Category',
-            many: true,
+        instagram: {
+            label: 'Instagram',
+            type: Url,
         },
-        heroVideo: {
-            label: '影片',
-            type: Relationship,
-            ref: 'Video',
-            /*dependsOn: {
-                leading: 'video'
-            }*/
-        },
-        heroImage: {
-            label: '首圖',
-            type: Relationship,
-            ref: 'Image',
-            /*dependsOn: {
-                leading: 'image'
-            }*/
-        },
-        heroImageSize: {
-            label: '首圖尺寸',
-            type: Select,
-            options: 'extend, normal, small',
-            default: 'normal',
-            /*dependsOn: {
-                heroImage: {
-                    '$regex': '.+/i'
-                }
-            }*/
+        line: {
+            label: 'Line',
+            type: Url,
         },
         ogTitle: {
             label: 'FB 分享標題',
@@ -145,59 +176,6 @@ module.exports = {
             label: 'FB 分享縮圖',
             type: Relationship,
             ref: 'Image',
-        },
-        titleStyle: {
-            label: '標題樣式',
-            type: Select,
-            options: 'feature, wide',
-            defaultValue: 'feature',
-        },
-        type: {
-            label: '型態',
-            type: Select,
-            dataType: 'string',
-            options: 'list, timeline, group, portrait wall, wide',
-            defaultValue: 'list',
-        },
-        source: {
-            label: '資料來源',
-            type: Select,
-            options: 'posts, activities',
-            /*dependsOn: {
-                type: 'timeline'
-            }*/
-        },
-        sortDir: {
-            label: '時間軸排序方向',
-            type: Select,
-            options: 'asc, desc',
-            /*dependsOn: {
-                type: 'timeline'
-            }*/
-        },
-        tags: {
-            label: '標籤',
-            type: Relationship,
-            ref: 'Tag',
-            many: true,
-        },
-        css: {
-            label: 'CSS',
-            type: Text,
-            isMultiline: true,
-        },
-        javascript: {
-            label: 'JavaScript',
-            type: Text,
-            isMultiline: true,
-        },
-        dfp: {
-            label: 'DFP Code',
-            type: Text,
-        },
-        mobileDfp: {
-            label: 'Mobile DFP Code',
-            type: Text,
         },
         isFeatured: {
             label: '置頂',
@@ -244,7 +222,7 @@ module.exports = {
         },
     },
     adminConfig: {
-        defaultColumns: 'slug, title, state, tags, isFeatured, createdAt',
+        defaultColumns: 'slug, title, state, leading, isFeatured, createdAt',
         defaultSort: '-createdAt',
     },
     labelField: 'name',

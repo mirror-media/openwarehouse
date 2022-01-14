@@ -96,6 +96,12 @@ module.exports = {
             ref: 'ArtShow.series',
             many: true,
         },
+        relatedContacts: {
+            label: '關聯主持人',
+            type: Relationship,
+            ref: 'Contact.relatedSeries',
+            many: true,
+        },
         introductionApiData: {
             label: 'Introduction API Data',
             type: TextHide,
