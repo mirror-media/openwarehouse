@@ -32,9 +32,11 @@ class HtmlController extends FieldController {
         // if (data[this.path]) {
         //     console.log(JSON.parse(data[this.path]))
         // }
-        // console.log(
-        //     JSON.stringify(data[this.path] ? data[this.path] : undefined)
-        // )
+        console.log(
+            'controller',
+            JSON.stringify(data[this.path] ? data[this.path] : undefined),
+            data[this.path] ? JSON.parse(data[this.path]) : undefined
+        )
 
         return convertDbDataToEditorState(
             data[this.path] ? JSON.parse(data[this.path]) : undefined
