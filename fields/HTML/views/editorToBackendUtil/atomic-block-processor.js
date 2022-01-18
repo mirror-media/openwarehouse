@@ -106,6 +106,14 @@ const processor = {
                 return
         }
 
+        console.log('atomic', {
+            id: block.key,
+            alignment,
+            type: type && type.toLowerCase(),
+            content,
+            styles,
+        })
+
         // block type of api data should be lower case
         return new ApiDataInstance({
             id: block.key,
