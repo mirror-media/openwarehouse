@@ -32,9 +32,6 @@ module.exports = {
         password: {
             label: '密碼',
             type: Password,
-            access: {
-                update: allowRoles(admin, moderator, owner),
-            },
         },
         role: {
             label: '角色權限',
@@ -44,7 +41,7 @@ module.exports = {
             defaultValue: 'contributor',
             isRequired: true,
             access: {
-                update: allowRoles(admin, moderator),
+                update: allowRoles(admin),
             },
         },
         isProtected: {
@@ -64,7 +61,7 @@ module.exports = {
     ],
     access: {
         read: allowRoles(admin, moderator, owner),
-        update: allowRoles(admin, moderator, owner),
+        update: allowRoles(admin, owner),
         create: allowRoles(admin),
         delete: allowRoles(admin),
     },
