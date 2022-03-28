@@ -24,22 +24,38 @@ export function convertDbDataToEditorState(data) {
 }
 
 export function convertEditorStateToDbData(editorState) {
-    const content = convertToRaw(editorState.getCurrentContent())
+    try {
+        const content = convertToRaw(editorState.getCurrentContent())
 
-    // remove unwanted undefined inlineStyle
-    content.blocks.forEach((block) => {
-        _.remove(block.inlineStyleRanges, (inlineStyleRange) => {
-            return typeof inlineStyleRange.style === 'undefined'
+        // remove unwanted undefined inlineStyle
+        content.blocks.forEach((block) => {
+            _.remove(block.inlineStyleRanges, (inlineStyleRange) => {
+                return typeof inlineStyleRange.style === 'undefined'
+            })
         })
-    })
+    
+        const cHtml = DraftConverter.convertToHtml(content)
+        const apiData = DraftConverter.convertToApiData(content)
 
-    const cHtml = DraftConverter.convertToHtml(content)
-    const apiData = DraftConverter.convertToApiData(content)
-
-    return {
-        draft: content,
-        html: cHtml,
-        apiData,
+        console.log('DraftConverter', DraftConverter)
+        console.log('dataconverter', {
+            draft: content,
+            html: cHtml,
+            apiData,
+        })
+    
+        return {
+            draft: content,
+            html: cHtml,
+            apiData,
+        }
+    } catch (err) {
+      console.log('[error]', err)
+      return {
+        draft: null,
+        html: '',
+        apiData: '',
+      }
     }
     // return content
 }

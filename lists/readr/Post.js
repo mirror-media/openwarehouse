@@ -494,11 +494,6 @@ module.exports = {
                 resolvedData,
                 addValidationError
             )
-            validateIfPublishTimeIsFutureTime(
-                existingItem,
-                resolvedData,
-                addValidationError
-            )
             validateIfReportPostHaveSlug(
                 existingItem,
                 resolvedData,
