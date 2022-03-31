@@ -1,37 +1,55 @@
-const { Text, File } = require('@keystonejs/fields')
+const { Integer, Select } = require('@keystonejs/fields')
+const CustomRelationship = require('../../fields/CustomRelationship')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
-const { DocumentAdapter } = require('../../lib/DocumentAdapter')
 const {
     admin,
+    bot,
     moderator,
+    editor,
+    contributor,
+    owner,
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
-const { deleteOldFileInGCS } = require('../../utils/gcsHandler')
-
-const mediaUrlBase = 'assets/documents/'
-const fileAdapter = new DocumentAdapter(mediaUrlBase)
+const {
+    getAccessControlViaServerType,
+} = require('../../helpers/ListAccessHandler')
+const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
-        name: {
-            label: '標題',
-            type: Text,
-            isRequired: true,
-        },
-        file: {
-            type: File,
-            adapter: fileAdapter,
-            // isRequired: true,
-        },
-        pdfUrl: {
-            label: 'PDF網址',
-            type: Text,
-            adminConfig: {
-                isReadOnly: true,
+            sortOrder:{
+                label: '排序順位',
+                type: Integer,
+                isUnique:true,
             },
-        },
+            adPost:{
+                label: '廣編文章',
+                type: CustomRelationship,
+                ref: 'Post',
+
+            },
+            status:{
+                label: '狀態',
+                type: Select,
+                option: 'published, draft, scheduled, archived',
+                defaultValue: 'draft',
+
+            },
+            startTime:{
+                label: '起始日期',
+                type: NewDateTime,
+                hasNowBtn: true,
+                isReadOnly: false,
+
+            },
+            endTime:{
+                label: '結束日期',
+                type: NewDateTime,
+                hasNowBtn: true,
+                isReadOnly: false,
+            },
     },
     plugins: [
         atTracking({
@@ -41,29 +59,22 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: allowRoles(admin, moderator),
-        create: allowRoles(admin, moderator),
+        read: getAccessControlViaServerType(
+            admin,
+            bot,
+            moderator,
+            editor,
+            contributor,
+            owner
+        ),
+        update: allowRoles(admin, moderator, editor, bot),
+        create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin, moderator),
     },
-    hooks: {
-        resolveInput: ({ resolvedData }) => {
-            if (resolvedData.file) {
-                resolvedData.pdfUrl = resolvedData.file._meta.url
-            }
-            return resolvedData
-        },
-        afterDelete: async ({ existingItem }) => {
-            try {
-                deleteOldFileInGCS(existingItem, fileAdapter)
-            } catch (err) {
-                console.log(err)
-            }
-        },
-    },
+    hooks: {},
     adminConfig: {
-        // defaultColumns: 'schedule, time, updatedAt',
-        // defaultSort: '-updatedAt',
+        defaultColumns: 'adPost, status, createdAt',
+        defaultSort: '-createdAt',
     },
-    labelField: 'name',
     cacheHint: cacheHint,
 }
