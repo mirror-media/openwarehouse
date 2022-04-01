@@ -19,37 +19,37 @@ const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
-            sortOrder:{
-                label: '排序順位',
-                type: Integer,
-                isUnique:true,
-            },
-            adPost:{
-                label: '廣編文章',
-                type: CustomRelationship,
-                ref: 'Post',
+		sortOrder:{
+			label: '排序順位',
+			type: Integer,
+			isUnique:true,
+		},
+		adPost:{
+			label: '廣編文章',
+			type: CustomRelationship,
+			ref: 'Post',
 
-            },
-            status:{
-                label: '狀態',
-                type: Select,
-                option: 'published, draft, scheduled, archived',
-                defaultValue: 'draft',
+		},
+		status:{
+			label: '狀態',
+			type: Select,
+			option: 'published, draft, scheduled, archived',
+			defaultValue: 'draft',
 
-            },
-            startTime:{
-                label: '起始日期',
-                type: NewDateTime,
-                hasNowBtn: true,
-                isReadOnly: false,
+		},
+		startTime:{
+			label: '起始日期',
+			type: NewDateTime,
+			hasNowBtn: true,
+			isReadOnly: false,
 
-            },
-            endTime:{
-                label: '結束日期',
-                type: NewDateTime,
-                hasNowBtn: true,
-                isReadOnly: false,
-            },
+		},
+		endTime:{
+			label: '結束日期',
+			type: NewDateTime,
+			hasNowBtn: true,
+			isReadOnly: false,
+		},
     },
     plugins: [
         atTracking({
@@ -71,7 +71,6 @@ module.exports = {
         create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin, moderator),
     },
-    hooks: {},
     adminConfig: {
         defaultColumns: 'adPost, status, createdAt',
         defaultSort: '-createdAt',
