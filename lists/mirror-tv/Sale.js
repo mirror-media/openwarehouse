@@ -1,4 +1,4 @@
-const { Integer, Select } = require('@keystonejs/fields')
+const { Integer, Select, Relationship } = require('@keystonejs/fields')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const {
