@@ -1,5 +1,4 @@
 const { Integer, Select } = require('@keystonejs/fields')
-const CustomRelationship = require('../../fields/CustomRelationship')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const {
@@ -26,11 +25,11 @@ module.exports = {
 		},
 		adPost:{
 			label: '廣編文章',
-			type: CustomRelationship,
+			type: Relationship,
 			ref: 'Post',
-
+			many: false,
 		},
-		status:{
+		state:{
 			label: '狀態',
 			type: Select,
 			option: 'published, draft, scheduled, archived',
