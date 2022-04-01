@@ -29,10 +29,10 @@ module.exports = {
 			ref: 'Post',
 			many: false,
 		},
-		state:{
+		status:{
 			label: '狀態',
 			type: Select,
-			option: 'published, draft, scheduled, archived',
+			options: 'published, draft, scheduled, archived',
 			defaultValue: 'draft',
 
 		},
