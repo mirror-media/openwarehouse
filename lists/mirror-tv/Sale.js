@@ -1,5 +1,4 @@
-const { Integer, Select } = require('@keystonejs/fields')
-const CustomRelationship = require('../../fields/CustomRelationship')
+const { Integer, Select, Relationship } = require('@keystonejs/fields')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const {
@@ -19,37 +18,37 @@ const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
-            sortOrder:{
-                label: '排序順位',
-                type: Integer,
-                isUnique:true,
-            },
-            adPost:{
-                label: '廣編文章',
-                type: CustomRelationship,
-                ref: 'Post',
+		sortOrder:{
+			label: '排序順位',
+			type: Integer,
+			isUnique:true,
+		},
+		adPost:{
+			label: '廣編文章',
+			type: Relationship,
+			ref: 'Post',
+			many: false,
+		},
+		status:{
+			label: '狀態',
+			type: Select,
+			options: 'published, draft, scheduled, archived',
+			defaultValue: 'draft',
 
-            },
-            status:{
-                label: '狀態',
-                type: Select,
-                option: 'published, draft, scheduled, archived',
-                defaultValue: 'draft',
+		},
+		startTime:{
+			label: '起始日期',
+			type: NewDateTime,
+			hasNowBtn: true,
+			isReadOnly: false,
 
-            },
-            startTime:{
-                label: '起始日期',
-                type: NewDateTime,
-                hasNowBtn: true,
-                isReadOnly: false,
-
-            },
-            endTime:{
-                label: '結束日期',
-                type: NewDateTime,
-                hasNowBtn: true,
-                isReadOnly: false,
-            },
+		},
+		endTime:{
+			label: '結束日期',
+			type: NewDateTime,
+			hasNowBtn: true,
+			isReadOnly: false,
+		},
     },
     plugins: [
         atTracking({
@@ -71,7 +70,6 @@ module.exports = {
         create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin, moderator),
     },
-    hooks: {},
     adminConfig: {
         defaultColumns: 'adPost, status, createdAt',
         defaultSort: '-createdAt',
