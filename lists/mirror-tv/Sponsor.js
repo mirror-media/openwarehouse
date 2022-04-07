@@ -30,7 +30,7 @@ module.exports = {
             type: Url,
         },
         logo: {
-            label: '首圖',
+            label: '首圖為必填',
             type: ImageRelationship,
             ref: 'Image',
             isRequired: true,
