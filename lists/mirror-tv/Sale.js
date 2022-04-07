@@ -23,8 +23,8 @@ module.exports = {
             type: Integer,
             isUnique: true,
         },
-        choice: {
-            label: '精選文章',
+        adPost: {
+            label: '廣編文章',
             type: Relationship,
             ref: 'Post',
             many: false,
@@ -70,7 +70,7 @@ module.exports = {
     },
     hooks: {},
     adminConfig: {
-        defaultColumns: 'choice, state, createdAt',
+        defaultColumns: 'adPost, state, createdAt',
         defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,
