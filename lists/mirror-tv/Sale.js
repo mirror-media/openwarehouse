@@ -32,7 +32,7 @@ module.exports = {
         state: {
             label: '狀態',
             type: Select,
-            options: 'draft, published, scheduled, archived, invisible',
+            options: 'draft, published, scheduled, archived',
             defaultValue: 'draft',
         },
         startTime:{
