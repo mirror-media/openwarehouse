@@ -24,14 +24,14 @@ module.exports = {
             isUnique: true,
         },
         choice: {
-            label: '廣編文章',
+            label: '精選文章',
             type: CustomRelationship,
             ref: 'Post',
         },
         state: {
             label: '狀態',
             type: Select,
-            options: 'draft, published, scheduled, archived',
+            options: 'draft, published, scheduled, archived, invisible',
             defaultValue: 'draft',
         },
     },
