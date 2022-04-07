@@ -33,6 +33,7 @@ module.exports = {
             label: '首圖',
             type: ImageRelationship,
             ref: 'Image',
+            isRequired: true,
         },
     },
     plugins: [
