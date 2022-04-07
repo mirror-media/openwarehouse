@@ -1,4 +1,5 @@
-const { Integer, Select, Relationship } = require('@keystonejs/fields')
+const { Integer, Select } = require('@keystonejs/fields')
+const CustomRelationship = require('../../fields/CustomRelationship')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const {
@@ -14,41 +15,25 @@ const cacheHint = require('../../helpers/cacheHint')
 const {
     getAccessControlViaServerType,
 } = require('../../helpers/ListAccessHandler')
-const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 module.exports = {
     fields: {
-		sortOrder:{
-			label: '排序順位',
-			type: Integer,
-			isUnique:true,
-		},
-		adPost:{
-			label: '廣編文章',
-			type: Relationship,
-			ref: 'Post',
-			many: false,
-		},
-		status:{
-			label: '狀態',
-			type: Select,
-			options: 'published, draft, scheduled, archived',
-			defaultValue: 'draft',
-
-		},
-		startTime:{
-			label: '起始日期',
-			type: NewDateTime,
-			hasNowBtn: true,
-			isReadOnly: false,
-
-		},
-		endTime:{
-			label: '結束日期',
-			type: NewDateTime,
-			hasNowBtn: true,
-			isReadOnly: false,
-		},
+        sortOrder: {
+            label: '排序順位',
+            type: Integer,
+            isUnique: true,
+        },
+        choice: {
+            label: '廣編文章',
+            type: CustomRelationship,
+            ref: 'Post',
+        },
+        state: {
+            label: '狀態',
+            type: Select,
+            options: 'draft, published, scheduled, archived',
+            defaultValue: 'draft',
+        },
     },
     plugins: [
         atTracking({
@@ -70,8 +55,9 @@ module.exports = {
         create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin, moderator),
     },
+    hooks: {},
     adminConfig: {
-        defaultColumns: 'adPost, status, createdAt',
+        defaultColumns: 'choice, state, createdAt',
         defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,
