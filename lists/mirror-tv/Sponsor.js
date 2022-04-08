@@ -19,7 +19,6 @@ module.exports = {
             label: '排序順位',
             type: Integer,
             isUnique: true,
-            isRequired: true,
         },
         topic: {
             label: '專題',
