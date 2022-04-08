@@ -29,7 +29,7 @@ module.exports = {
             ref: 'Post',
             many: false,
         },
-        status: {
+        satus: {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled, archived',
@@ -70,7 +70,7 @@ module.exports = {
     },
     hooks: {},
     adminConfig: {
-        defaultColumns: 'adPost, status, createdAt',
+        defaultColumns: 'adPost, satus, createdAt',
         defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,
