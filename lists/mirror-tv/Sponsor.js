@@ -19,6 +19,7 @@ module.exports = {
             label: '排序順位',
             type: Integer,
             isUnique: true,
+            isRequired: true,
         },
         topic: {
             label: '專題',
@@ -30,7 +31,7 @@ module.exports = {
             type: Url,
         },
         logo: {
-            label: '首圖為必填',
+            label: '首圖(必填)',
             type: ImageRelationship,
             ref: 'Image',
             isRequired: true,
