@@ -30,9 +30,10 @@ module.exports = {
             type: Url,
         },
         logo: {
-            label: '首圖',
+            label: '首圖(必填)',
             type: ImageRelationship,
             ref: 'Image',
+            isRequired: true,
         },
     },
     plugins: [
