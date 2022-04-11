@@ -14,7 +14,7 @@ const cacheHint = require('../../helpers/cacheHint')
 const {
     getAccessControlViaServerType,
 } = require('../../helpers/ListAccessHandler')
-
+const NewDateTime = require('../../fields/NewDateTime/index.js')
 module.exports = {
     fields: {
         sortOrder: {
@@ -33,6 +33,18 @@ module.exports = {
             type: Select,
             options: 'draft, published, scheduled, archived, invisible',
             defaultValue: 'draft',
+        },
+        startTime:{
+            label: '起始日期',
+            type: NewDateTime,
+            hasNowBtn: true,
+            isReadOnly: false,
+        },
+        endTime:{
+            label: '結束日期',
+            type: NewDateTime,
+            hasNowBtn: true,
+            isReadOnly: false,
         },
     },
     plugins: [
