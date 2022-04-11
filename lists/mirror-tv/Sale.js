@@ -23,7 +23,7 @@ module.exports = {
             isUnique: true,
         },
         choice: {
-            label: '精選文章',
+            label: '廣編文章',
             type: Relationship,
             ref: 'Post',
             many: false,
@@ -31,7 +31,7 @@ module.exports = {
         state: {
             label: '狀態',
             type: Select,
-            options: 'draft, published, scheduled, archived, invisible',
+            options: 'draft, published, scheduled, archived',
             defaultValue: 'draft',
         },
         startTime:{
