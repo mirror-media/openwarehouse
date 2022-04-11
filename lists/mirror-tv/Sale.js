@@ -23,15 +23,15 @@ module.exports = {
             type: Integer,
             isUnique: true,
         },
-        adPost: {
-            label: '廣編文章',
+        choice: {
+            label: '精選文章',
             type: CustomRelationship,
             ref: 'Post',
         },
-        status: {
+        state: {
             label: '狀態',
             type: Select,
-            options: 'draft, published, scheduled, archived',
+            options: 'draft, published, scheduled, archived, invisible',
             defaultValue: 'draft',
         },
     },
@@ -57,7 +57,7 @@ module.exports = {
     },
     hooks: {},
     adminConfig: {
-        defaultColumns: 'adPost, status, createdAt',
+        defaultColumns: 'choice, state, createdAt',
         defaultSort: '-createdAt',
     },
     cacheHint: cacheHint,
