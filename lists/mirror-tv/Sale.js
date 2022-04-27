@@ -33,6 +33,14 @@ module.exports = {
             type: Select,
             options: 'draft, published, scheduled, archived',
             defaultValue: 'draft',
+            access: {
+                // 如果user.role是contributor 那將不能發佈文章（draft以外的狀態）
+                // 所以在此不給contributor有更動post.state的create/update權限
+                // 但又因post.state的defaultValue是draft
+                // 所以也就變相地達到contributor只能發佈draft的要求
+                create: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         startTime:{
             label: '起始日期',
@@ -63,8 +71,8 @@ module.exports = {
             contributor,
             owner
         ),
-        update: allowRoles(admin, moderator, editor, bot),
-        create: allowRoles(admin, moderator, editor),
+        update: allowRoles(admin, moderator, editor, contributor, bot),
+        create: allowRoles(admin, moderator, editor, contributor),
         delete: allowRoles(admin, moderator),
     },
     hooks: {},
