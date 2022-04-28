@@ -183,6 +183,12 @@ module.exports = {
             type: Relationship,
             ref: 'Audio',
         },
+        download:{
+            label: '附加檔案',
+            type: Relationship,
+            ref: 'Download',
+            many: true
+        },
         relatedPosts: {
             label: '相關文章',
             type: CustomRelationship,
