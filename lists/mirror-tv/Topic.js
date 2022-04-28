@@ -17,6 +17,7 @@ const {
     admin,
     moderator,
     editor,
+    contributor,
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 
@@ -121,6 +122,14 @@ module.exports = {
             type: Select,
             options: 'draft, published',
             defaultValue: 'draft',
+            access: {
+                // 如果user.role是contributor 那將不能發佈文章（draft以外的狀態）
+                // 所以在此不給contributor有更動post.state的create/update權限
+                // 但又因post.state的defaultValue是draft
+                // 所以也就變相地達到contributor只能發佈draft的要求
+                create: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         brief: {
             label: '前言',
@@ -204,8 +213,8 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: allowRoles(admin, moderator, editor),
-        create: allowRoles(admin, moderator, editor),
+        update: allowRoles(admin, moderator, editor, contributor),
+        create: allowRoles(admin, moderator, editor, contributor),
         delete: allowRoles(admin, moderator),
     },
     hooks: {
