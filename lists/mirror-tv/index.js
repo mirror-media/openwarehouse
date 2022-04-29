@@ -21,4 +21,5 @@ module.exports = {
     Serie: require('./Serie'),
     Sale: require('./Sale'),
     Sponsor: require('./Sponsor'),
+    Download: require('./Download')
 }
