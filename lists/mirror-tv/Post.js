@@ -183,6 +183,12 @@ module.exports = {
             type: Relationship,
             ref: 'Audio',
         },
+        download:{
+            label: '附加檔案',
+            type: Relationship,
+            ref: 'Download',
+            many: true
+        },
         relatedPosts: {
             label: '相關文章',
             type: CustomRelationship,
@@ -287,7 +293,7 @@ module.exports = {
             contributor,
             owner
         ),
-        update: allowRoles(admin, bot, moderator, owner),
+        update: allowRoles(admin, bot, moderator, contributor, owner),
         create: allowRoles(admin, bot, moderator, editor, contributor),
         delete: allowRoles(admin, moderator),
     },
