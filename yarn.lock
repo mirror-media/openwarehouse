@@ -3317,10 +3317,10 @@
     p-reflect "^2.1.0"
     semver "^7.3.5"
 
-"@liyibass/html-draft-editor@^1.1.7":
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/@liyibass/html-draft-editor/-/html-draft-editor-1.1.7.tgz#dcd8b198bf6bf1a2282dd8ae416d4aca032606b2"
-  integrity sha512-cWwgE6cez/f7oek8keBOc3WL7TotZWqZxAlcREFHe+LWcbUib3HDSSDeNea2WLL5pk32UIYc5Vx/P/rXHo4z5Q==
+"@mirrormedia/html-draft-editor@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@mirrormedia/html-draft-editor/-/html-draft-editor-1.1.9.tgz#d425519bda27a206d46fe017f8f566aa6d688585"
+  integrity sha512-ox5xYNmNpLf7xWsL076AIRMqI8T57XbO2yuy6b7Ww/dqdhoqzM6WUiNmwYTKkomP1PQvutEIePn39be54J5kGg==
   dependencies:
     "@arch-ui/button" "^0.0.23"
     "@arch-ui/dialog" "^0.0.26"
