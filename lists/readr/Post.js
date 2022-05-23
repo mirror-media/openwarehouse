@@ -141,7 +141,7 @@ module.exports = {
             label: '樣式',
             type: Select,
             options:
-                'reviews, news, report, memo, dummy, card, qa, project3, embedded, scrollablevideo',
+                'reviews, news, report, memo, dummy, card, qa, project3, embedded, scrollablevideo, frame',
             defaultValue: 'news',
         },
         summary: {

@@ -1,4 +1,4 @@
-const { Relationship, Slug, Text } = require('@keystonejs/fields')
+const { Relationship, Slug, Text, Select } = require('@keystonejs/fields')
 
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
@@ -101,6 +101,15 @@ module.exports = {
             type: Relationship,
             ref: 'Contact.relatedSeries',
             many: true,
+        },
+        style:{
+            label: '樣式',
+            type: Select,
+            options: [
+                {value:'default', label:'預設'},
+                {value: 'acting', label: '誰來演戲'},
+            ],
+            defaultValue: 'default',
         },
         introductionApiData: {
             label: 'Introduction API Data',
