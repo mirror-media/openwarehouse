@@ -36,6 +36,7 @@ module.exports = {
             label: '相關正片',
             type: Relationship,
             ref: 'ArtShow',
+            many: true,
         },
         show: {
             label: '相關節目',
@@ -62,6 +63,10 @@ module.exports = {
                 {value: 'art', label: '藝文'},
             ],
             defaultValue: 'default',
+        },
+        trailerUrl:{
+            label: '預告清單(url)',
+            type: Text,
         }
     },
     plugins: [

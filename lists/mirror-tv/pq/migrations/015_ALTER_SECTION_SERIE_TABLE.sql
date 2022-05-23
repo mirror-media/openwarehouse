@@ -16,3 +16,11 @@ ALTER TABLE "Section" ADD CONSTRAINT "Section_style_check" CHECK ((style = ANY (
 ALTER TABLE "Serie" ADD COLUMN "style"  text DEFAULT 'default';
 ALTER TABLE "Serie" ADD CONSTRAINT "Serie_style_check" CHECK ((style = ANY (ARRAY['default'::text, 'acting'::text])));
 
+--alter section for column trailerUrl and artshow relationship(to many)
+ALTER TABLE "Section" ADD COLUMN "trailerUrl" text NULL;
+CREATE TABLE "Section_artshow_many" (
+	"Section_left_id" int4 NOT NULL,
+	"ArtShow_right_id" int4 NOT NULL
+);
+CREATE INDEX Section_artshow_many_ArtShow_right_id_index ON "Section_artshow_many" USING btree ("ArtShow_right_id");
+CREATE INDEX Section_artshow_many_Section_left_id_index ON "Section_artshow_many" USING btree ("Section_left_id");
