@@ -1,4 +1,4 @@
-const { Relationship, Slug, Text } = require('@keystonejs/fields')
+const { Relationship, Slug, Text, Select } = require('@keystonejs/fields')
 
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
@@ -25,6 +25,19 @@ module.exports = {
             type: Text,
             isRequired: true,
         },
+        host:{
+            label: '主持人',
+            type: Relationship,
+            ref: 'Contact',
+            many: true,
+
+        },
+        artshow:{
+            label: '相關正片',
+            type: Relationship,
+            ref: 'ArtShow',
+            many: true,
+        },
         show: {
             label: '相關節目',
             type: Relationship,
@@ -37,6 +50,24 @@ module.exports = {
             ref: 'Serie.section',
             many: true,
         },
+        introduction:{
+            label: '文字簡介',
+            type: Text,
+            isMultiline:true,
+        },
+        style:{
+            label: '樣式',
+            type: Select,
+            options: [
+                {value:'default', label:'預設'},
+                {value: 'art', label: '藝文'},
+            ],
+            defaultValue: 'default',
+        },
+        trailerUrl:{
+            label: '預告清單(url)',
+            type: Text,
+        }
     },
     plugins: [
         atTracking({
