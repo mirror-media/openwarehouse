@@ -39,7 +39,7 @@ module.exports = {
                 // 但又因post.state的defaultValue是draft
                 // 所以也就變相地達到contributor只能發佈draft的要求
                 create: allowRoles(admin, moderator, editor),
-                update: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor, bot),
             },
         },
         startTime:{
