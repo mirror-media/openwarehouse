@@ -25,7 +25,7 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - gcr.io/$PROJECT_ID/openwarehouse
+      - gcr.io/$PROJECT_ID/openwarehouse:${BRANCH_NAME}_${SHORT_SHA}
 
   # NOTICE: THE FOLLOWING STEPS ARE FOR TEMPRARY USAGE
   # build `kustomize` configs
