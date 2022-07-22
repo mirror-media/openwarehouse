@@ -128,6 +128,7 @@ const graphQLOptions = {
     apollo: {
         ...apolloDftOptions,
         ...apolloRedisCacheOptions,
+        maxFileSize: 300 * 1024 * 1024,
     },
 }
 
