@@ -1,4 +1,4 @@
-const { Integer, Select, Relationship, Url } = require('@keystonejs/fields')
+const { Integer, Text, Select, Relationship, Url } = require('@keystonejs/fields')
 
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
@@ -14,6 +14,10 @@ const cacheHint = require('../../helpers/cacheHint')
 
 module.exports = {
     fields: {
+        title:{
+            label: '標題',
+            type: Text
+        },
         sortOrder: {
             label: '排序順位',
             type: Integer,
@@ -44,6 +48,18 @@ module.exports = {
         },
         logo: {
             label: '首圖(必填)',
+            type: ImageRelationship,
+            ref: 'Image',
+            isRequired: true,
+        },
+        mobile: {
+            label: '手機用圖',
+            type: ImageRelationship,
+            ref: 'Image',
+            isRequired: true,
+        },
+        tablet : {
+            label: '平板用圖',
             type: ImageRelationship,
             ref: 'Image',
             isRequired: true,
