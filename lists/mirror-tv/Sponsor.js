@@ -53,16 +53,14 @@ module.exports = {
             isRequired: true,
         },
         mobile: {
-            label: '手機用圖',
+            label: '手機用圖（僅供外部連結使用）',
             type: ImageRelationship,
             ref: 'Image',
-            isRequired: true,
         },
         tablet : {
-            label: '平板用圖',
+            label: '平板用圖（僅供外部連結使用）',
             type: ImageRelationship,
             ref: 'Image',
-            isRequired: true,
         },
     },
     plugins: [
