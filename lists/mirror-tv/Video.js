@@ -57,6 +57,9 @@ module.exports = {
             type: Relationship,
             ref: 'Category',
             many: true,
+            access: {
+              update: allowRoles(admin, moderator, editor, contributor),
+            },
         },
         coverPhoto: {
             label: '封面照片',
@@ -91,6 +94,9 @@ module.exports = {
             type: CustomRelationship,
             ref: 'Post',
             many: true,
+            access: {
+              update: allowRoles(admin, moderator, editor, contributor),
+            },
         },
         isFeed: {
             label: '供稿',
