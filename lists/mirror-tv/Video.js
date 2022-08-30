@@ -42,70 +42,94 @@ module.exports = {
             label: '標題',
             type: Text,
             isRequired: true,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         youtubeUrl: {
             label: 'Youtube網址',
             type: Text,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         file: {
             label: '檔案',
             type: File,
             adapter: fileAdapter,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         categories: {
             label: '分類',
             type: Relationship,
             ref: 'Category',
             many: true,
-            access: {
-              update: allowRoles(admin, moderator, editor, contributor),
-            },
         },
         coverPhoto: {
             label: '封面照片',
             type: Relationship,
             ref: 'Image',
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         description: {
             label: '敘述',
             type: Text,
             isMultiline: true,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         tags: {
             label: '標籤',
             type: Relationship,
             ref: 'Tag',
             many: true,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         state: {
             label: '狀態',
             type: Select,
             options: 'draft, published, scheduled',
             defaultValue: 'draft',
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         publishTime: {
             label: '發佈時間',
             type: NewDateTime,
             hasNowBtn: true,
             isReadOnly: false,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         relatedPosts: {
             label: '相關文章',
             type: CustomRelationship,
             ref: 'Post',
             many: true,
-            access: {
-              update: allowRoles(admin, moderator, editor, contributor),
-            },
         },
         isFeed: {
             label: '供稿',
             type: Checkbox,
             defaultValue: true,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         thumbnail: {
             label: '縮圖網址',
             type: Url,
+            access: {
+                update: allowRoles(admin, moderator, editor),
+            },
         },
         meta: {
             label: '中繼資料',
@@ -137,7 +161,7 @@ module.exports = {
         byTracking(),
     ],
     access: {
-        update: allowRoles(admin, moderator, editor),
+        update: allowRoles(admin, moderator, editor, contributor),
         create: allowRoles(admin, moderator, editor, contributor, bot),
         delete: allowRoles(admin, moderator),
     },
