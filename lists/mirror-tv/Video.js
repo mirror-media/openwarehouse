@@ -79,9 +79,6 @@ module.exports = {
             label: '敘述',
             type: Text,
             isMultiline: true,
-            access: {
-                update: allowRoles(admin, moderator, editor),
-            },
         },
         tags: {
             label: '標籤',
