@@ -153,6 +153,11 @@ module.exports = {
                 isReadOnly: true,
             },
         },
+        isResigned: {
+            label: '已離職',
+            type: Checkbox,
+
+        },
     },
     plugins: [
         atTracking({
@@ -183,6 +188,9 @@ module.exports = {
         defaultColumns: 'sortOrder, slug, createdAt',
         defaultSort: '-createdAt',
     },
-    labelField: 'name',
+    labelResolver: async(item) => {
+        const contactLabel = item.isResigned?  `${item.name} (已離職)`: item.name
+        return contactLabel
+        },
     cacheHint: cacheHint,
 }
