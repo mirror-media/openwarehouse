@@ -171,6 +171,7 @@ module.exports = {
             label: '專題',
             type: Relationship,
             ref: 'Topic',
+          access: false,
         },
         tags: {
             label: '標籤',
@@ -199,6 +200,7 @@ module.exports = {
             label: '相關專題',
             type: Relationship,
             ref: 'Topic',
+          access: false,
         },
         ogTitle: {
             label: 'FB 分享標題',
