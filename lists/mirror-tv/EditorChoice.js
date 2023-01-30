@@ -67,23 +67,7 @@ module.exports = {
         create: allowRoles(admin, moderator, editor),
         delete: allowRoles(admin, moderator),
     },
-    hooks: {
-        resolveInput: async ({ resolvedData, operation }) => {
-            const published = resolvedData.publishedDate;
-            const expired = resolvedData.expiredDate;
-            console.log(resolvedData);
-            if (operation == 'create') {
-                if (published == null) {
-                    resolvedData.publishedDate = addDate(1)
-                }
-                if (expired == null) {
-                    resolvedData.expiredDate = addDate(2)
-                }
-            }
-
-            return resolvedData;
-        }
-    },
+    hooks: {},
     adminConfig: {
         defaultColumns: 'choice, state, createdAt',
         defaultSort: '-createdAt',
