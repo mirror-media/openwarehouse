@@ -16,7 +16,7 @@ const {
     getAccessControlViaServerType,
 } = require('../../helpers/ListAccessHandler')
 const addDate = (day) => {
-    let today =  new Date()
+    let today = new Date()
     today.setDate(today.getDate() + day)
     return today.toISOString().slice(0, 10)
 }
@@ -35,13 +35,10 @@ module.exports = {
         publishedDate: {
             label: '上架日期（預設隔日）',
             type: CalendarDay,
-            defaultValue: addDate(1)
         },
         expiredDate: {
             label: '下架日期（預設隔一日）',
             type: CalendarDay,
-            defaultValue: addDate(2)
-            //new Date().setDate(today.getDate() + 1).toISOString().slice(0, 10)
         },
         state: {
             label: '狀態',
