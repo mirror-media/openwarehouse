@@ -1,4 +1,4 @@
-const { Integer, Select } = require('@keystonejs/fields')
+const { Integer, Select, CalendarDay } = require('@keystonejs/fields')
 const CustomRelationship = require('../../fields/CustomRelationship')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
@@ -15,7 +15,11 @@ const cacheHint = require('../../helpers/cacheHint')
 const {
     getAccessControlViaServerType,
 } = require('../../helpers/ListAccessHandler')
-
+const addDate = (day) => {
+    let today = new Date()
+    today.setDate(today.getDate() + day)
+    return today.toISOString().slice(0, 10)
+}
 module.exports = {
     fields: {
         sortOrder: {
@@ -27,6 +31,14 @@ module.exports = {
             label: '精選文章',
             type: CustomRelationship,
             ref: 'Post',
+        },
+        publishedDate: {
+            label: '上架日期（預設隔日）',
+            type: CalendarDay,
+        },
+        expiredDate: {
+            label: '下架日期（預設隔一日）',
+            type: CalendarDay,
         },
         state: {
             label: '狀態',
