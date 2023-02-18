@@ -219,6 +219,11 @@ module.exports = {
             isMultiline: true,
             defaultValue: '',
         },
+        isFeed:{
+            label: '供稿',
+            type: Checkbox,
+            defaultValue:true
+        },
         isFeatured: {
             label: '置頂',
             type: Checkbox,
