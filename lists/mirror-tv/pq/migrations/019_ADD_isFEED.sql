@@ -1,0 +1,1 @@
+ALTER TABLE "Post" ADD COLUMN "isFeed" boolean DEFAULT true;
