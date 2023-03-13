@@ -221,6 +221,10 @@ module.exports = {
             isMultiline: true,
             defaultValue: '',
         },
+        notFeed:{
+            label: '不供稿給週刊',
+            type: Checkbox,
+        },
         isFeatured: {
             label: '置頂',
             type: Checkbox,
