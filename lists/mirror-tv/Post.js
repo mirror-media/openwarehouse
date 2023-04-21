@@ -232,7 +232,7 @@ module.exports = {
             type: Checkbox,
         },
         isAdvertised: {
-            label: '廣告文案',
+            label: '廣告文案（內容不餵給 LINE 跟 Yahoo RSS）',
             type: Checkbox,
         },
         isAdBlocked: {
