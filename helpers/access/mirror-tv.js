@@ -10,11 +10,11 @@ const contributor = ({ authentication: { item: user } }) =>
 const bot = ({ authentication: { item: user } }) =>
     Boolean(user && user.role == 'bot')
 
-const owner = ({ authentication: { item: user }, listKey }) => {
+const owner = ({ authentication: { item: user }, listKey, existingItem }) => {
     if (!user) return false
 
     if (listKey == 'User') return { id: user.id }
-
+    if (existingItem?.createdBy == user.id) return existingItem?.createdBy == user.id //for field level ACL
     return { createdBy: { id: user.id } }
 }
 

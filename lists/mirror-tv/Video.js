@@ -19,6 +19,7 @@ const {
     moderator,
     editor,
     contributor,
+    owner,
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
@@ -58,7 +59,7 @@ module.exports = {
             type: File,
             adapter: fileAdapter,
             access: {
-                update: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor, owner),
             },
         },
         categories: {
@@ -95,7 +96,7 @@ module.exports = {
             options: 'draft, published, scheduled',
             defaultValue: 'draft',
             access: {
-                update: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor, owner),
             },
         },
         publishTime: {
