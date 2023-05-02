@@ -105,7 +105,7 @@ module.exports = {
             hasNowBtn: true,
             isReadOnly: false,
             access: {
-                update: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor, owner),
             },
         },
         relatedPosts: {
