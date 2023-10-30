@@ -78,6 +78,10 @@ module.exports = {
             ref: 'Contact',
             many: true,
         },
+        igUrl: {
+            label: 'IG 連結',
+            type: Url,
+        },
         facebookUrl: {
             label: 'facebook 粉專連結',
             type: Url,
