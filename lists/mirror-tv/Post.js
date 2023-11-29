@@ -299,7 +299,7 @@ module.exports = {
             contributor,
             owner
         ),
-        update: allowRoles(admin, bot, moderator, contributor, owner),
+        update: allowRoles(admin, bot, moderator, owner),
         create: allowRoles(admin, bot, moderator, editor, contributor),
         delete: allowRoles(admin, moderator),
     },
