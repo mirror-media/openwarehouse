@@ -322,8 +322,9 @@ module.exports = {
             resolvedData,
             addValidationError,
 			context,
+			operation,
         }) => {
-			if (existingItem.state == 'published') {
+			if (operation == 'update' && existingItem.state == 'published') {
 				if (context.req.user.role == 'contributor') {
 					addValidationError("You don't have the permission")
 					return

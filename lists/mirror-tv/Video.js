@@ -163,7 +163,6 @@ module.exports = {
         create: allowRoles(admin, moderator, editor, contributor, bot),
         delete: allowRoles(admin, moderator),
     },
-    hooks: {},
     adminConfig: {
         defaultColumns: 'title, video, tags, state, publishTime, createdAt',
         defaultSort: '-createdAt',
@@ -174,8 +173,9 @@ module.exports = {
             resolvedData,
             addValidationError,
             context,
+			operation,
         }) => {
-			if (existingItem.state == 'published') {
+			if (operation == 'update' && existingItem.state == 'published') {
 				if (context.req.user.role == 'contributor') {
 					addValidationError("You don't have the permission")
 					return
