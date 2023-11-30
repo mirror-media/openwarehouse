@@ -96,7 +96,8 @@ module.exports = {
             options: 'draft, published, scheduled',
             defaultValue: 'draft',
             access: {
-                update: allowRoles(admin, moderator, editor, owner),
+                create: allowRoles(admin, moderator, editor),
+                update: allowRoles(admin, moderator, editor),
             },
         },
         publishTime: {
