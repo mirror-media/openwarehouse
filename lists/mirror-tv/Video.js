@@ -173,7 +173,14 @@ module.exports = {
             existingItem,
             resolvedData,
             addValidationError,
+            context,
         }) => {
+			if (existingItem.state == 'published') {
+				if (context.req.user.role == 'contributor') {
+					addValidationError("You don't have the permission")
+					return
+				}
+            }
             const keyToUse = validateWhichKeyShouldCMSChoose(
                 existingItem,
                 resolvedData,
