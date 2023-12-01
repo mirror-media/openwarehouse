@@ -43,24 +43,15 @@ module.exports = {
             label: '標題',
             type: Text,
             isRequired: true,
-            access: {
-                update: allowRoles(admin, moderator, editor),
-            },
         },
         youtubeUrl: {
             label: 'Youtube網址',
             type: Text,
-            access: {
-                update: allowRoles(admin, moderator, editor),
-            },
         },
         file: {
             label: '檔案',
             type: File,
             adapter: fileAdapter,
-            access: {
-                update: allowRoles(admin, moderator, editor, owner),
-            },
         },
         categories: {
             label: '分類',
@@ -72,9 +63,6 @@ module.exports = {
             label: '封面照片',
             type: Relationship,
             ref: 'Image',
-            access: {
-                update: allowRoles(admin, moderator, editor),
-            },
         },
         description: {
             label: '敘述',
@@ -86,9 +74,6 @@ module.exports = {
             type: Relationship,
             ref: 'Tag',
             many: true,
-            access: {
-                update: allowRoles(admin, moderator, editor),
-            },
         },
         state: {
             label: '狀態',
@@ -105,9 +90,6 @@ module.exports = {
             type: NewDateTime,
             hasNowBtn: true,
             isReadOnly: false,
-            access: {
-                update: allowRoles(admin, moderator, editor, owner),
-            },
         },
         relatedPosts: {
             label: '相關文章',
@@ -119,16 +101,10 @@ module.exports = {
             label: '供稿',
             type: Checkbox,
             defaultValue: true,
-            access: {
-                update: allowRoles(admin, moderator, editor),
-            },
         },
         thumbnail: {
             label: '縮圖網址',
             type: Url,
-            access: {
-                update: allowRoles(admin, moderator, editor),
-            },
         },
         meta: {
             label: '中繼資料',
