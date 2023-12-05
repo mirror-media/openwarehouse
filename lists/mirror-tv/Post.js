@@ -299,7 +299,7 @@ module.exports = {
             contributor,
             owner
         ),
-        update: allowRoles(admin, bot, moderator, contributor, owner),
+        update: allowRoles(admin, bot, moderator, owner),
         create: allowRoles(admin, bot, moderator, editor, contributor),
         delete: allowRoles(admin, moderator),
     },
@@ -321,7 +321,15 @@ module.exports = {
             existingItem,
             resolvedData,
             addValidationError,
+			context,
+			operation,
         }) => {
+			if (operation == 'update' && existingItem.state == 'published') {
+				if (context.req.user.role == 'contributor') {
+					addValidationError("You don't have the permission")
+					return
+				}
+			}
             await validateIfPostNeedPublishTime(
                 existingItem,
                 resolvedData,
