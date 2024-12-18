@@ -66,6 +66,12 @@ module.exports = {
             type: HTML,
             isMultiline: true,
         },
+        tags: {
+            label: '標籤',
+            type: Relationship,
+            ref: 'Tag',
+            many: true,
+        },
         source: {
             label: '原文網址',
             type: Url,
