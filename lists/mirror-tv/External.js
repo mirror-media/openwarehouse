@@ -72,6 +72,12 @@ module.exports = {
             ref: 'Tag',
             many: true,
         },
+        categories: {
+            label: '分類',
+            type: Relationship,
+            ref: 'Category',
+            many: true,
+        },
         source: {
             label: '原文網址',
             type: Url,
