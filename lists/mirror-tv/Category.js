@@ -2,6 +2,7 @@ const {
     Checkbox,
     Integer,
     Relationship,
+	Select,
     Slug,
     Text,
 } = require('@keystonejs/fields')
