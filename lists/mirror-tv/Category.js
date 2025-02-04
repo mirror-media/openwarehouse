@@ -2,6 +2,7 @@ const {
     Checkbox,
     Integer,
     Relationship,
+	Select,
     Slug,
     Text,
 } = require('@keystonejs/fields')
@@ -48,6 +49,14 @@ module.exports = {
         isFeatured: {
             label: '置頂',
             type: Checkbox,
+        },
+        style: {
+            label: '樣式',
+            type: Select,
+            options:
+                'normal,highlight',
+            // defaultValue: 'article'
+            defaultValue: 'normal',
         },
     },
     plugins: [
