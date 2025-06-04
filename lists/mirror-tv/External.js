@@ -2,6 +2,7 @@ const { Slug, Text, Relationship, Select, Url } = require('@keystonejs/fields')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 
 const HTML = require('../../fields/HTML')
+const TextHide = require('../../fields/TextHide')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const {
@@ -54,6 +55,17 @@ module.exports = {
         thumbnail: {
             label: '縮圖',
             type: Url,
+        },
+        brief_original: {
+            label: '前言(RSS source)',
+            type: TextHide,
+            //isMultiline: true,
+        },
+        content_original: {
+            label: '內文(RSS source)',
+            // type: Text,
+            type: TextHide,
+            //isMultiline: true,
         },
         brief: {
             label: '前言',
