@@ -101,7 +101,7 @@ module.exports = {
         },
 		*/
         listShow: {
-            label: '顯示在首頁',
+            label: '首頁隱藏',
             type: Checkbox,
         },
         trailerPlaylist: {
