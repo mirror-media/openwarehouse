@@ -1,4 +1,4 @@
-LTER TABLE "ArtShow" ADD COLUMN "state" text NOT NULL DEFAULT 'draft';                                            
+ALTER TABLE "ArtShow" ADD COLUMN "state" text NOT NULL DEFAULT 'draft';                                            
 ALTER TABLE "ArtShow" ADD COLUMN "publishTime" timestamp NULL;                                                     
 ALTER TABLE "ArtShow" ADD COLUMN "contentHtml" text NULL;                                                          
 ALTER TABLE "ArtShow" ADD COLUMN "contentApiData" text NULL;                                                       

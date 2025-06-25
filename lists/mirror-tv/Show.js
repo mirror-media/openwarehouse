@@ -100,6 +100,10 @@ module.exports = {
             type: Url,
         },
 		*/
+        listShow: {
+            label: '首頁隱藏',
+            type: Checkbox,
+        },
         trailerPlaylist: {
             label: '預告清單',
             type: Url,
