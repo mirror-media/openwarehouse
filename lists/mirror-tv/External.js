@@ -56,6 +56,10 @@ module.exports = {
             label: '縮圖',
             type: Url,
         },
+        heroCaption: {
+            label: '首圖圖說',
+            type: Text,
+        },
         brief_original: {
             label: '前言(RSS source)',
             type: TextHide,
