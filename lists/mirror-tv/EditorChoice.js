@@ -33,7 +33,7 @@ module.exports = {
             ref: 'Post',
         },
         externalChoice: {
-            label: '精選文章',
+            label: '外部文章',
             type: CustomRelationship,
             ref: 'External',
         },
