@@ -225,6 +225,10 @@ module.exports = {
             label: '不供稿給週刊',
             type: Checkbox,
         },
+        exclusive: {
+            label: '獨家',
+            type: Checkbox,
+        },
         isFeatured: {
             label: '置頂',
             type: Checkbox,
