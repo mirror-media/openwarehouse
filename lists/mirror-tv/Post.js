@@ -144,6 +144,7 @@ module.exports = {
             type: Select,
             options: 'extend, normal, small',
             defaultValue: 'normal',
+            access: false,
             /*dependsOn: {
                 heroImage: {
                     '$regex': '.+/i'
@@ -154,7 +155,7 @@ module.exports = {
             label: '樣式',
             type: Select,
             options:
-                'article, videoNews, wide, projects, photography, script, campaign, readr',
+                'article, videoNews',
             // defaultValue: 'article'
             defaultValue: 'article',
         },
@@ -172,7 +173,7 @@ module.exports = {
             label: '專題',
             type: Relationship,
             ref: 'Topic',
-          access: false,
+            access: false,
         },
         tags: {
             label: '標籤',
