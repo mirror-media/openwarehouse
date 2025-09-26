@@ -144,7 +144,6 @@ module.exports = {
             type: Select,
             options: 'extend, normal, small',
             defaultValue: 'normal',
-            access: false,
             /*dependsOn: {
                 heroImage: {
                     '$regex': '.+/i'
