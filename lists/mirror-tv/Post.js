@@ -154,7 +154,7 @@ module.exports = {
             label: '樣式',
             type: Select,
             options:
-                'article, videoNews',
+                'article, videoNews, wide, projects, photography, script, campaign, readr',
             // defaultValue: 'article'
             defaultValue: 'article',
         },
