@@ -127,6 +127,10 @@ module.exports = {
             label: '節目主持人',
             type: Checkbox,
         },
+        international: {
+            label: '鏡國際',
+            type: Checkbox,
+        },
         relatedShows: {
             label: '關聯藝文節目',
             type: Relationship,
