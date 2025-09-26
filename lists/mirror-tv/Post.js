@@ -26,6 +26,7 @@ const cacheHint = require('../../helpers/cacheHint')
 const { parseResolvedData } = require('../../utils/parseResolvedData')
 const { emitEditLog } = require('../../utils/emitEditLog')
 const { controlCharacterFilter } = require('../../utils/controlCharacterFilter')
+const { removeInvisibleChars, hasInvisibleChars } = require('../../utils/invisibleChar')
 const {
     validateIfPostNeedPublishTime,
     validateIfPublishTimeIsFutureTime,
@@ -143,6 +144,7 @@ module.exports = {
             type: Select,
             options: 'extend, normal, small',
             defaultValue: 'normal',
+            access: false,
             /*dependsOn: {
                 heroImage: {
                     '$regex': '.+/i'
@@ -153,7 +155,7 @@ module.exports = {
             label: '樣式',
             type: Select,
             options:
-                'article, videoNews, wide, projects, photography, script, campaign, readr',
+                'article, videoNews',
             // defaultValue: 'article'
             defaultValue: 'article',
         },
@@ -171,7 +173,7 @@ module.exports = {
             label: '專題',
             type: Relationship,
             ref: 'Topic',
-          access: false,
+            access: false,
         },
         tags: {
             label: '標籤',
@@ -317,6 +319,12 @@ module.exports = {
 
             await parseResolvedData(existingItem, resolvedData)
 
+            // 針對自動產生之 HTML 欄位，於解析後再做清理，避免被覆寫
+            if (resolvedData.briefHtml)
+                resolvedData.briefHtml = removeInvisibleChars(resolvedData.briefHtml)
+            if (resolvedData.contentHtml)
+                resolvedData.contentHtml = removeInvisibleChars(resolvedData.contentHtml)
+
             await generateSource(existingItem, resolvedData)
 
             return resolvedData
@@ -344,6 +352,17 @@ module.exports = {
                 resolvedData,
                 addValidationError
             )
+
+            // 若輸入含不可見字元，於驗證階段進一步清理（不阻擋儲存）
+            // 只檢查此次變更的欄位
+            const fieldsToCheck = ['briefHtml', 'contentHtml']
+            for (const field of fieldsToCheck) {
+                if (field in resolvedData && typeof resolvedData[field] === 'string') {
+                    if (hasInvisibleChars(resolvedData[field])) {
+                        resolvedData[field] = removeInvisibleChars(resolvedData[field])
+                    }
+                }
+            }
         },
         afterChange: async ({
             operation,
