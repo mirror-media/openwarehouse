@@ -35,7 +35,10 @@ const {
     deleteOldVideoFileInGCSIfNeeded,
     feedNewVideoData,
     validateWhichKeyShouldCMSChoose,
+    YouTubeDurationUtil,
+    getYouTubeDuration,
 } = require('../../utils/videoHandler')
+const { processVideoInBackground } = require('../../utils/processVideoInBackground')
 
 module.exports = {
     fields: {
@@ -127,7 +130,44 @@ module.exports = {
                 isReadOnly: true,
             },
         },
+        // 新增欄位
+        fileDuration_internal: {
+            label: '影片檔案時長(ISO 8601)',
+            type: Text,
+            adminConfig: { isReadOnly: true, isHidden: true },
+        },
+        youtubeDuration_internal: {
+            label: 'YouTube影片時長(ISO 8601)',
+            type: Text,
+            adminConfig: { isReadOnly: true, isHidden: true },
+        },
     },
+
+    extendGraphQLSchema: {
+        types: [
+            `
+            extend type Video {
+                fileDuration: String
+                youtubeDuration: String
+            }
+            `
+        ],
+        resolvers: {
+            Video: {
+                fileDuration: (item) => {
+                    const v = item.fileDuration_internal;
+                    if (item.youtubeUrl && !item.file) return 'PT0S';
+                    return v && v !== '0' ? v : 'PT0S';
+                },
+                youtubeDuration: (item) => {
+                    const v = item.youtubeDuration_internal;
+                    if (item.file && !item.youtubeUrl) return 'PT0S';
+                    return v && v !== '0' ? v : 'PT0S';
+                }
+            }
+        }
+    },
+
     plugins: [
         atTracking({
             hasNowBtn: false,
@@ -141,7 +181,7 @@ module.exports = {
         delete: allowRoles(admin, moderator),
     },
     adminConfig: {
-        defaultColumns: 'title, video, tags, state, publishTime, createdAt',
+        defaultColumns: 'name, video, tags, state, publishTime, createdAt',
         defaultSort: '-createdAt',
     },
     hooks: {
@@ -202,6 +242,89 @@ module.exports = {
                     break
             }
         },
+        resolveInput: async ({ resolvedData, existingItem }) => {
+            try {
+                // 抓 YouTube URL 影片長度
+                if (resolvedData.youtubeUrl && resolvedData.youtubeUrl !== existingItem?.youtubeUrl) {
+                    const durationData = await getYouTubeDuration(resolvedData.youtubeUrl);
+                    if (durationData) {
+                        const { durationISO, durationSeconds } = durationData;
+
+                        // 設定 YouTube 相關欄位
+                        resolvedData.youtubeDuration_internal = durationISO;
+                        resolvedData.duration = durationSeconds;
+
+                        // YouTube → File 時長設為 0
+                        resolvedData.fileDuration_internal = 'PT0S';
+
+                        console.log(`[Video Hook] YouTube URL processed: ${resolvedData.youtubeUrl}`);
+                        console.log(`Duration (seconds): ${durationSeconds}, ISO: ${durationISO}`);
+                    } else {
+                        // 如果抓不到，設定為 PT0S
+                        resolvedData.youtubeDuration_internal = 'PT0S';
+                        resolvedData.fileDuration_internal = 'PT0S';
+                        resolvedData.duration = 0;
+
+                        console.warn(`[Video Hook] YouTube URL duration not found: ${resolvedData.youtubeUrl}`);
+                    }
+                }
+
+                // 更新 updatedAt_utc
+                if (existingItem) { 
+                    resolvedData.updatedAt_utc = new Date();
+                    console.log(`[Video Hook] updatedAt_utc updated: ${resolvedData.updatedAt_utc}`);
+                }
+
+                return resolvedData;
+            } catch (error) {
+                console.error('[Video Hook] resolveInput error:', error);
+
+                if (existingItem) {
+                    resolvedData.updatedAt_utc = new Date();
+                }
+                return resolvedData;
+            }
+        },
+
+        afterChange: async ({ existingItem, updatedItem, context, operation }) => {
+            const oldFile = existingItem?.file?.filename;
+            const newFile = updatedItem?.file?.filename;
+
+            console.log('[Hook] afterChange triggered, operation:', operation);
+            console.log('Old File:', oldFile, 'New File:', newFile);
+
+            // 檔案沒變 → 跳過
+            if (oldFile && newFile && oldFile === newFile){
+                console.log('File name same, skip processing');
+                return;
+            }
+
+            // 更換檔案
+            if (oldFile && !newFile && updatedItem.file) {
+                console.log('Replacing file and wait for next afterChange');
+                return;
+            }
+
+            // 檔案被刪除
+            if (oldFile && !newFile && !updatedItem.file) {
+                console.log('File removed, clearing duration');
+                processVideoInBackground({
+                    videoId: updatedItem.id.toString(),
+                    fileInfo: null,
+                    action: 'delete',
+                }, context);
+                return;
+            }
+
+            // 新檔案 → 背景處理影片
+            console.log('New file detected, processing:', newFile);
+            processVideoInBackground({
+                videoId: updatedItem.id.toString(),
+                fileInfo: updatedItem.file,
+                action: 'process', // Run ffmpeg 計算 duration
+            }, context);
+        },
+
         beforeChange: async ({
             existingItem,
             resolvedData,
