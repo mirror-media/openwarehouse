@@ -2,9 +2,13 @@
 
 module.exports = {
     main: {
+        project: 'your-project-name',
         applicationName: "applicationName",
         authList: "authList",
-        dropDatabase: true
+        uuid: 'uuid',
+        dropDatabase: false,
+        isGraphQLCached: false,
+        isAdminAppRequired: true,
     },
     database: {
         host: "host",
@@ -17,9 +21,19 @@ module.exports = {
         ttl: 3600,
         prefix: "ks-sess"
     },
+    storage: {
+        gcpUrlBase: 'gcpUrlBase',
+        webUrlBase: 'webUrlBase',
+        bucket: 'your-bucket-name',
+        imgUrlBase: 'imgUrlBase',
+        videoUrlBase: '/video-files',
+    },
     redis: {
         host: "host",
         port: "port",
         authPass: "authPass"
-    }
+    },
+    youtube: {
+        apiKey: "your_youtube_api_key"
+    },
 }

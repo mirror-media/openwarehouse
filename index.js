@@ -13,6 +13,7 @@ const {
     database,
     session,
     redis: redisConf,
+    youtube
 } = require('./configs/config.js')
 const lists = require(`./lists/${app.project}`)
 const createDefaultAdmin = require('./helpers/createDefaultAdmin')
@@ -29,6 +30,7 @@ const adapterConfig = {
     knexOptions: {
         client: 'postgres',
         connection: `postgresql://${database.acc}:${database.pass}@${database.host}/${database.db}`,
+        // connection: `postgresql://${database.acc}:${database.pass}@${database.host}:${database.port}/${database.db}`,
     },
 }
 
@@ -59,6 +61,7 @@ const newRedisClient = (redisConf) => {
 
 const keystone = new Keystone({
     adapter: new Adapter(adapterConfig),
+    youtubeApiKey: youtube.apiKey,
     cookie: {
         // If it's explicitly configured to use insecure cookies, overwrite the default setting.
         // Anything else will be fallback to the default of true in production.
