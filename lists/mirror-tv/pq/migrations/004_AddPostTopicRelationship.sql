@@ -4,7 +4,7 @@ ALTER TABLE "ArtShow" ADD COLUMN "contentHtml" text NULL;
 ALTER TABLE "ArtShow" ADD COLUMN "contentApiData" text NULL;                                                       
 ALTER TABLE "ArtShow" ADD COLUMN "isAdult" bool NOT NULL DEFAULT false;                                            
 ALTER TABLE "ArtShow" ADD COLUMN "show" int4 NULL;                                                                 
-CREATE INDEX artshow_show_index ON "Show" USING btree (show);                                               
+CREATE INDEX artshow_show_index ON "ArtShow" USING btree ("show");
                                                                                                                    
 --
 -- Name: ArtShow_author_many; Type: TABLE; Schema: public; Owner: agent_konstantin
@@ -13,7 +13,7 @@ CREATE TABLE "ArtShow_author_many" (
     "ArtShow_left_id" integer NOT NULL,
     "Contact_right_id" integer NOT NULL
 );
-ALTER TABLE "ArtShow_author_many" OWNER TO agent_konstantin;
+-- ALTER TABLE "ArtShow_author_many" OWNER TO agent_konstantin;
 CREATE INDEX artshow_author_many_artshow_left_id_index ON "ArtShow_author_many" USING btree ("ArtShow_left_id");
 CREATE INDEX artshow_author_many_contact_right_id_index ON "ArtShow_author_many" USING btree ("Contact_right_id");
 ALTER TABLE ONLY "ArtShow_author_many"
