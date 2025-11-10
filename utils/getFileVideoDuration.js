@@ -47,7 +47,7 @@ async function getFileVideoDuration(fileInfo) {
     if (!fileInfo) return null
     
     const filename = fileInfo?.filename;
-    const fileUrl = fileInfo?._meta?.url;
+    const fileUrl = fileInfo?._meta?.url || fileInfo?.url;
 
     // Case 1: URL (file:/// 或 http[s]://)
     if (fileUrl && isURL(fileUrl)) {
