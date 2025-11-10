@@ -150,6 +150,10 @@ if (!!app.isAdminAppRequired) {
     )
 }
 
+// ---- 啟動 videoWorker ----
+const { startEmbeddedWorker } = require('./utils/videoWorkerBootstrap');
+startEmbeddedWorker();
+
 module.exports = {
     keystone,
     apps: [new GraphQLApp(graphQLOptions), ...optionalApps],
