@@ -35,6 +35,7 @@ function getVideoDurationFromPath(filePath) {
             console.error(`ffprobe error`, err)
             return resolve(null)
         }
+        console.log('[File Duration Debug] ffprobe metadata:', metadata)
         const duration = Math.floor(metadata?.format?.duration || 0)
         console.log(`Duration: ${duration}s`)
         resolve(duration)
