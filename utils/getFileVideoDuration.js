@@ -4,15 +4,16 @@ const os = require('os')
 const ffmpeg = require('fluent-ffmpeg')
 const ffprobeStatic = require('ffprobe-static');
 const ffmpegStatic = require('ffmpeg-static');
+const fetch = require('node-fetch');
 const config = require('../configs/config');
 
 // 判斷是否 URL
 function isURL(str) {
-        return /^(https?|file):\/\//.test(str);
-    }
+    return /^(https?|file):\/\//.test(str);
+}
 
-    // 生成 public URL (GCS)
-    function getFileURL(bucket, basePath, filename) {
+// 生成 public URL (GCS)
+function getFileURL(bucket, basePath, filename) {
     if (!bucket || !basePath || !filename) return ''
     const cleanBase = basePath.startsWith('/') ? basePath.slice(1) : basePath
     return `https://storage.googleapis.com/${bucket}/${cleanBase}/${filename}`;
@@ -35,6 +36,7 @@ ffmpeg.setFfmpegPath(ffmpegStatic.path);
 // ffprobe util
 function getVideoDurationFromPath(filePath) {
     return new Promise(resolve => {
+        console.log('Running ffprobe on:', filePath);
         ffmpeg.ffprobe(filePath, (err, metadata) => {
         if (err) {
             console.error(`ffprobe error`, err)
@@ -48,6 +50,21 @@ function getVideoDurationFromPath(filePath) {
     })
 }
 
+// 下載 URL 到暫存檔
+async function downloadToTemp(url) {
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const buffer = await res.buffer();
+        const tmpPath = path.join(os.tmpdir(), `video_${Date.now()}.mp4`);
+        fs.writeFileSync(tmpPath, buffer);
+        return tmpPath;
+    } catch (err) {
+        console.error('Download failed:', err.message);
+        return null;
+    }
+}
+
 // Main function — Check URL / local first
 async function getFileVideoDuration(fileInfo) {
     if (!fileInfo) return null
@@ -55,10 +72,27 @@ async function getFileVideoDuration(fileInfo) {
     const filename = fileInfo?.filename;
     const fileUrl = fileInfo?._meta?.url || fileInfo?.url;
 
+    let tempFilePath = null;
+
     // Case 1: URL (file:/// 或 http[s]://)
-    if (fileUrl && isURL(fileUrl)) {
+    if (fileUrl) {
         console.log(`URL detected → ffprobe: ${fileUrl}`);
-        return await getVideoDurationFromPath(fileUrl);
+        // file:// 或本地路徑
+        if (fileUrl.startsWith('file://') || fs.existsSync(fileUrl)) {
+            const localPath = fileUrl.startsWith('file://') ? fileUrl.replace(/^file:\/\//, '') : fileUrl;
+            return await getVideoDurationFromPath(localPath);
+        }
+
+        // HTTP or HTTPS
+        if (/^https?:\/\//.test(fileUrl)){
+            tempFilePath = await downloadToTemp(fileUrl);
+            if (!tempFilePath) return null;
+            try {
+                return await getVideoDurationFromPath(tempFilePath);
+            } finally {
+                fs.existsSync(tempFilePath) && fs.unlinkSync(tempFilePath);
+            }
+        }
     }
 
     // Case 2: Try GCS (if configured)
