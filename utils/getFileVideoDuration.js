@@ -2,6 +2,8 @@ const path = require('path')
 const fs = require('fs')
 const os = require('os')
 const ffmpeg = require('fluent-ffmpeg')
+const ffprobeStatic = require('ffprobe-static');
+const ffmpegStatic = require('ffmpeg-static');
 const config = require('../configs/config');
 
 // 判斷是否 URL
@@ -27,6 +29,9 @@ const envVar = {
     },
 }
 
+// 設定 ffprobe 路徑
+ffmpeg.setFfprobePath(ffprobeStatic.path);
+ffmpeg.setFfmpegPath(ffmpegStatic.path);
 // ffprobe util
 function getVideoDurationFromPath(filePath) {
     return new Promise(resolve => {
