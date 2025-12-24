@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 const {
     Text,
     Checkbox,
@@ -24,7 +24,7 @@ const {
     allowRoles,
 } = require('../../helpers/access/mirror-tv')
 const cacheHint = require('../../helpers/cacheHint')
-
+const { cronService } = require('../../configs/config.js')
 const mediaUrlBase = 'assets/videos/'
 const fileAdapter = new GCSAdapter(mediaUrlBase)
 
@@ -40,8 +40,10 @@ const {
     getYouTubeDuration,
 } = require('../../utils/videoHandler')
 
-const { videoQueue, videoQueueEvents } = require('../../utils/videoQueue');
-const { processVideoInBackground } = require('../../utils/processVideoInBackground')
+const { videoQueue, videoQueueEvents } = require('../../utils/videoQueue')
+const {
+    processVideoInBackground,
+} = require('../../utils/processVideoInBackground')
 
 module.exports = {
     fields: {
@@ -153,22 +155,22 @@ module.exports = {
                 fileDuration: String
                 youtubeDuration: String
             }
-            `
+            `,
         ],
         resolvers: {
             Video: {
                 fileDuration: (item) => {
-                    const v = item.fileDuration_internal;
-                    if (item.youtubeUrl && !item.file) return 'PT0S';
-                    return v && v !== '0' ? v : 'PT0S';
+                    const v = item.fileDuration_internal
+                    if (item.youtubeUrl && !item.file) return 'PT0S'
+                    return v && v !== '0' ? v : 'PT0S'
                 },
                 youtubeDuration: (item) => {
-                    const v = item.youtubeDuration_internal;
-                    if (item.file && !item.youtubeUrl) return 'PT0S';
-                    return v && v !== '0' ? v : 'PT0S';
-                }
-            }
-        }
+                    const v = item.youtubeDuration_internal
+                    if (item.file && !item.youtubeUrl) return 'PT0S'
+                    return v && v !== '0' ? v : 'PT0S'
+                },
+            },
+        },
     },
 
     plugins: [
@@ -193,13 +195,13 @@ module.exports = {
             resolvedData,
             addValidationError,
             context,
-			operation,
+            operation,
         }) => {
-			if (operation == 'update' && existingItem.state == 'published') {
-				if (context.req.user.role == 'contributor') {
-					addValidationError("You don't have the permission")
-					return
-				}
+            if (operation == 'update' && existingItem.state == 'published') {
+                if (context.req.user.role == 'contributor') {
+                    addValidationError("You don't have the permission")
+                    return
+                }
             }
             const keyToUse = validateWhichKeyShouldCMSChoose(
                 existingItem,
@@ -248,66 +250,79 @@ module.exports = {
         resolveInput: async ({ resolvedData, existingItem }) => {
             try {
                 // 抓 YouTube URL 影片長度
-                if (resolvedData.youtubeUrl && resolvedData.youtubeUrl !== existingItem?.youtubeUrl) {
-                    const durationData = await getYouTubeDuration(resolvedData.youtubeUrl);
+                if (
+                    resolvedData.youtubeUrl &&
+                    resolvedData.youtubeUrl !== existingItem?.youtubeUrl
+                ) {
+                    const durationData = await getYouTubeDuration(
+                        resolvedData.youtubeUrl
+                    )
                     if (durationData) {
-                        const { durationISO, durationSeconds } = durationData;
+                        const { durationISO, durationSeconds } = durationData
 
                         // 設定 YouTube 相關欄位
-                        resolvedData.youtubeDuration_internal = durationISO;
-                        resolvedData.duration = durationSeconds;
+                        resolvedData.youtubeDuration_internal = durationISO
+                        resolvedData.duration = durationSeconds
 
                         // YouTube → File 時長設為 0
-                        resolvedData.fileDuration_internal = 'PT0S';
+                        resolvedData.fileDuration_internal = 'PT0S'
 
                         if (existingItem?.meta) {
-                            resolvedData.meta = '';
+                            resolvedData.meta = ''
                         }
 
-                        console.log(`[Video Hook] YouTube URL processed: ${resolvedData.youtubeUrl}`);
-                        console.log(`Duration (seconds): ${durationSeconds}, ISO: ${durationISO}`);
+                        console.log(
+                            `[Video Hook] YouTube URL processed: ${resolvedData.youtubeUrl}`
+                        )
+                        console.log(
+                            `Duration (seconds): ${durationSeconds}, ISO: ${durationISO}`
+                        )
                     } else {
                         // 如果抓不到，設定為 PT0S
-                        resolvedData.youtubeDuration_internal = 'PT0S';
-                        resolvedData.fileDuration_internal = 'PT0S';
-                        resolvedData.duration = 0;
+                        resolvedData.youtubeDuration_internal = 'PT0S'
+                        resolvedData.fileDuration_internal = 'PT0S'
+                        resolvedData.duration = 0
 
                         if (existingItem?.meta) {
-                            resolvedData.meta = '';
+                            resolvedData.meta = ''
                         }
 
-                        console.warn(`[Video Hook] YouTube URL duration not found: ${resolvedData.youtubeUrl}`);
+                        console.warn(
+                            `[Video Hook] YouTube URL duration not found: ${resolvedData.youtubeUrl}`
+                        )
                     }
                 }
 
                 // 更新 updatedAt_utc
-                if (existingItem) { 
-                    resolvedData.updatedAt_utc = new Date();
-                    console.log(`[Video Hook] updatedAt_utc updated: ${resolvedData.updatedAt_utc}`);
+                if (existingItem) {
+                    resolvedData.updatedAt_utc = new Date()
+                    console.log(
+                        `[Video Hook] updatedAt_utc updated: ${resolvedData.updatedAt_utc}`
+                    )
                 }
 
-                return resolvedData;
+                return resolvedData
             } catch (error) {
-                console.error('[Video Hook] resolveInput error:', error);
+                console.error('[Video Hook] resolveInput error:', error)
 
                 if (existingItem) {
-                    resolvedData.updatedAt_utc = new Date();
+                    resolvedData.updatedAt_utc = new Date()
                 }
-                return resolvedData;
+                return resolvedData
             }
         },
 
         beforeChange: async ({ resolvedData, context, operation, item }) => {
-            console.log('=== beforeChange triggered ===');
-            console.log('operation:', operation);
+            console.log('=== beforeChange triggered ===')
+            console.log('operation:', operation)
 
             // 跳過已處理過的更新（避免循環）
             if (context.req?._skipVideoHook) {
-                console.log('>>> Skipping video hook (already processed)');
-                return resolvedData;
+                console.log('>>> Skipping video hook (already processed)')
+                return resolvedData
             }
 
-            let newFile = null;
+            let newFile = null
             if (resolvedData.file && typeof resolvedData.file === 'object') {
                 // 新上傳檔案(e.g. create)
                 newFile = {
@@ -315,26 +330,28 @@ module.exports = {
                     url: resolvedData.file._meta?.url,
                     duration: resolvedData.file._meta?.duration ?? 0,
                     originalFile: resolvedData.file,
-                };
+                }
             } else if (resolvedData.meta?.url) {
                 // Keystone 只傳 meta.url(e.g. update)
-                const filename = path.basename(resolvedData.meta.url.replace('file://', ''));
+                const filename = path.basename(
+                    resolvedData.meta.url.replace('file://', '')
+                )
                 newFile = {
                     filename,
                     url: resolvedData.meta.url,
                     duration: resolvedData.duration ?? 0,
                     originalFile: null,
-                };
+                }
             }
 
             // 如果有新檔案，立即處理並更新 resolvedData
             if (newFile) {
-                console.log('>>> New file detected, processing immediately');
-                
+                console.log('>>> New file detected, processing immediately')
+
                 try {
                     // 需要有 item.id 才能加入 queue（create 時可能還沒有）
-                    const videoId = item?.id || 'temp-' + Date.now();
-                    
+                    const videoId = item?.id || 'temp-' + Date.now()
+
                     const job = await videoQueue.add('videoJob', {
                         videoId: videoId.toString(),
                         file: newFile.originalFile || {
@@ -346,55 +363,68 @@ module.exports = {
                             },
                         },
                         action: 'process',
-                    });
-                    console.log('[Hook] Process job added:', job.id);
+                    })
+                    console.log('[Hook] Process job added:', job.id)
 
                     if (videoQueueEvents) {
-                        const result = await job.waitUntilFinished(videoQueueEvents);
+                        const result = await job.waitUntilFinished(
+                            videoQueueEvents
+                        )
 
                         // 直接更新 resolvedData，自動寫入 DB
-                        resolvedData.fileDuration_internal = result.isoDuration;
-                        resolvedData.youtubeDuration_internal = 'PT0S';
-                        resolvedData.duration = result.durationSec ?? 0;
+                        resolvedData.fileDuration_internal = result.isoDuration
+                        resolvedData.youtubeDuration_internal = 'PT0S'
+                        resolvedData.duration = result.durationSec ?? 0
 
-                        console.log('[Hook] Video data updated in resolvedData:', {
-                            videoId: result.videoId,
-                            fileDuration: result.isoDuration,
-                            duration: result.durationSec,
-                        });
+                        console.log(
+                            '[Hook] Video data updated in resolvedData:',
+                            {
+                                videoId: result.videoId,
+                                fileDuration: result.isoDuration,
+                                duration: result.durationSec,
+                            }
+                        )
                     }
                 } catch (err) {
-                    console.error('[Hook] Failed to process new file:', err);
+                    console.error('[Hook] Failed to process new file:', err)
                 }
             }
 
-            console.log('==============================');
-            return resolvedData;
+            console.log('==============================')
+            return resolvedData
         },
 
-        afterChange: async ({ existingItem, updatedItem, context }) => {
+        afterChange: async ({
+            existingItem,
+            updatedItem,
+            context,
+            operation,
+        }) => {
             // 跳過 hook 觸發的更新
-            if (context.req?._skipVideoHook) return;
+            if (context.req?._skipVideoHook) return
 
-            const oldFile = existingItem?.file?.filename;
-            const currentFile = updatedItem?.file?.filename;
-            const hasYouTubeUrl = updatedItem?.youtubeUrl; // 檢查是否有 YouTube URL
+            const oldFile = existingItem?.file?.filename
+            const currentFile = updatedItem?.file?.filename
+            const hasYouTubeUrl = updatedItem?.youtubeUrl // 檢查是否有 YouTube URL
 
             // 只處理刪除檔案的情況
             if (oldFile && !currentFile && !hasYouTubeUrl) {
-                console.log('[Hook] File deleted, cleaning up');
+                console.log('[Hook] File deleted, cleaning up')
 
                 try {
                     const job = await videoQueue.add('videoJob', {
                         videoId: updatedItem.id.toString(),
                         action: 'delete',
-                    });
+                    })
 
                     if (videoQueueEvents) {
-                        await job.waitUntilFinished(videoQueueEvents);
+                        await job.waitUntilFinished(videoQueueEvents)
 
-                        const sudoContext = context.sudo();
-                        sudoContext.req = { ...(context.req || {}), _skipVideoHook: true };
+                        const sudoContext = context.sudo()
+                        sudoContext.req = {
+                            ...(context.req || {}),
+                            _skipVideoHook: true,
+                        }
 
                         await sudoContext.executeGraphQL({
                             query: `
@@ -410,10 +440,55 @@ module.exports = {
                                 }
                             `,
                             variables: { id: updatedItem.id },
-                        });
+                        })
                     }
                 } catch (err) {
-                    console.error('[Hook] Delete failed:', err);
+                    console.error('[Hook] Delete failed:', err)
+                }
+            }
+
+            // 觸發 video JSON 更新
+            const liveVideoNames = ['mnews-live', 'live-cam']
+            const isLiveVideo = liveVideoNames.includes(updatedItem.name)
+            if (isLiveVideo) {
+                const wasPublished = existingItem?.state === 'published'
+                const isPublished = updatedItem.state === 'published'
+
+                // 只要跟 published 有關就觸發（發佈或下架）
+                if (wasPublished || isPublished) {
+                    console.log(
+                        `[Hook] Live video "${updatedItem.name}" published status changed, triggering JSON regeneration`
+                    )
+
+                    try {
+                        const fetch = require('node-fetch')
+                        const CRON_SERVICE_URL =
+                            cronService.apiUrlBase || 'http://localhost:5000'
+
+                        const response = await fetch(
+                            `${CRON_SERVICE_URL}/homepage_video`,
+                            {
+                                method: 'GET',
+                            }
+                        )
+
+                        if (response.ok) {
+                            console.log(
+                                '[Hook] Video JSON updated successfully'
+                            )
+                        } else {
+                            console.error(
+                                '[Hook] Video JSON update failed:',
+                                response.status,
+                                response.statusText
+                            )
+                        }
+                    } catch (error) {
+                        console.error(
+                            '[Hook] Failed to trigger video JSON update:',
+                            error.message
+                        )
+                    }
                 }
             }
         },

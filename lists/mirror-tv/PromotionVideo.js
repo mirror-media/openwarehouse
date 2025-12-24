@@ -12,6 +12,7 @@ const {
 } = require('../../helpers/access/mirror-tv')
 
 const cacheHint = require('../../helpers/cacheHint')
+const { cronService } = require('../../configs/config.js')
 
 module.exports = {
     fields: {
@@ -52,6 +53,51 @@ module.exports = {
     adminConfig: {
         defaultColumns: 'name, sortOrder, state',
         defaultSort: '-sortOrder',
+    },
+    hooks: {
+        afterChange: async ({ existingItem, updatedItem }) => {
+            const wasPublished = existingItem?.state === 'published'
+            const isPublished = updatedItem.state === 'published'
+            if (wasPublished || isPublished) {
+                console.log(
+                    `[Hook] PromotionVideo "${updatedItem.name}" published status changed, triggering JSON regeneration`
+                )
+
+                try {
+                    const fetch = require('node-fetch')
+                    const CRON_SERVICE_URL =
+                        cronService.apiUrlBase || 'http://localhost:5000'
+
+                    console.log(
+                        `[Hook] Calling ${CRON_SERVICE_URL}/homepage_video`
+                    )
+
+                    const response = await fetch(
+                        `${CRON_SERVICE_URL}/homepage_video`,
+                        {
+                            method: 'GET',
+                        }
+                    )
+
+                    if (response.ok) {
+                        console.log(
+                            '[Hook] Video JSON updated successfully via PromotionVideo'
+                        )
+                    } else {
+                        console.error(
+                            '[Hook] Video JSON update failed:',
+                            response.status,
+                            response.statusText
+                        )
+                    }
+                } catch (error) {
+                    console.error(
+                        '[Hook] Failed to trigger video JSON update:',
+                        error.message
+                    )
+                }
+            }
+        },
     },
     labelField: 'name',
     cacheHint: cacheHint,
