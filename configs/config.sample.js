@@ -3,23 +3,23 @@
 module.exports = {
     main: {
         project: 'your-project-name',
-        applicationName: "applicationName",
-        authList: "authList",
+        applicationName: 'applicationName',
+        authList: 'authList',
         uuid: 'uuid',
         dropDatabase: false,
         isGraphQLCached: false,
         isAdminAppRequired: true,
     },
     database: {
-        host: "host",
-        db: "name",
-        acc: "acc",
-        pass: "pass",
+        host: 'host',
+        db: 'name',
+        acc: 'acc',
+        pass: 'pass',
     },
     session: {
-        cookieSecret: "cookieSecret",
+        cookieSecret: 'cookieSecret',
         ttl: 3600,
-        prefix: "ks-sess"
+        prefix: 'ks-sess',
     },
     storage: {
         gcpUrlBase: 'gcpUrlBase',
@@ -29,11 +29,14 @@ module.exports = {
         videoUrlBase: '/video-files',
     },
     redis: {
-        host: "host",
-        port: "port",
-        authPass: "authPass"
+        host: 'host',
+        port: 'port',
+        authPass: 'authPass',
     },
     youtube: {
-        apiKey: "your_youtube_api_key"
+        apiKey: 'your_youtube_api_key',
+    },
+    cronService: {
+        apiUrlBase: 'http://localhost:5000',
     },
 }
