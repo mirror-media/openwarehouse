@@ -9,7 +9,7 @@ const {
 } = require('@keystonejs/fields')
 const NewDateTime = require('../../fields/NewDateTime/index.js')
 const CustomRelationship = require('../../fields/CustomRelationship')
-
+const { cronService } = require('../../configs/config.js')
 const { byTracking } = require('@keystonejs/list-plugins')
 const { atTracking } = require('../../helpers/list-plugins')
 const { GCSAdapter } = require('../../lib/GCSAdapter')
@@ -153,13 +153,13 @@ module.exports = {
             resolvedData,
             addValidationError,
             context,
-			operation,
+            operation,
         }) => {
-			if (operation == 'update' && existingItem.state == 'published') {
-				if (context.req.user.role == 'contributor') {
-					addValidationError("You don't have the permission")
-					return
-				}
+            if (operation == 'update' && existingItem.state == 'published') {
+                if (context.req.user.role == 'contributor') {
+                    addValidationError("You don't have the permission")
+                    return
+                }
             }
             const keyToUse = validateWhichKeyShouldCMSChoose(
                 existingItem,
@@ -215,6 +215,52 @@ module.exports = {
             //     resolvedData,
             //     addValidationError
             // )
+        },
+        afterChange: async ({ existingItem, updatedItem }) => {
+            // 觸發 video JSON 更新
+            const liveVideoNames = ['mnews-live', 'live-cam']
+            const isLiveVideo = liveVideoNames.includes(updatedItem.name)
+            if (isLiveVideo) {
+                const wasPublished = existingItem?.state === 'published'
+                const isPublished = updatedItem.state === 'published'
+
+                // 只要跟 published 有關就觸發（發佈或下架）
+                if (wasPublished || isPublished) {
+                    console.log(
+                        `[Hook] Live video "${updatedItem.name}" published status changed, triggering JSON regeneration`
+                    )
+
+                    try {
+                        const fetch = require('node-fetch')
+                        const CRON_SERVICE_URL =
+                            cronService.apiUrlBase || 'http://localhost:5000'
+
+                        const response = await fetch(
+                            `${CRON_SERVICE_URL}/homepage_video`,
+                            {
+                                method: 'GET',
+                            }
+                        )
+
+                        if (response.ok) {
+                            console.log(
+                                '[Hook] Video JSON updated successfully'
+                            )
+                        } else {
+                            console.error(
+                                '[Hook] Video JSON update failed:',
+                                response.status,
+                                response.statusText
+                            )
+                        }
+                    } catch (error) {
+                        console.error(
+                            '[Hook] Failed to trigger video JSON update:',
+                            error.message
+                        )
+                    }
+                }
+            }
         },
         afterDelete: async ({ existingItem, resolvedData }) => {
             deleteOldVideoFileInGCSIfNeeded(
