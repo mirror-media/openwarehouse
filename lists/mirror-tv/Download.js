@@ -65,6 +65,10 @@ module.exports = {
             ) {
                 const bucketUrl = storage.webUrlBase
                 resolvedData.url = `${bucketUrl}assets/documents/tv-schedule.json`
+                console.log(
+                    '[Download resolveInput] Set tv-schedule URL to:',
+                    resolvedData.url
+                )
             }
             return resolvedData
         },
@@ -85,16 +89,7 @@ module.exports = {
                 const CRON_SERVICE_URL =
                     cronService.apiUrlBase || 'http://localhost:5000'
                 const syncUrl = `${CRON_SERVICE_URL}/tv-schedule/sync`
-
-                let actualFilename = filename
-                if (updatedItem.url) {
-                    const urlParts = updatedItem.url.split('/')
-                    const filenameFromUrl = urlParts[urlParts.length - 1]
-                    if (filenameFromUrl && filenameFromUrl.endsWith('.csv')) {
-                        actualFilename = filenameFromUrl
-                    }
-                }
-                const blobName = `${mediaUrlBase}${actualFilename}`
+                const blobName = `${mediaUrlBase}${filename}`
                 console.log(
                     `[Download Hook] Triggering tv-schedule sync for: ${blobName}`
                 )
@@ -103,7 +98,6 @@ module.exports = {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         filename: blobName,
-                        downloadId: updatedItem.id,
                     }),
                 })
                 if (!response.ok) {
