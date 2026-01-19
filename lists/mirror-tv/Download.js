@@ -16,6 +16,7 @@ const { text } = require('express')
 const mediaUrlBase = 'assets/documents/'
 const fileAdapter = new DocumentAdapter(mediaUrlBase)
 const { cronService } = require('../../configs/config.js')
+const { storage } = require('../../configs/config.js')
 module.exports = {
     fields: {
         name: {
@@ -54,9 +55,16 @@ module.exports = {
         defaultSort: '-createdAt',
     },
     hooks: {
-        resolveInput: ({ resolvedData }) => {
+        resolveInput: ({ resolvedData, existingItem }) => {
             if (resolvedData.file) {
                 resolvedData.url = resolvedData.file._meta.url
+            }
+            if (
+                resolvedData.name === 'tv-schedule' ||
+                existingItem?.name === 'tv-schedule'
+            ) {
+                const bucketUrl = storage.webUrlBase
+                resolvedData.url = `${bucketUrl}assets/documents/tv-schedule.json`
             }
             return resolvedData
         },
