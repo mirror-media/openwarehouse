@@ -77,7 +77,16 @@ module.exports = {
                 const CRON_SERVICE_URL =
                     cronService.apiUrlBase || 'http://localhost:5000'
                 const syncUrl = `${CRON_SERVICE_URL}/tv-schedule/sync`
-                const blobName = `${mediaUrlBase}${filename}`
+
+                let actualFilename = filename
+                if (updatedItem.url) {
+                    const urlParts = updatedItem.url.split('/')
+                    const filenameFromUrl = urlParts[urlParts.length - 1]
+                    if (filenameFromUrl && filenameFromUrl.endsWith('.csv')) {
+                        actualFilename = filenameFromUrl
+                    }
+                }
+                const blobName = `${mediaUrlBase}${actualFilename}`
                 console.log(
                     `[Download Hook] Triggering tv-schedule sync for: ${blobName}`
                 )
