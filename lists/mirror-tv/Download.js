@@ -63,7 +63,7 @@ module.exports = {
                 resolvedData.name === 'tv-schedule' ||
                 existingItem?.name === 'tv-schedule'
             ) {
-                const bucketUrl = storage.webUrlBase
+                const bucketUrl = storage.gcpUrlBase
                 resolvedData.url = `${bucketUrl}assets/documents/tv-schedule.json`
                 console.log(
                     '[Download resolveInput] Set tv-schedule URL to:',
