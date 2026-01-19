@@ -15,6 +15,7 @@ const { deleteOldFileInGCS } = require('../../utils/gcsHandler')
 const { text } = require('express')
 const mediaUrlBase = 'assets/documents/'
 const fileAdapter = new DocumentAdapter(mediaUrlBase)
+const { cronService } = require('../../configs/config.js')
 module.exports = {
     fields: {
         name: {
@@ -23,7 +24,7 @@ module.exports = {
             isRequired: true,
         },
         file: {
-            label:'檔案(支援檔案類型:PDF word excel ppt)',
+            label: '檔案(支援檔案類型:PDF word excel ppt csv)',
             type: File,
             adapter: fileAdapter,
         },
@@ -58,6 +59,50 @@ module.exports = {
                 resolvedData.url = resolvedData.file._meta.url
             }
             return resolvedData
+        },
+
+        afterChange: async ({ operation, updatedItem, originalInput }) => {
+            // 只處理 tv-schedule
+            if (updatedItem.name !== 'tv-schedule') return
+            const isFileUpload = originalInput && originalInput.file
+            const isCreate = operation === 'create'
+            if (!isCreate && !isFileUpload) return
+            const filename = updatedItem.file?.filename
+            if (!filename || !filename.endsWith('.csv')) {
+                console.log('[Download Hook] Skipping: not a CSV file')
+                return
+            }
+            try {
+                const fetch = require('node-fetch')
+                const CRON_SERVICE_URL =
+                    cronService.apiUrlBase || 'http://localhost:5000'
+                const syncUrl = `${CRON_SERVICE_URL}/tv-schedule/sync`
+                const blobName = `${mediaUrlBase}${filename}`
+                console.log(
+                    `[Download Hook] Triggering tv-schedule sync for: ${blobName}`
+                )
+                const response = await fetch(syncUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: blobName,
+                        downloadId: updatedItem.id,
+                    }),
+                })
+                if (!response.ok) {
+                    console.error(
+                        `[Download Hook] Sync failed: ${response.status}`
+                    )
+                } else {
+                    const result = await response.json()
+                    console.log(
+                        '[Download Hook] Sync triggered successfully:',
+                        result
+                    )
+                }
+            } catch (error) {
+                console.error('[K5 Hook] Sync Error:', error.message)
+            }
         },
         afterDelete: async ({ existingItem }) => {
             try {
