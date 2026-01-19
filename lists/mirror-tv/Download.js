@@ -79,20 +79,36 @@ module.exports = {
             const isFileUpload = originalInput && originalInput.file
             const isCreate = operation === 'create'
             if (!isCreate && !isFileUpload) return
-            const filename = updatedItem.file?.filename
-            if (!filename || !filename.endsWith('.csv')) {
-                console.log('[Download Hook] Skipping: not a CSV file')
+
+            const file = updatedItem.file
+            if (!file || !file._meta || !file._meta.url) {
+                console.log('[Download Hook] No file URL found')
                 return
             }
+
+            const csvUrl = file._meta.url
+            if (!csvUrl.endsWith('.csv')) {
+                console.log('[Download Hook] Not a CSV file')
+                return
+            }
+
+            const match = csvUrl.match(/(assets\/documents\/.+\.csv)/)
+            const blobName = match ? match[1] : null
+            if (!blobName) {
+                console.error(
+                    '[Download Hook] Cannot extract blob name from:',
+                    csvUrl
+                )
+                return
+            }
+
+            console.log(`[Download Hook] Blob name: ${blobName}`)
             try {
                 const fetch = require('node-fetch')
                 const CRON_SERVICE_URL =
                     cronService.apiUrlBase || 'http://localhost:5000'
                 const syncUrl = `${CRON_SERVICE_URL}/tv-schedule/sync`
-                const blobName = `${mediaUrlBase}${filename}`
-                console.log(
-                    `[Download Hook] Triggering tv-schedule sync for: ${blobName}`
-                )
+                console.log(`[Download Hook] Triggering tv-schedule sync`)
                 const response = await fetch(syncUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
